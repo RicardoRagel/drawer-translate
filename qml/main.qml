@@ -116,12 +116,25 @@ ApplicationWindow
                 selectByMouse: true
                 wrapMode: TextEdit.Wrap
 
-                placeholderText: 'Write here your text ...'
                 text: ""
 
                 onTextChanged:
                 {
                     DataManager.setInputText(text)
+                }
+
+                //placeholderText: 'Write here your text ...' // It seems doesn't work properly on Win10
+                property string placeholderTextFixed: 'Write here your text ...'
+                Text
+                {
+                    id: placeHolderText
+                    anchors.centerIn: parent
+                    font.pixelSize: fontPixelSize
+                    font.italic: true
+                    color: fontColor
+                    opacity: parent.opacity * 0.5
+                    text: inputText.placeholderTextFixed
+                    visible: !inputText.text
                 }
             }
         }
