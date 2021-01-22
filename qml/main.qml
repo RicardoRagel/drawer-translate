@@ -38,7 +38,8 @@ ApplicationWindow
     visible: true
     title: qsTr(Constants.appTitle)
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
-    flags:   Qt.FramelessWindowHint     // Remove TitleBar
+    flags:   Qt.Window                  // Force app to be a Window and not a Popup
+           | Qt.FramelessWindowHint     // Remove TitleBar
            | Qt.WindowStaysOnTopHint    // Always on top
 
     // Manage the app starup
