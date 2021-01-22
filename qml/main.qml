@@ -26,7 +26,7 @@ ApplicationWindow
     property color fontColor:           Qt.rgba(242/255,242/255,242/255, 1)
     property color appWindowColor:      Qt.rgba(30/255,30/255,30/255, 1)
     property int buttonSize: 15
-    property real heightFactor: 0.20
+    property real heightFactor: 0.10
     property int margins: 10
 
     // Windows Configuration
@@ -38,7 +38,7 @@ ApplicationWindow
     visible: true
     title: qsTr(Constants.appTitle)
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
-    flags: Qt.FramelessWindowHint       // Remove TitleBar
+    flags:   Qt.FramelessWindowHint     // Remove TitleBar
            | Qt.WindowStaysOnTopHint    // Always on top
 
     // Manage the app starup
@@ -148,13 +148,33 @@ ApplicationWindow
             anchors.topMargin: margins
             anchors.rightMargin: anchors.topMargin
             color: "transparent"
-            width: buttonSize * 2 + margins*2
+            width: buttonSize * 3 + margins*2
             height: buttonSize
             Row
             {
                 id: winButtonsRow
                 spacing: margins
                 anchors.centerIn: parent
+
+                // Settings
+                CustomButton2
+                {
+                    id: winButtonMinimize
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: buttonSize
+                    height: buttonSize
+                    imgSizeFactor: 1.0
+                    imgOpacity: 1.0
+                    image_url: "qrc:/resources/decrement.svg"
+                    onClickedChanged:
+                    {
+                        if(clicked)
+                        {
+                            clicked = false
+                            root.showMinimized()
+                        }
+                    }
+                }
 
                 // Settings
                 CustomButton2

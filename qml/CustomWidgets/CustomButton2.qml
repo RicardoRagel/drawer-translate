@@ -55,7 +55,7 @@ Rectangle
 
         onClicked:
         {
-            console.log("clicked")
+            //console.log("clicked")
             root.clicked = true
         }
     }
