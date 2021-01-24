@@ -23,8 +23,9 @@ ApplicationWindow
 
     // Design
     property int fontPixelSize:         14
-    property color fontColor:           Qt.rgba(242/255,242/255,242/255, 1)
-    property color appWindowColor:      Qt.rgba(30/255,30/255,30/255, 1)
+    property color fontColor:           Qt.rgba(242/255, 242/255, 242/255, 1)
+    property color appWindowColor:      Qt.rgba(30/255, 30/255, 30/255, 1)
+    property color appSectionColor:     Qt.rgba(3/255, 21/255, 104/255, 1)
     property int buttonSize: 15
     property real heightFactor: 0.10
     property int margins: 10
@@ -96,51 +97,6 @@ ApplicationWindow
         color: appWindowColor
         radius: 10
 
-        //  Window Content
-        Rectangle
-        {
-            id: contentRect
-            anchors.centerIn: parent
-            width: parent.width - 2*margins - 2*winButtonsRect.width
-            height: parent.height- 2*margins
-            color: "transparent"
-
-            TextArea
-            {
-                id: inputText
-                anchors.fill: parent
-                background: Rectangle { color: "transparent" }
-                color: fontColor
-                font.pixelSize: fontPixelSize
-                horizontalAlignment: TextInput.AlignHCenter
-                verticalAlignment: TextInput.AlignVCenter
-                selectByMouse: true
-                wrapMode: TextEdit.Wrap
-
-                text: DataManager.inputText
-
-                onTextChanged:
-                {
-                    if(text !== DataManager.inputText)
-                        DataManager.setInputText(text)
-                }
-
-                //placeholderText: 'Write here your text ...' // It seems doesn't work properly on Win10
-                property string placeholderTextFixed: 'Write here your text ...'
-                Text
-                {
-                    id: placeHolderText
-                    anchors.centerIn: parent
-                    font.pixelSize: fontPixelSize
-                    font.italic: true
-                    color: fontColor
-                    opacity: parent.opacity * 0.5
-                    text: inputText.placeholderTextFixed
-                    visible: !inputText.text
-                }
-            }
-        }
-
         // Window Buttons
         Rectangle
         {
@@ -148,7 +104,7 @@ ApplicationWindow
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.topMargin: margins
-            anchors.rightMargin: anchors.topMargin
+            anchors.rightMargin: margins
             color: "transparent"
             width: buttonSize * 3 + margins*2
             height: buttonSize
@@ -219,6 +175,108 @@ ApplicationWindow
                 }
             }//row
         }//window buttons
+
+        //  Window Content
+        Rectangle
+        {
+            id: contentRect
+            anchors.top: winButtonsRect.bottom
+            anchors.bottom: parent.bottom
+            anchors.topMargin: margins
+            anchors.bottomMargin: margins
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width - 2*margins
+            color: "transparent"
+
+            Row
+            {
+                id: contentRow
+                anchors.centerIn: parent
+                spacing: 10
+
+                Rectangle
+                {
+                    id: inputTextRect
+                    width: contentRect.width/2 - contentRow.spacing/2
+                    height: contentRect.height
+                    color: appSectionColor
+                    radius: 10
+
+                    TextArea
+                    {
+                        id: inputText
+                        anchors.fill: parent
+                        background: Rectangle { color: "transparent" }
+                        color: fontColor
+                        font.pixelSize: fontPixelSize
+                        horizontalAlignment: TextInput.AlignHCenter
+                        verticalAlignment: TextInput.AlignVCenter
+                        selectByMouse: true
+                        wrapMode: TextEdit.Wrap
+
+                        text: DataManager.inputText
+
+                        onTextChanged:
+                        {
+                            if(text !== DataManager.inputText)
+                                DataManager.setInputText(text)
+                        }
+
+                        //placeholderText: 'Write here your text ...' // It seems doesn't work properly on Win10
+                        property string placeholderTextFixed: 'Write here your text ...'
+                        Text
+                        {
+                            id: placeHolderInputText
+                            anchors.centerIn: parent
+                            font.pixelSize: fontPixelSize
+                            font.italic: true
+                            color: fontColor
+                            opacity: parent.opacity * 0.5
+                            text: inputText.placeholderTextFixed
+                            visible: !inputText.text
+                        }
+                    }
+                }
+
+                Rectangle
+                {
+                    id: outputTextRect
+                    width: contentRect.width/2 - contentRow.spacing/2
+                    height: contentRect.height
+                    color: appSectionColor
+                    radius: 10
+
+                    TextArea
+                    {
+                        id: outputText
+                        anchors.fill: parent
+                        background: Rectangle { color: "transparent" }
+                        color: fontColor
+                        font.pixelSize: fontPixelSize
+                        horizontalAlignment: TextInput.AlignHCenter
+                        verticalAlignment: TextInput.AlignVCenter
+                        selectByMouse: true
+                        wrapMode: TextEdit.Wrap
+
+                        text: DataManager.outputText
+
+                        //placeholderText: 'Write here your text ...' // It seems doesn't work properly on Win10
+                        property string placeholderTextFixed: 'Translation result will be shown here ...'
+                        Text
+                        {
+                            id: placeHolderOutputText
+                            anchors.centerIn: parent
+                            font.pixelSize: fontPixelSize
+                            font.italic: true
+                            color: fontColor
+                            opacity: parent.opacity * 0.5
+                            text: outputText.placeholderTextFixed
+                            visible: !outputText.text
+                        }
+                    }
+                }
+            }
+        }
     }//background
 
     /*

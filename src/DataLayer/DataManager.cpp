@@ -33,6 +33,13 @@ void DataManager::setInputText(QString input_text)
     emit inputTextChanged();
 }
 
+void DataManager::setOutputText(QString output_text)
+{
+    qDebug() << "(DataManager) Output Text: " << output_text;
+
+    _output_text = output_text;
+    emit outputTextChanged();
+}
 
 /** *********************************
  *  Slots
@@ -50,13 +57,3 @@ void DataManager::clipboardSelectionChanged()
 
     setInputText(_clipboard->text());
 }
-
-
-/** *********************************
- *  QML Invokable standalone functions
- ** ********************************/
-//void DataManager::clearList()
-//{
-//    _item_list.clear();
-//    updateQmlItemList();
-//}

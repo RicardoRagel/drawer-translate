@@ -26,17 +26,21 @@ public:
 
   // QML properties declarations
   Q_PROPERTY(QString inputText READ inputText WRITE setInputText NOTIFY inputTextChanged)
+  Q_PROPERTY(QString outputText READ outputText WRITE setOutputText NOTIFY outputTextChanged)
 
   // QML properties getters
   QString inputText() {return _input_text;}
+  QString outputText() {return _output_text;}
 
   // QML Invokable properties setters
   Q_INVOKABLE void setInputText(QString input_text);
+  Q_INVOKABLE void setOutputText(QString output_text);
 
 signals:
 
   // QML properties signals
   void inputTextChanged();
+  void outputTextChanged();
 
 private slots:
 
@@ -48,6 +52,7 @@ private:
 
   // Variables
   QString _input_text;
+  QString _output_text;
   QClipboard *_clipboard;
 };
 
