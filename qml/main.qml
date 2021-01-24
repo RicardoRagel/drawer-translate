@@ -25,7 +25,7 @@ ApplicationWindow
     property int fontPixelSize:         14
     property color fontColor:           Qt.rgba(242/255, 242/255, 242/255, 1)
     property color appWindowColor:      Qt.rgba(30/255, 30/255, 30/255, 1)
-    property color appSectionColor:     Qt.rgba(3/255, 21/255, 104/255, 1)
+    property color appSectionColor:     Qt.rgba(93/255, 99/255, 99/255, 1)
     property int buttonSize: 15
     property real heightFactor: 0.10
     property int margins: 10
