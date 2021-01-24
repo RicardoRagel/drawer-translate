@@ -15,6 +15,9 @@ DataManager::DataManager()
   // Connect clipboard to this app
   connect(_clipboard, SIGNAL(dataChanged()), this, SLOT(clipboardDataChanged()));
   connect(_clipboard, SIGNAL(selectionChanged()), this, SLOT(clipboardSelectionChanged()));
+
+  // Init network manager to Google Translate API
+  _network_manager = new QNetworkAccessManager(this);
 }
 
 DataManager::~DataManager()

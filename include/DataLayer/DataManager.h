@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QClipboard>
 #include <QApplication>
+#include <QNetworkAccessManager>
 
 #include "Constants.h"
 
@@ -54,6 +55,7 @@ private:
   QString _input_text;
   QString _output_text;
   QClipboard *_clipboard;
+  QNetworkAccessManager *_network_manager;
 };
 
 #endif // DATAMANAGER_H

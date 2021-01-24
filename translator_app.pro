@@ -1,4 +1,4 @@
-QT += widgets qml quick # Others usual: 3dinput positioning svg multimedia gamepad
+QT += widgets qml quick network # Others usual: 3dinput positioning svg multimedia gamepad
 CONFIG += c++17         # C++ Version
 CONFIG += qml_debug     # Enable QML console debug
 #CONFIG += resources_big # Set this flag if your resources are big and cause a compilation error
