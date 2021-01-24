@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QString>
 #include <QDir>
+#include <QClipboard>
+#include <QApplication>
 
 #include "Constants.h"
 
@@ -36,10 +38,17 @@ signals:
   // QML properties signals
   void inputTextChanged();
 
+private slots:
+
+  // Receive selection changes
+  void clipboardDataChanged();
+  void clipboardSelectionChanged();
+
 private:
 
   // Variables
   QString _input_text;
+  QClipboard *_clipboard;
 };
 
 #endif // DATAMANAGER_H

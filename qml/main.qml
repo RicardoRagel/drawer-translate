@@ -117,11 +117,12 @@ ApplicationWindow
                 selectByMouse: true
                 wrapMode: TextEdit.Wrap
 
-                text: ""
+                text: DataManager.inputText
 
                 onTextChanged:
                 {
-                    DataManager.setInputText(text)
+                    if(text !== DataManager.inputText)
+                        DataManager.setInputText(text)
                 }
 
                 //placeholderText: 'Write here your text ...' // It seems doesn't work properly on Win10

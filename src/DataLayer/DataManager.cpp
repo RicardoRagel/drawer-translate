@@ -1,5 +1,4 @@
 #include "DataManager.h"
-#include <QJsonObject>
 
 /** *********************************
  *  DataManager Initizalization
@@ -9,6 +8,13 @@ DataManager::DataManager()
 {
 
   qDebug() << "(DataManager) Initialization ...";
+
+  // Init vars
+  _clipboard = QApplication::clipboard();
+
+  // Connect clipboard to this app
+  connect(_clipboard, SIGNAL(dataChanged()), this, SLOT(clipboardDataChanged()));
+  connect(_clipboard, SIGNAL(selectionChanged()), this, SLOT(clipboardSelectionChanged()));
 }
 
 DataManager::~DataManager()
@@ -21,11 +27,30 @@ DataManager::~DataManager()
  ** ********************************/
 void DataManager::setInputText(QString input_text)
 {
-    //qDebug() << "(DataManager) Input Text: " << input_text;
+    qDebug() << "(DataManager) Input Text: " << input_text;
 
     _input_text = input_text;
     emit inputTextChanged();
 }
+
+
+/** *********************************
+ *  Slots
+ ** ********************************/
+void DataManager::clipboardDataChanged()
+{
+    qDebug() << "(DataManager) Clipboard Data Changed: " << _clipboard->text();
+
+    setInputText(_clipboard->text());
+}
+
+void DataManager::clipboardSelectionChanged()
+{
+    qDebug() << "(DataManager) Clipboard Selection Changed: " << _clipboard->text();
+
+    setInputText(_clipboard->text());
+}
+
 
 /** *********************************
  *  QML Invokable standalone functions
@@ -34,20 +59,4 @@ void DataManager::setInputText(QString input_text)
 //{
 //    _item_list.clear();
 //    updateQmlItemList();
-//}
-
-/** *********************************
- *  Auxiliar functions
- ** ********************************/
-//void DataManager::loadListFromJson(QJsonDocument doc)
-//{
-//    //qDebug() << doc.toJson();
-//    QJsonArray objs_array = doc.array();
-//    qDebug() << "Loading " << objs_array.size() << " elements";
-
-//    for(const auto value : objs_array)
-//    {
-//        QJsonObject obj = value.toObject();
-//        addItem(obj["id"].toInt(), obj["name"].toString(), obj["checked"].toBool(), obj["score"].toDouble(), obj["filepath"].toString());
-//    }
 //}
