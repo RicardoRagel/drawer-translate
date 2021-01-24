@@ -10,13 +10,13 @@ INCLUDEPATH += include/Core \
                include/DataLayer \
                include/Utils
 HEADERS += \
-    include/Core/DeeplApp.h \
+    include/Core/TranslatorApp.h \
     include/DataLayer/Constants.h \
     include/DataLayer/DataManager.h \
     include/Utils/CursorPosProvider.h
 
 SOURCES += \
-    src/Core/DeeplApp.cpp \
+    src/Core/TranslatorApp.cpp \
     src/DataLayer/DataManager.cpp \
     src/main.cpp
 
@@ -28,5 +28,5 @@ OTHER_FILES += \
     qml/main.qml
 
 RESOURCES += \
-    deepl_app_media.qrc \
-    deepl_app_qml.qrc
+    translator_app_media.qrc \
+    translator_app_qml.qrc

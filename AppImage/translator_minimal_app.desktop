@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Translator Minimal App
+Comment=App created using the translator-minimal-app package
+Exec=translator_app
+Icon=icon_app
+Categories=Office;
+X-AppImage-Version=1.0.0
+Name[en_US]=translator_minimal_app.desktop

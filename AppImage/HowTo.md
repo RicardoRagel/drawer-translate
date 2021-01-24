@@ -1,8 +1,8 @@
 
-# Deploying *deepl-app* AppImage
+# Deploying *translator-app* AppImage
 
 ## Overview
-This document describe how to create an AppImage self-contained executable of the *deepl-app* app. 
+This document describe how to create an AppImage self-contained executable of the *translator-app* app. 
 
 We are going to supposse the usual case that you are not running the pre-installed Qt version of your OS. In this particular case, I am using Ubuntu 16.04 and Qt 5.14.2.
 
@@ -26,17 +26,17 @@ We are going to supposse the usual case that you are not running the pre-install
 
     ``` chmod a+x linuxdeployqt-6-x86_64.AppImage ```
 
-* If you have not do it yet, compile the **app-deepl** app using QtCreator and copy the path of the folder where it has been built, we are going to call it as <PATH_TO_YOUR_BUILD_FOLDER> in the following steps. In my case, this path is: */home/ricardo/Libraries/build-deepl_app-Desktop_Qt_5_14_2_GCC_64bit-Debug*
+* If you have not do it yet, compile the **app-translator** app using QtCreator and copy the path of the folder where it has been built, we are going to call it as <PATH_TO_YOUR_BUILD_FOLDER> in the following steps. In my case, this path is: */home/ricardo/Libraries/build-translator_app-Desktop_Qt_5_14_2_GCC_64bit-Debug*
 
-* Copy the *deepl_app.desktop* and *icon.png* files of the [AppImage](AppImage) folder of this repository into the previous build folder. They will be neccessary to deploy the app.
+* Copy the *translator_minimal_app.desktop* and *icon.png* files of the [AppImage](AppImage) folder of this repository into the previous build folder. They will be neccessary to deploy the app.
 
 * Finally execute the **linuxdeployqt** AppImage with the following arguments:
 
-    ```./linuxdeployqt-6-x86_64.AppImage /<PATH_TO_YOUR_BUILD_FOLDER>/deepl_app.desktop -qmldir=/<PATH_TO_THIS_REPO>/deepl_app/qml -extra-plugins=<QT_EXTRA_PLUGINS_COMMA_SEPARATED> -appimage```
+    ```./linuxdeployqt-6-x86_64.AppImage /<PATH_TO_YOUR_BUILD_FOLDER>/translator_minimal_app.desktop -qmldir=/<PATH_TO_THIS_REPO>/translator_app/qml -extra-plugins=<QT_EXTRA_PLUGINS_COMMA_SEPARATED> -appimage```
 
     In my case, this command looks like this:
 
-    ```./linuxdeployqt-6-x86_64.AppImage /home/ricardo/Libraries/build-deepl_app-Desktop_Qt_5_14_2_GCC_64bit3-Debug/deepl_app.desktop -qmldir=/home/ricardo/Libraries/qt-qml-deepl-app/qml -extra-plugins=iconengines,imageformats -appimage```
+    ```./linuxdeployqt-6-x86_64.AppImage /home/ricardo/Libraries/build-translator_app-Desktop_Qt_5_14_2_GCC_64bit3-Debug/translator_minimal_app.desktop -qmldir=/home/ricardo/Libraries/translator-minimal-app/qml -extra-plugins=iconengines,imageformats -appimage```
 
     iconengines,imageformats,renderplugins,sceneparsers,geometryloaders,gamepads
 

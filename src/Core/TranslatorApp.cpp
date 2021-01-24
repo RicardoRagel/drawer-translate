@@ -1,13 +1,13 @@
-#include "DeeplApp.h"
+#include "TranslatorApp.h"
 
-DeeplApp* DeeplApp::_app = nullptr;
+TranslatorApp* TranslatorApp::_app = nullptr;
 
-DeeplApp::DeeplApp(int& argc, char* argv[]) : QApplication(argc, argv),
+TranslatorApp::TranslatorApp(int& argc, char* argv[]) : QApplication(argc, argv),
                                                 _constants(nullptr),
                                                 _dataManager(nullptr),
                                                 _qmlAppEngine(nullptr)
 {
-  //qDebug()<< "(DeeplApp) Constructor";
+  //qDebug()<< "(TranslatorApp) Constructor";
   Q_ASSERT(_app == nullptr);
   _app = this;
 
@@ -27,34 +27,34 @@ DeeplApp::DeeplApp(int& argc, char* argv[]) : QApplication(argc, argv),
   _app->setApplicationVersion(APP_VERSION);
 }
 
-DeeplApp::~DeeplApp()
+TranslatorApp::~TranslatorApp()
 {
 
 }
 
-QObject* DeeplApp::_rootQmlObject(void)
+QObject* TranslatorApp::_rootQmlObject(void)
 {
   return _qmlAppEngine->rootObjects()[0];
 }
 
 QObject* dataManagerQmlGlobalSingletonFactory(QQmlEngine*, QJSEngine*)
 {
-  return DeeplApp::_app->dataManager();
+  return TranslatorApp::_app->dataManager();
 }
 
 QObject* constantsQmlGlobalSingletonFactory(QQmlEngine*, QJSEngine*)
 {
-  return DeeplApp::_app->constants();
+  return TranslatorApp::_app->constants();
 }
 
 QObject* cursorPosProviderQmlGlobalSingletonFactory(QQmlEngine*, QJSEngine*)
 {
-  return DeeplApp::_app->cursorPosProvider();
+  return TranslatorApp::_app->cursorPosProvider();
 }
 
-void DeeplApp::initCommon(void)
+void TranslatorApp::initCommon(void)
 {
-  qDebug() << "(DeeplApp) Init Common functionalities..";
+  qDebug() << "(TranslatorApp) Init Common functionalities..";
 
   // Register Classes to be accesible from QML
   qmlRegisterSingletonType<Constants>("Constants", 1, 0, "Constants", constantsQmlGlobalSingletonFactory);
@@ -62,13 +62,13 @@ void DeeplApp::initCommon(void)
   qmlRegisterSingletonType<CursorPosProvider>("MouseProvider", 1, 0, "MouseProvider", cursorPosProviderQmlGlobalSingletonFactory);
 }
 
-bool DeeplApp::loadQmlEngine(void)
+bool TranslatorApp::loadQmlEngine(void)
 {
-  qDebug() << "(DeeplApp) Init QML engine";
+  qDebug() << "(TranslatorApp) Init QML engine";
 
   _qmlAppEngine = new QQmlApplicationEngine(this);
 
-  qDebug() << "(DeeplApp).. registering qml files";
+  qDebug() << "(TranslatorApp).. registering qml files";
 
   _qmlAppEngine->addImportPath("qrc:/qml");
   _qmlAppEngine->load(QUrl(QStringLiteral("qrc:/qml/main.qml")));

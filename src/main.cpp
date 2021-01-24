@@ -1,9 +1,9 @@
-#include "DeeplApp.h"
+#include "TranslatorApp.h"
 
 int main(int argc, char **argv)
 {
     // Init our QApplication
-    DeeplApp* app = new DeeplApp(argc,argv);
+    TranslatorApp* app = new TranslatorApp(argc,argv);
 
     // Init the app's data managers
     app->initCommon();

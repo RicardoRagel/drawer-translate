@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Deepl Minimal App
-Comment=App created using the deepl-minimal-app package
-Exec=sample_app
-Icon=icon_app
-Categories=Office;
-X-AppImage-Version=1.0.0
-Name[en_US]=deepl_minimal_app.desktop

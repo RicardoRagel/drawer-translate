@@ -1,5 +1,5 @@
-#ifndef DEEPLAPP_H
-#define DEEPLAPP_H
+#ifndef TRANSLATORAPP_H
+#define TRANSLATORAPP_H
 
 #include <QApplication>
 #include <QQmlApplicationEngine>
@@ -14,15 +14,15 @@
 
 using namespace std;
 
-class DeeplApp : public QApplication
+class TranslatorApp : public QApplication
 {
   Q_OBJECT
 
 public:
 
-  DeeplApp(int& argc, char* argv[]);
+  TranslatorApp(int& argc, char* argv[]);
 
-  ~DeeplApp();
+  ~TranslatorApp();
 
   void initCommon(void);
 
@@ -33,7 +33,7 @@ public:
 
   bool loadQmlEngine(void);
 
-  static DeeplApp* _app;
+  static TranslatorApp* _app;
 
 private:
 
@@ -44,4 +44,4 @@ private:
   QObject* _rootQmlObject(void);
 };
 
-#endif // DEEPLAPP_H
+#endif // TRANSLATORAPP_H
