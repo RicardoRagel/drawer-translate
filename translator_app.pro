@@ -12,11 +12,13 @@ INCLUDEPATH += include/Core \
 HEADERS += \
     include/Core/TranslatorApp.h \
     include/DataLayer/Constants.h \
+    include/DataLayer/Settings.h \
     include/DataLayer/DataManager.h \
     include/Utils/CursorPosProvider.h
 
 SOURCES += \
     src/Core/TranslatorApp.cpp \
+    src/DataLayer/Settings.cpp \
     src/DataLayer/DataManager.cpp \
     src/main.cpp
 

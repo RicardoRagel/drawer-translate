@@ -10,6 +10,7 @@
 #include <QNetworkAccessManager>
 
 #include "Constants.h"
+#include "Settings.h"
 
 using namespace std;
 
@@ -45,17 +46,19 @@ signals:
 
 private slots:
 
-  // Receive selection changes
+  // Receive system clipboard changes
   void clipboardDataChanged();
   void clipboardSelectionChanged();
 
 private:
 
   // Variables
+  Settings _settings;
   QString _input_text;
   QString _output_text;
   QClipboard *_clipboard;
   QNetworkAccessManager *_network_manager;
+
 };
 
 #endif // DATAMANAGER_H
