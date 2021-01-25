@@ -56,7 +56,9 @@ void DataManager::clipboardDataChanged()
 
 void DataManager::clipboardSelectionChanged()
 {
-    qDebug() << "(DataManager) Clipboard Selection Changed: " << _clipboard->text();
+    qDebug() << "(DataManager) Clipboard Selection Changed: " << _clipboard->text(QClipboard::Selection);
 
-    setInputText(_clipboard->text());
+    // Set selection to input text only if text doesn't belong to this app
+    if(!_clipboard->ownsSelection())
+        setInputText(_clipboard->text(QClipboard::Selection));
 }
