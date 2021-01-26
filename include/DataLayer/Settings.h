@@ -21,6 +21,9 @@ public:
     // Destuctor
     ~Settings();
 
+    // Initialization
+    void init();
+
     // QML properties declarations
     Q_PROPERTY(QString apiKey READ apiKey WRITE setApiKey NOTIFY apiKeyChanged)
     Q_PROPERTY(QString sourceLang READ sourceLang WRITE setSourceLang NOTIFY sourceLangChanged)
@@ -46,7 +49,7 @@ signals:
 private:
 
     // Settings file handler
-    QSettings *_settings;
+    QSettings *_settingsHandler;
 
     // Settings variables
     QString _api_key;

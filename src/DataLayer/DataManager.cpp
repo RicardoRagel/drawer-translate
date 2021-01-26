@@ -9,7 +9,11 @@ DataManager::DataManager()
 
   qDebug() << "(DataManager) Initialization ...";
 
-  // Init vars
+  // Init settings
+  _settings = new Settings();
+  _settings->init();
+
+  // Init clipboard handler
   _clipboard = QApplication::clipboard();
 
   // Connect clipboard to this app
@@ -28,6 +32,11 @@ DataManager::~DataManager()
 /** *********************************
  *  QML Invokable properties setters
  ** ********************************/
+void DataManager::setSettings(Settings *settings)
+{
+    _settings = settings;
+}
+
 void DataManager::setInputText(QString input_text)
 {
     qDebug() << "(DataManager) Input Text: " << input_text;
