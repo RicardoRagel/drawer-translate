@@ -16,8 +16,8 @@ Settings::~Settings()
 
 void Settings::init()
 {
-    qDebug() << "(Settings) Initialization ...";
     _settingsHandler = new QSettings(QSettings::IniFormat, QSettings::UserScope, "TranslatorMinimalApp", "TranslatorApp");
+    qDebug() << "(Settings) Initialization of settings to/from " << _settingsHandler->fileName();
 
     // Initialize QSettings to the current values or to defaults if they don't exist yet
     if(!_settingsHandler->contains("Translator/apiKey"))
