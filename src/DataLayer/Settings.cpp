@@ -16,10 +16,21 @@ Settings::~Settings()
 
 void Settings::init()
 {
-    qDebug() << "(Settings) Initialization ...";
     _settingsHandler = new QSettings(QSettings::IniFormat, QSettings::UserScope, "TranslatorMinimalApp", "TranslatorApp");
+    qDebug() << "(Settings) Initialization of settings to/from " << _settingsHandler->fileName();
 
     // Initialize QSettings to the current values or to defaults if they don't exist yet
+    if(!_settingsHandler->contains("Window/frameLess"))
+    {
+        qDebug() << "(Settings) Initializing FrameLess Window to" << DEFAULT_FRAMELESS_WIN;
+        setframelessWin(DEFAULT_FRAMELESS_WIN);
+    }
+    else
+    {
+        setframelessWin(_settingsHandler->value("Window/frameLess").toBool());
+        qDebug() << "(Settings) FrameLess Window:" << framelessWin();
+    }
+
     if(!_settingsHandler->contains("Translator/apiKey"))
     {
         qDebug() << "(Settings) Initializing API Key to" << DEFAULT_API_KEY;
@@ -57,6 +68,12 @@ void Settings::init()
 /** *********************************
  *  QML Invokable properties setters
  ** ********************************/
+void Settings::setframelessWin(bool frameless_win)
+{
+    _settingsHandler->setValue("Window/frameLess", frameless_win);
+    _frameless_win = frameless_win;
+    emit framelessWinChanged();
+}
 void Settings::setApiKey(QString api_key)
 {
     _settingsHandler->setValue("Translator/apiKey", api_key);

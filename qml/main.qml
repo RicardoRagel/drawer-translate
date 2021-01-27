@@ -43,9 +43,12 @@ ApplicationWindow
     visible: true
     title: qsTr(Constants.appTitle)
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
-    flags:   Qt.Window                  // Force app to be a Window and not a Popup
-           | Qt.FramelessWindowHint     // Remove TitleBar
-           | Qt.WindowStaysOnTopHint    // Always on top
+    flags: DataManager.settings.framelessWin?
+             Qt.Window                  // Force app to be a Window and not a Popup
+             | Qt.WindowStaysOnTopHint    // Always on top
+             | Qt.FramelessWindowHint     // Remove TitleBar
+           : Qt.Window                  // Force app to be a Window and not a Popup
+             | Qt.WindowStaysOnTopHint    // Always on top
 
     // Manage the app starup
     Component.onCompleted:
@@ -205,6 +208,7 @@ ApplicationWindow
                     height: contentRect.height
                     color: appSectionColor
                     radius: 10
+                    clip: true
 
                     TextArea
                     {
@@ -228,17 +232,21 @@ ApplicationWindow
 
                         //placeholderText: 'Write here your text ...' // It seems doesn't work properly on Win10
                         property string placeholderTextFixed: 'Write here your text ...'
-                        Text
-                        {
-                            id: placeHolderInputText
-                            anchors.centerIn: parent
-                            font.pixelSize: fontPixelSize
-                            font.italic: true
-                            color: fontColor
-                            opacity: parent.opacity * 0.5
-                            text: inputText.placeholderTextFixed
-                            visible: !inputText.text
-                        }
+                    }
+                    Text
+                    {
+                        id: placeHolderInputText
+                        width: parent.width
+                        anchors.centerIn: parent
+                        font.pixelSize: fontPixelSize
+                        horizontalAlignment: TextInput.AlignHCenter
+                        verticalAlignment: TextInput.AlignVCenter
+                        font.italic: true
+                        color: fontColor
+                        opacity: inputText.opacity * 0.5
+                        text: inputText.placeholderTextFixed
+                        visible: !inputText.text
+                        wrapMode: TextEdit.Wrap
                     }
                 }
 
@@ -249,6 +257,7 @@ ApplicationWindow
                     height: contentRect.height
                     color: appSectionColor
                     radius: 10
+                    clip: true
 
                     TextArea
                     {
@@ -266,17 +275,21 @@ ApplicationWindow
 
                         //placeholderText: 'Write here your text ...' // It seems doesn't work properly on Win10
                         property string placeholderTextFixed: 'Translation result will be shown here ...'
-                        Text
-                        {
-                            id: placeHolderOutputText
-                            anchors.centerIn: parent
-                            font.pixelSize: fontPixelSize
-                            font.italic: true
-                            color: fontColor
-                            opacity: parent.opacity * 0.5
-                            text: outputText.placeholderTextFixed
-                            visible: !outputText.text
-                        }
+                    }
+                    Text
+                    {
+                        id: placeHolderOutputText
+                        width: parent.width
+                        anchors.centerIn: parent
+                        font.pixelSize: fontPixelSize
+                        font.italic: true
+                        horizontalAlignment: TextInput.AlignHCenter
+                        verticalAlignment: TextInput.AlignVCenter
+                        color: fontColor
+                        opacity: outputText.opacity * 0.5
+                        text: outputText.placeholderTextFixed
+                        visible: !outputText.text
+                        wrapMode: TextEdit.Wrap
                     }
                 }
             }
