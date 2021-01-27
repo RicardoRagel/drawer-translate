@@ -27,6 +27,7 @@ OTHER_FILES += \
     qml/CustomWidgets/CustomButton2.qml \
     qml/CustomWidgets/CustomCheckBox.qml \
     qml/CustomWidgets/CustomScrollView.qml \
+    qml/ExternalWindows/SettingsWin.qml \
     qml/main.qml
 
 RESOURCES += \

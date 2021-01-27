@@ -15,6 +15,7 @@ import MouseProvider 1.0
 
 // Import other project QML scripts
 import "CustomWidgets"
+import "ExternalWindows"
 
 // App Window
 ApplicationWindow
@@ -22,11 +23,14 @@ ApplicationWindow
     id: root
 
     // Design
-    property int fontPixelSize:         14
-    property color fontColor:           Qt.rgba(242/255, 242/255, 242/255, 1)
-    property color appWindowColor:      Qt.rgba(30/255, 30/255, 30/255, 1)
-    property color appSectionColor:     Qt.rgba(93/255, 99/255, 99/255, 1)
+    property int fontPixelSize:             14
     property int buttonSize: 15
+    property color fontColor:               Qt.rgba(242/255, 242/255, 242/255, 1)
+    property color appWindowColor:          Qt.rgba(30/255, 30/255, 30/255, 1)
+    property color appSectionColor:         Qt.rgba(93/255, 99/255, 99/255, 1)
+    property color appEditableSpaceColor:   Qt.rgba(93/255, 99/255, 99/255, 1)
+    property color appButtonUnpressedColor: Qt.rgba(93/255, 99/255, 99/255, 1)
+    property color appButtonPressedColor:   Qt.rgba(93/255, 99/255, 99/255, 1)
     property real heightFactor: 0.10
     property int margins: 10
 
@@ -149,7 +153,7 @@ ApplicationWindow
                         if(clicked)
                         {
                             clicked = false
-                            //fileDialog.visible = true
+                            settingsWindow.visible = true
                         }
                     }
                 }
@@ -282,4 +286,25 @@ ApplicationWindow
     /*
         EXTERNAL WINDOWS
     */
+    SettingsWin
+    {
+        id: settingsWindow
+        visible: false
+        title: root.title + " - Settings"
+        buttonSize: root.buttonSize * 2
+        fontPixelSize: root.fontPixelSize
+        fontColor: root.fontColor
+        backgroundColor: root.appWindowColor
+        editableSpaceColor: root.appEditableSpaceColor
+        buttonUnpressedColor: root.appButtonUnpressedColor
+        buttonPressedColor: root.appButtonPressedColor
+        margins: root.margins
+        Component.onCompleted:
+        {
+            width = Screen.width * 2/4
+            height = Screen.height * 2/4
+            x = Screen.width * 2/8
+            y = Screen.height * 2/8
+        }
+    }
 }

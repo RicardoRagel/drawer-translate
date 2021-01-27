@@ -5,5 +5,6 @@
         <file>qml/CustomWidgets/CustomCheckBox.qml</file>
         <file>qml/CustomWidgets/CustomScrollView.qml</file>
         <file>qml/CustomWidgets/CustomButton2.qml</file>
+        <file>qml/ExternalWindows/SettingsWin.qml</file>
     </qresource>
 </RCC>
