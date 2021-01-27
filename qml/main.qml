@@ -28,6 +28,7 @@ ApplicationWindow
     property color fontColor:               Qt.rgba(242/255, 242/255, 242/255, 1)
     property color appWindowColor:          Qt.rgba(30/255, 30/255, 30/255, 1)
     property color appSectionColor:         Qt.rgba(93/255, 99/255, 99/255, 1)
+    property color appSectionBorderColor:   Qt.rgba(150/255, 150/255, 150/255, 1)
     property color appEditableSpaceColor:   Qt.rgba(93/255, 99/255, 99/255, 1)
     property color appButtonUnpressedColor: Qt.rgba(93/255, 99/255, 99/255, 1)
     property color appButtonPressedColor:   Qt.rgba(93/255, 99/255, 99/255, 1)
@@ -38,7 +39,7 @@ ApplicationWindow
     x: 0
     y:  Screen.height * (1.0 - heightFactor)
     width: Screen.width
-    height: Screen.height - y
+    height: Screen.height * (heightFactor)
     color: "transparent"
     visible: true
     title: qsTr(Constants.appTitle)
@@ -66,6 +67,8 @@ ApplicationWindow
     {
         id: topArea
         height: 20
+        enabled: DataManager.settings.framelessWin
+
         anchors
         {
             top: parent.top
@@ -209,6 +212,8 @@ ApplicationWindow
                     color: appSectionColor
                     radius: 10
                     clip: true
+                    border.width: inputText.hovered?1:0
+                    border.color: appSectionBorderColor
 
                     TextArea
                     {
@@ -230,7 +235,8 @@ ApplicationWindow
                                 DataManager.setInputText(text)
                         }
 
-                        //placeholderText: 'Write here your text ...' // It seems doesn't work properly on Win10
+                        // It seems placeholderText doesn't work properly on Win10, adding placeHolderInputText
+                        //placeholderText: 'Write here your text ...'
                         property string placeholderTextFixed: 'Write here your text ...'
                     }
                     Text
@@ -245,8 +251,9 @@ ApplicationWindow
                         color: fontColor
                         opacity: inputText.opacity * 0.5
                         text: inputText.placeholderTextFixed
-                        visible: !inputText.text
                         wrapMode: TextEdit.Wrap
+                        //visible: !inputText.text
+                        visible: !(inputText.text || inputText.activeFocus)
                     }
                 }
 
@@ -258,6 +265,9 @@ ApplicationWindow
                     color: appSectionColor
                     radius: 10
                     clip: true
+
+                    border.width: outputText.hovered?1:0
+                    border.color: appSectionBorderColor
 
                     TextArea
                     {
@@ -273,7 +283,8 @@ ApplicationWindow
 
                         text: DataManager.outputText
 
-                        //placeholderText: 'Write here your text ...' // It seems doesn't work properly on Win10
+                        // It seems placeholderText doesn't work properly on Win10, adding placeHolderOutputText
+                        //placeholderText: 'Write here your text ...
                         property string placeholderTextFixed: 'Translation result will be shown here ...'
                     }
                     Text
@@ -288,8 +299,9 @@ ApplicationWindow
                         color: fontColor
                         opacity: outputText.opacity * 0.5
                         text: outputText.placeholderTextFixed
-                        visible: !outputText.text
                         wrapMode: TextEdit.Wrap
+                        //visible: !outputText.text
+                        visible: !(outputText.text || outputText.activeFocus)
                     }
                 }
             }
@@ -303,6 +315,7 @@ ApplicationWindow
     {
         id: settingsWindow
         visible: false
+        flags: Qt.WindowStaysOnTopHint    // Always on top
         title: root.title + " - Settings"
         buttonSize: root.buttonSize * 2
         fontPixelSize: root.fontPixelSize
