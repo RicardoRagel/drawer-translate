@@ -10,7 +10,8 @@
 #define DEG2RAD M_PI/180
 #define RAD2DEG 180/M_PI
 #define APP_TITLE "Translator App"
-
+#define TRIGGER_TRANSLATION_DELAY 1000 // Delay in ms to trigger the translation [integer]
+#define TRANSLATION_ERROR_MSG "Something went wrong..."
 /*
  *
  * C++ DEFINES TO QML

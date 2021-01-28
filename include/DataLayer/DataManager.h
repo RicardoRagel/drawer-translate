@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QString>
 #include <QDir>
+#include <QTimer>
 #include <QClipboard>
 #include <QApplication>
 #include <QNetworkAccessManager>
@@ -54,15 +55,25 @@ private slots:
   void clipboardDataChanged();
   void clipboardSelectionChanged();
 
+  // Timer callback to trigger the translateText()
+  void translateTimerCallback();
+
+  // Receive QNetworkAccessManager replies
+  void onNetworkAnswerReceived(QNetworkReply* reply);
+
 private:
 
   // Variables
-  Settings *_settings;
-  QString _input_text;
-  QString _output_text;
-  QClipboard *_clipboard;
-  QNetworkAccessManager *_network_manager;
+  Settings *_settings;                      // App Settings from .ini file
+  QString _input_text;                      // User input text to be translated
+  QStringList _translations;                // List of translated text results
+  QString _output_text;                     // Translated text to be shown
+  QClipboard *_clipboard;                   // System clipboard handler
+  QNetworkAccessManager *_network_manager;  // System network handler to post request to the online translator
+  QTimer *_translate_timer;                 // Timer to post the translation
 
+  // Functions
+  void sendTranslationNetworkRequest(QString input_text);   // Send the text to the Network translation API. It answer will be received by onNetworkAnswerReceived()
 };
 
 #endif // DATAMANAGER_H
