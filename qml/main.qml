@@ -38,25 +38,22 @@ ApplicationWindow
     // Windows Configuration
     x: 0
     y:  Screen.height * (1.0 - heightFactor)
+    //width: Screen.desktopAvailableWidth
     width: Screen.width
     height: Screen.height * (heightFactor)
     color: "transparent"
     visible: true
     title: qsTr(Constants.appTitle)
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
-    flags: DataManager.settings.framelessWin?
-             Qt.Window                  // Force app to be a Window and not a Popup
-             | Qt.WindowStaysOnTopHint    // Always on top
-             | Qt.FramelessWindowHint     // Remove TitleBar
-           : Qt.Window                  // Force app to be a Window and not a Popup
-             | Qt.WindowStaysOnTopHint    // Always on top
+    flags:  DataManager.settings.framelessWin?
+                Qt.ToolTip                 // Frameless window
+                | Qt.WindowStaysOnTopHint  // Always on top
+            :   Qt.Window                  // Normal window
+                | Qt.WindowStaysOnTopHint  // Always on top
 
     // Manage the app starup
     Component.onCompleted:
     {
-        // nothing for now
-        //console.log("verticalMargin: " + verticalMargin)
-        //console.log("horizontalMargin: " + horizontalMargin)
     }
 
     // A FramelessWindow has not handlers to resize it. Adding one at the top
