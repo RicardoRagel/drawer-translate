@@ -37,23 +37,50 @@ ApplicationWindow
 
     // Windows Configuration
     x: 0
-    y:  Screen.height * (1.0 - heightFactor)
-    //width: Screen.desktopAvailableWidth
-    width: Screen.width
-    height: Screen.height * (heightFactor)
+    y:  Screen.desktopAvailableHeight * (1.0 - heightFactor)
+    width: Screen.desktopAvailableWidth
+    height: Screen.desktopAvailableHeight * (heightFactor)
     color: "transparent"
-    visible: true
+    visible: false
     title: qsTr(Constants.appTitle)
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
     flags:  DataManager.settings.framelessWin?
-                Qt.ToolTip                 // Frameless window
+                Qt.Window
+                | Qt.FramelessWindowHint   // Frameless window
                 | Qt.WindowStaysOnTopHint  // Always on top
             :   Qt.Window                  // Normal window
                 | Qt.WindowStaysOnTopHint  // Always on top
 
-    // Manage the app starup
+    // Manage the app starup, fixing some issues found for multiple monitors:
+    // the problem is Screen.desktopAvailableWidth doesn't take in account the
+    // lateral taskbar width if multiple monitors are present and the app window
+    // is Qt.FramelessWindowHint. This timer will be stopped as soon as user presses
+    // on the input text field
     Component.onCompleted:
     {
+        if(Screen.desktopAvailableWidth > Screen.width)
+            fixMultipleMonitorIssueTimer.running = true
+    }
+    Timer
+    {
+        id: fixMultipleMonitorIssueTimer
+        interval: 100
+        running: false
+        repeat: true
+        onTriggered:
+        {
+            if(!root.visible)
+            {
+                root.visible = true
+            }
+            else
+            {
+                if(root.width > Screen.width)
+                {
+                    root.width = root.width - Screen.width
+                }
+            }
+        }
     }
 
     // A FramelessWindow has not handlers to resize it. Adding one at the top
@@ -153,6 +180,7 @@ ApplicationWindow
                     image_url: "qrc:/resources/settings.svg"
                     onClickedChanged:
                     {
+                        console.log("Width " + root.width)
                         if(clicked)
                         {
                             clicked = false
@@ -230,6 +258,12 @@ ApplicationWindow
                         {
                             if(text !== DataManager.inputText)
                                 DataManager.setInputText(text)
+                        }
+
+                        onPressed:
+                        {
+                            // stop the dummy timer
+                            fixMultipleMonitorIssueTimer.running = false
                         }
 
                         // It seems placeholderText doesn't work properly on Win10, adding placeHolderInputText
