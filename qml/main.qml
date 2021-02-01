@@ -102,7 +102,7 @@ ApplicationWindow
             right: parent.right
         }
         // We set the shape of the cursor so that it is clear that this resizing
-        cursorShape: Qt.SizeVerCursor
+        cursorShape: enabled?Qt.SizeVerCursor:Qt.ArrowCursor
 
         onPressed:
         {
