@@ -118,7 +118,7 @@ ApplicationWindow
             //root.height = Screen.height - root.y
 
             root.y = MouseProvider.cursorPos().y
-            root.height = Screen.height - root.y
+            root.height = Screen.desktopAvailableHeight - root.y
         }
     }
 
