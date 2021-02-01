@@ -25,12 +25,18 @@ Window
     property color buttonPressedColor: "yellow"
     property int margins: 30
 
+    property int widthColum1: 250
+    property int widthColum2: 250
+    property int heightColumns: 30
+
     // Set the current settings values
-//    onVisibleChanged:
-//    {
-//        if(visible)
-//            folderPath = "file://" + DataManager.resourcesFolder
-//    }
+    onVisibleChanged:
+    {
+        if(visible)
+        {
+            apiKey.text = DataManager.settings.apiKey
+        }
+    }
 
     // Content
     Rectangle
@@ -53,6 +59,52 @@ Window
                 anchors.centerIn: parent
                 spacing: margins/4
 
+                // API Key
+                Row
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: true
+                            color: fontColor
+                            text: "API Key: "
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: "transparent"
+
+                        TextField
+                        {
+                            id: apiKey
+                            anchors.fill: parent
+                            background: Rectangle { color: editableSpaceColor }
+                            font.pixelSize: fontPixelSize
+                            color: fontColor
+                            horizontalAlignment: TextInput.AlignHCenter
+                            verticalAlignment: TextInput.AlignVCenter
+                            selectByMouse: false
+                        }
+                    }
+
+                }
+
+                // Some Space
                 Rectangle
                 {
                     id: whiteSpace
@@ -87,6 +139,7 @@ Window
                             {
                                 clicked = false
                                 console.log("Setting new configuration")
+                                DataManager.settings.setApiKey(apiKey.text)
                                 root.visible = false
                             }
                         }
