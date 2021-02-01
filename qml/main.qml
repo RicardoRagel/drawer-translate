@@ -34,6 +34,7 @@ ApplicationWindow
     property color appButtonPressedColor:   Qt.rgba(93/255, 99/255, 99/255, 1)
     property real heightFactor: 0.10
     property int margins: 10
+    property int forceMinimumHeight: buttonSize + margins * 2
 
     // Windows Configuration
     x: 0
@@ -48,8 +49,7 @@ ApplicationWindow
                 Qt.Window
                 | Qt.FramelessWindowHint   // Frameless window
                 | Qt.WindowStaysOnTopHint  // Always on top
-            :   Qt.Window                  // Normal window
-                | Qt.WindowStaysOnTopHint  // Always on top
+            :   flags
 
     // Manage the app starup, fixing some issues found for multiple monitors:
     // the problem is Screen.desktopAvailableWidth doesn't take in account the
@@ -117,8 +117,13 @@ ApplicationWindow
             //root.y = root.y + dy
             //root.height = Screen.height - root.y
 
-            root.y = MouseProvider.cursorPos().y
-            root.height = Qt.platform.os === "windows"?Screen.desktopAvailableHeight - root.y:Screen.height - root.y
+            var new_height = Qt.platform.os === "windows"?Screen.desktopAvailableHeight - MouseProvider.cursorPos().y:Screen.height - MouseProvider.cursorPos().y
+
+            if(new_height > forceMinimumHeight)
+            {
+                root.y = MouseProvider.cursorPos().y
+                root.height = new_height
+            }
         }
     }
 
@@ -224,12 +229,14 @@ ApplicationWindow
             anchors.horizontalCenter: parent.horizontalCenter
             width: parent.width - 2*margins
             color: "transparent"
+            clip: true
 
             Row
             {
                 id: contentRow
                 anchors.centerIn: parent
                 spacing: 10
+                clip: true
 
                 Rectangle
                 {
@@ -253,6 +260,7 @@ ApplicationWindow
                         verticalAlignment: TextInput.AlignVCenter
                         selectByMouse: true
                         wrapMode: TextEdit.Wrap
+                        clip: true
 
                         text: DataManager.inputText
 
