@@ -37,9 +37,9 @@ ApplicationWindow
 
     // Windows Configuration
     x: 0
-    y:  Screen.desktopAvailableHeight * (1.0 - heightFactor)
     width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight * (heightFactor)
+    y:  Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (1.0 - heightFactor):Screen.height * (1.0 - heightFactor)
+    height: Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (heightFactor):Screen.height * (heightFactor)
     color: "transparent"
     visible: false
     title: qsTr(Constants.appTitle)
@@ -118,7 +118,7 @@ ApplicationWindow
             //root.height = Screen.height - root.y
 
             root.y = MouseProvider.cursorPos().y
-            root.height = Screen.desktopAvailableHeight - root.y
+            root.height = Qt.platform.os === "windows"?Screen.desktopAvailableHeight - root.y:Screen.height - root.y
         }
     }
 
