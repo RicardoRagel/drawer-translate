@@ -25,8 +25,6 @@ TranslatorApp::TranslatorApp(int& argc, char* argv[]) : QApplication(argc, argv)
 
   // Set Application Version
   _app->setApplicationVersion(APP_VERSION);
-
-  _app->setAttribute(Qt::AA_UseOpenGLES);
 }
 
 TranslatorApp::~TranslatorApp()

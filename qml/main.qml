@@ -60,6 +60,8 @@ ApplicationWindow
     {
         if(Screen.desktopAvailableWidth > Screen.width)
             fixMultipleMonitorIssueTimer.running = true
+        else
+            root.visible = true
     }
     Timer
     {
