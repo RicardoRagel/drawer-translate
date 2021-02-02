@@ -54,10 +54,13 @@ Window
             width: background.width - 2*margins
             height: background.height - 2*margins
 
+
             Column
             {
                 anchors.centerIn: parent
                 spacing: margins/4
+
+                // SECTION - Translation
 
                 // API Key
                 Row
