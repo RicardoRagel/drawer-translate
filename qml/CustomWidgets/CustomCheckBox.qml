@@ -1,4 +1,4 @@
-import QtQuick 2.9
+import QtQuick 2.14
 import QtQuick.Controls 2.14
 import QtQuick.Controls.Styles 1.4
 import QtGraphicalEffects 1.0
@@ -17,6 +17,7 @@ CheckBox
     property color border_color: "black"
     property double tick_size_factor: 0.75
     property url tick_image: "qrc:/resources/accept.svg"
+    property string tool_tip: ""
 
     width: box_width
 
@@ -44,4 +45,8 @@ CheckBox
             }
         }
     }
+
+    ToolTip.text: tool_tip
+    ToolTip.visible: tool_tip !== ""? hovered : false
+    ToolTip.delay: 500
 }

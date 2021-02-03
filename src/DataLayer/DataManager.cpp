@@ -70,15 +70,17 @@ void DataManager::clipboardDataChanged()
 {
     qDebug() << "(DataManager) Clipboard Data Changed: " << _clipboard->text();
 
-    setInputText(_clipboard->text());
+    // Set selection to input text only if translate on copy is enabled
+    if(_settings->translateOnCopy())
+        setInputText(_clipboard->text());
 }
 
 void DataManager::clipboardSelectionChanged()
 {
     qDebug() << "(DataManager) Clipboard Selection Changed: " << _clipboard->text(QClipboard::Selection);
 
-    // Set selection to input text only if text doesn't belong to this app
-    if(!_clipboard->ownsSelection())
+    // Set selection to input text only if text doesn't belong to this app and translate on selection is enabled
+    if(_settings->translateOnSelection() && !_clipboard->ownsSelection())
         setInputText(_clipboard->text(QClipboard::Selection));
 }
 

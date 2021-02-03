@@ -35,6 +35,8 @@ Window
         if(visible)
         {
             apiKey.text = DataManager.settings.apiKey
+            onSelection.checked = DataManager.settings.translateOnSelection
+            onCopy.checked = DataManager.settings.translateOnCopy
         }
     }
 
@@ -61,6 +63,23 @@ Window
                 spacing: margins/4
 
                 // SECTION - Translation
+                Rectangle
+                {
+                    anchors.left: parent.left
+                    width: widthColum1 + widthColum2
+                    height: heightColumns
+                    color: "transparent"
+
+                    Text
+                    {
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: fontPixelSize * 1.2
+                        font.bold: true
+                        color: fontColor
+                        text: "Translation"
+                    }
+                }
 
                 // API Key
                 Row
@@ -80,9 +99,9 @@ Window
                             anchors.left: parent.left
                             anchors.verticalCenter: parent.verticalCenter
                             font.pixelSize: fontPixelSize
-                            font.bold: true
+                            font.bold: false
                             color: fontColor
-                            text: "API Key: "
+                            text: "    API Key: "
                         }
                     }
                     Rectangle
@@ -102,6 +121,109 @@ Window
                             horizontalAlignment: TextInput.AlignHCenter
                             verticalAlignment: TextInput.AlignVCenter
                             selectByMouse: false
+                        }
+                    }
+
+                }
+
+                // SECTION - Input
+                Rectangle
+                {
+                    anchors.left: parent.left
+                    width: widthColum1 + widthColum2
+                    height: heightColumns
+                    color: "transparent"
+
+                    Text
+                    {
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: fontPixelSize * 1.2
+                        font.bold: true
+                        color: fontColor
+                        text: "Input"
+                    }
+                }
+
+                // OnSelection
+                Row
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    On selection: "
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: "transparent"
+
+                        CustomCheckBox
+                        {
+                            id: onSelection
+                            anchors.centerIn: parent
+                            box_width: buttonSize/2
+                            border_color: "transparent"
+                            tool_tip:  "Enable translate selected text directly"
+                        }
+                    }
+
+                }
+
+                // OnSelection
+                Row
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    On copy: "
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: "transparent"
+
+                        CustomCheckBox
+                        {
+                            id: onCopy
+                            anchors.centerIn: parent
+                            box_width: buttonSize/2
+                            border_color: "transparent"
+                            tool_tip:  "Enable translate copied text directly"
                         }
                     }
 
@@ -143,6 +265,8 @@ Window
                                 clicked = false
                                 console.log("Setting new configuration")
                                 DataManager.settings.setApiKey(apiKey.text)
+                                DataManager.settings.setTranslateOnSelection(onSelection.checked)
+                                DataManager.settings.setTranslateOnCopy(onCopy.checked)
                                 root.visible = false
                             }
                         }
