@@ -34,6 +34,10 @@ Window
     {
         if(visible)
         {
+            // Call to update available languages
+            DataManager.updateAvailableLanguageCode()
+
+            // Update current settings
             apiKey.text = DataManager.settings.apiKey
             onSelection.checked = DataManager.settings.translateOnSelection
             onCopy.checked = DataManager.settings.translateOnCopy
@@ -60,7 +64,7 @@ Window
             Column
             {
                 anchors.centerIn: parent
-                spacing: margins/4
+                spacing: 10
 
                 // SECTION - Translation
                 Rectangle
@@ -101,7 +105,7 @@ Window
                             font.pixelSize: fontPixelSize
                             font.bold: false
                             color: fontColor
-                            text: "    API Key: "
+                            text: "    API Key:"
                         }
                     }
                     Rectangle
@@ -123,7 +127,115 @@ Window
                             selectByMouse: false
                         }
                     }
+                }
 
+                // Source Language
+                Row
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    Source Language:"
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: "transparent"
+
+                        CustomComboBox
+                        {
+                            id: sourceLang
+                            anchors.fill: parent
+                            anchors.centerIn: parent
+                            backgroundColor: editableSpaceColor
+                            text_color: fontColor
+                            font_size: fontPixelSize
+                            text_centered: true
+                            selection_color: "black"
+                            editable: false
+                            focus: true
+                            clip: true
+                            textRole: "display"
+                            currentIndex: -1
+                            model: DataManager.languageNamesAndCodes
+                            onCurrentIndexChanged:
+                            {
+                                console.log("ComboBox: " + sourceLang.currentText)
+                            }
+                        }
+                    }
+                }
+
+                // Target Language
+                Row
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    Target Language:"
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: "transparent"
+
+                        CustomComboBox
+                        {
+                            id: targetLang
+                            height: parent.height
+                            width: parent.width
+                            anchors.centerIn: parent
+                            backgroundColor: editableSpaceColor
+                            text_color: fontColor
+                            font_size: fontPixelSize
+                            text_centered: true
+                            selection_color: "black"
+                            editable: false
+                            focus: true
+                            clip: true
+                            textRole: "display"
+                            currentIndex: -1
+                            model: DataManager.languageNamesAndCodes
+                            onCurrentIndexChanged:
+                            {
+                                console.log("ComboBox: " + targetLang.currentText)
+                            }
+                        }
+                    }
                 }
 
                 // SECTION - Input

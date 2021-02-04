@@ -14,18 +14,21 @@ HEADERS += \
     include/DataLayer/Constants.h \
     include/DataLayer/Settings.h \
     include/DataLayer/DataManager.h \
-    include/Utils/CursorPosProvider.h
+    include/Utils/CursorPosProvider.h \
+    include/Utils/LanguageISOCodes.h
 
 SOURCES += \
     src/Core/TranslatorApp.cpp \
     src/DataLayer/Settings.cpp \
     src/DataLayer/DataManager.cpp \
+    src/Utils/LanguageISOCodes.cpp \
     src/main.cpp
 
 OTHER_FILES += \
     qml/CustomWidgets/CustomButton.qml \
     qml/CustomWidgets/CustomButton2.qml \
     qml/CustomWidgets/CustomCheckBox.qml \
+    qml/CustomWidgets/CustomComboBox.qml \
     qml/CustomWidgets/CustomScrollView.qml \
     qml/ExternalWindows/SettingsWin.qml \
     qml/main.qml

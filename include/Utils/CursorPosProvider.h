@@ -1,3 +1,6 @@
+#ifndef CURSORPOSPROVIDER_H
+#define CURSORPOSPROVIDER_H
+
 #include <QObject>
 #include <QCursor>
 
@@ -15,3 +18,5 @@ public:
         return QCursor::pos();
     }
 };
+
+#endif

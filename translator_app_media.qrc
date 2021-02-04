@@ -27,5 +27,6 @@
         <file>resources/icon_app.png</file>
         <file>resources/reddit.svg</file>
         <file>resources/settings.svg</file>
+        <file>resources/arrow_down.svg</file>
     </qresource>
 </RCC>
