@@ -63,6 +63,7 @@ Window
 
             Column
             {
+                id: column
                 anchors.centerIn: parent
                 spacing: 10
 
@@ -162,22 +163,21 @@ Window
                         CustomComboBox
                         {
                             id: sourceLang
-                            anchors.fill: parent
+                            height: parent.height
+                            width: parent.width
                             anchors.centerIn: parent
                             backgroundColor: editableSpaceColor
-                            text_color: fontColor
-                            font_size: fontPixelSize
-                            text_centered: true
-                            selection_color: "black"
-                            editable: false
-                            focus: true
-                            clip: true
+                            textColor: fontColor
+                            fontSize: fontPixelSize
+                            dropDownMaxHeight: root.height/2
+                            dropDownArrowColor: buttonPressedColor
+                            currentIndex: 0
                             textRole: "display"
-                            currentIndex: -1
                             model: DataManager.languageNamesAndCodes
                             onCurrentIndexChanged:
                             {
                                 console.log("ComboBox: " + sourceLang.currentText)
+                                console.log("ComboBox: " + sourceLang.textAt(3))
                             }
                         }
                     }
@@ -186,6 +186,7 @@ Window
                 // Target Language
                 Row
                 {
+                    id: targetLangRow
                     anchors.horizontalCenter: parent.horizontalCenter
                     spacing: 2
 
@@ -220,19 +221,17 @@ Window
                             width: parent.width
                             anchors.centerIn: parent
                             backgroundColor: editableSpaceColor
-                            text_color: fontColor
-                            font_size: fontPixelSize
-                            text_centered: true
-                            selection_color: "black"
-                            editable: false
-                            focus: true
-                            clip: true
+                            textColor: fontColor
+                            fontSize: fontPixelSize
+                            dropDownMaxHeight: root.height/2
+                            dropDownArrowColor: buttonPressedColor
+                            currentIndex: 0
                             textRole: "display"
-                            currentIndex: -1
                             model: DataManager.languageNamesAndCodes
                             onCurrentIndexChanged:
                             {
                                 console.log("ComboBox: " + targetLang.currentText)
+                                console.log("ComboBox: " + targetLang.textAt(3))
                             }
                         }
                     }

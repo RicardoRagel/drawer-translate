@@ -205,6 +205,7 @@ void DataManager::setLanguageCodes(QStringList language_codes)
 
 void DataManager::setLanguageNamesAndCodes(QStringList language_codes)
 {
+    // Get names by codes and generate "Names [codes]" list
     QStringList language_names_and_codes;
     for(QString code : language_codes)
     {
@@ -212,6 +213,10 @@ void DataManager::setLanguageNamesAndCodes(QStringList language_codes)
         language_names_and_codes.append(name + " [" + code + "]");
     }
 
+    // Order it alphabetically
+    language_names_and_codes.sort();
+
+    // Set to the model var
     _language_names_and_codes.setStringList(language_names_and_codes);
     emit languageNamesAndCodesChanged();
 }

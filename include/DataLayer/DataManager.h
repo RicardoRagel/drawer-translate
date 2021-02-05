@@ -49,6 +49,8 @@ public:
 
   // QML Invokable functions
   Q_INVOKABLE void updateAvailableLanguageCode();
+//  Q_INVOKABLE void setSourceLanguage(QString source_lang);
+//  Q_INVOKABLE void setTargetLanguage(QString target_lang);
 
 signals:
 

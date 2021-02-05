@@ -31,7 +31,7 @@ ApplicationWindow
     property color appSectionBorderColor:   Qt.rgba(150/255, 150/255, 150/255, 1)
     property color appEditableSpaceColor:   Qt.rgba(93/255, 99/255, 99/255, 1)
     property color appButtonUnpressedColor: Qt.rgba(93/255, 99/255, 99/255, 1)
-    property color appButtonPressedColor:   Qt.rgba(93/255, 99/255, 99/255, 1)
+    property color appButtonPressedColor:   Qt.rgba(50/255, 50/255, 50/255, 1)
     property real heightFactor: 0.10
     property int margins: 10
     property int forceMinimumHeight: buttonSize + margins * 2
