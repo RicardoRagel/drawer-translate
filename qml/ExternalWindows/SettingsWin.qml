@@ -39,6 +39,8 @@ Window
 
             // Update current settings
             apiKey.text = DataManager.settings.apiKey
+            sourceLang.currentIndex = sourceLang.find("[" + DataManager.settings.sourceLang + "]", Qt.MatchContains)
+            targetLang.currentIndex = targetLang.find("[" + DataManager.settings.targetLang + "]", Qt.MatchContains)
             onSelection.checked = DataManager.settings.translateOnSelection
             onCopy.checked = DataManager.settings.translateOnCopy
         }
@@ -378,6 +380,8 @@ Window
                                 DataManager.settings.setApiKey(apiKey.text)
                                 DataManager.settings.setTranslateOnSelection(onSelection.checked)
                                 DataManager.settings.setTranslateOnCopy(onCopy.checked)
+                                DataManager.setSourceLanguage(sourceLang.currentText)
+                                DataManager.setTargetLanguage(targetLang.currentText)
                                 root.visible = false
                             }
                         }

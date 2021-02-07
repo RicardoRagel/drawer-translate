@@ -49,8 +49,8 @@ public:
 
   // QML Invokable functions
   Q_INVOKABLE void updateAvailableLanguageCode();
-//  Q_INVOKABLE void setSourceLanguage(QString source_lang);
-//  Q_INVOKABLE void setTargetLanguage(QString target_lang);
+  Q_INVOKABLE void setSourceLanguage(QString source_lang);
+  Q_INVOKABLE void setTargetLanguage(QString target_lang);
 
 signals:
 
@@ -87,10 +87,11 @@ private:
   QTimer *_translate_timer;                     // Timer to post the translation
 
   // Functions
-  void sendTranslationNetworkRequest(QString input_text);   // Send the text to the Network translation API. Its answer will be received by onTranslationNetworkAnswer()
-  void sendLanguagesNetworkRequest(QString target = "");
-  void setLanguageCodes(QStringList language_codes);
-  void setLanguageNamesAndCodes(QStringList language_codes);
+  void sendTranslationNetworkRequest(QString input_text);       // Send the text to be trasnslated to the Network translation API. Its answer will be received by onTranslationNetworkAnswer()
+  void sendLanguagesNetworkRequest(QString target = "");        // Send a request of the available languages to the Network translation API. Its answer will be received by onTranslationNetworkAnswer()
+  void setLanguageCodes(QStringList language_codes);            // Set the available language codes
+  void setLanguageNamesAndCodes(QStringList language_codes);    // Set the available language codes and names
+  QString extractLanguageCode(QString language_name_and_code);  // Extract the language code from a human-readable string "Name [code]"
 };
 
 #endif // DATAMANAGER_H

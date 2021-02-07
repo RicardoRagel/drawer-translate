@@ -29,7 +29,6 @@ DataManager::DataManager()
   _network_manager = new QNetworkAccessManager(this);
   connect(_network_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onTranslationNetworkAnswer(QNetworkReply*)));
 
-  ///TODO: Check if it is actually necessary or it is enough calling it from QML
   // Update available languages
   updateAvailableLanguageCode();
 }
@@ -55,7 +54,9 @@ void DataManager::setInputText(QString input_text)
     emit inputTextChanged();
 
     _translate_timer->stop();
-    _translate_timer->start();
+
+    if(_input_text != "")
+        _translate_timer->start();
 }
 
 void DataManager::setOutputText(QString output_text)
@@ -74,6 +75,24 @@ void DataManager::updateAvailableLanguageCode()
 {
     // Trigger network available language request
     sendLanguagesNetworkRequest();
+}
+
+void DataManager::setSourceLanguage(QString source_lang)
+{
+    qDebug() << "(DataManager) Setting source Language: " << source_lang;
+
+   QString code = extractLanguageCode(source_lang);
+   if(code != "")
+       _settings->setSourceLang(code);
+}
+
+void DataManager::setTargetLanguage(QString target_lang)
+{
+    qDebug() << "(DataManager) Setting target Language: " << target_lang;
+
+    QString code = extractLanguageCode(target_lang);
+    if(code != "")
+        _settings->setTargetLang(code);
 }
 
 /** *********************************
@@ -219,4 +238,23 @@ void DataManager::setLanguageNamesAndCodes(QStringList language_codes)
     // Set to the model var
     _language_names_and_codes.setStringList(language_names_and_codes);
     emit languageNamesAndCodesChanged();
+}
+
+QString DataManager::extractLanguageCode(QString language_name_and_code)
+{
+    QString code = "";
+
+    // Extract code from "Name [Code]" strings
+    QStringList split1 = language_name_and_code.split("[");
+    if(split1.size() > 1)
+    {
+        QStringList split2 = split1[1].split("]");
+        if(split2.size() > 0)
+        {
+            code = split2[0];
+        }
+    }
+    qDebug() << "(DataManager) Extracted code: " << code;
+
+    return code;
 }
