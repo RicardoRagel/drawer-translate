@@ -37,7 +37,8 @@ ApplicationWindow
     property int forceMinimumHeight: buttonSize + margins * 2
 
     // Windows Configuration
-    x: 0
+    x: Screen.width - Screen.desktopAvailableWidth > 0? Screen.width - Screen.desktopAvailableWidth : 0
+    //x: 0
     width: Screen.desktopAvailableWidth
     y:  Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (1.0 - heightFactor):Screen.height * (1.0 - heightFactor)
     height: Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (heightFactor):Screen.height * (heightFactor)
@@ -47,8 +48,9 @@ ApplicationWindow
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
     flags:  DataManager.settings.framelessWin?
                 Qt.Window
-                | Qt.FramelessWindowHint   // Frameless window
-                | Qt.WindowStaysOnTopHint  // Always on top
+                | Qt.FramelessWindowHint        // Frameless window
+                | Qt.WindowStaysOnTopHint       // Always on top
+                | Qt.X11BypassWindowManagerHint // Avoid flickering in Linux
             :   flags
 
     // Manage the app starup, fixing some issues found for multiple monitors:
@@ -59,7 +61,9 @@ ApplicationWindow
     Component.onCompleted:
     {
         if(Screen.desktopAvailableWidth > Screen.width)
+        {
             fixMultipleMonitorIssueTimer.running = true
+        }
         else
             root.visible = true
     }
