@@ -43,6 +43,7 @@ Window
             targetLang.currentIndex = targetLang.find("[" + DataManager.settings.targetLang + "]", Qt.MatchContains)
             onSelection.checked = DataManager.settings.translateOnSelection
             onCopy.checked = DataManager.settings.translateOnCopy
+            borderLess.checked = DataManager.settings.framelessWin
         }
     }
 
@@ -342,6 +343,66 @@ Window
 
                 }
 
+                // SECTION - Window
+                Rectangle
+                {
+                    anchors.left: parent.left
+                    width: widthColum1 + widthColum2
+                    height: heightColumns
+                    color: "transparent"
+
+                    Text
+                    {
+                        anchors.left: parent.left
+                        anchors.verticalCenter: parent.verticalCenter
+                        font.pixelSize: fontPixelSize * 1.2
+                        font.bold: true
+                        color: fontColor
+                        text: "Window"
+                    }
+                }
+
+                Row
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    Borderless (restart required): "
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: "transparent"
+
+                        CustomCheckBox
+                        {
+                            id: borderLess
+                            anchors.centerIn: parent
+                            box_width: buttonSize/2
+                            border_color: "transparent"
+                            tool_tip:  "Disable the OS window frame"
+                        }
+                    }
+
+                }
+
                 // Some Space
                 Rectangle
                 {
@@ -382,6 +443,7 @@ Window
                                 DataManager.settings.setTranslateOnCopy(onCopy.checked)
                                 DataManager.setSourceLanguage(sourceLang.currentText)
                                 DataManager.setTargetLanguage(targetLang.currentText)
+                                DataManager.settings.setFramelessWin(borderLess.checked)
                                 root.visible = false
                             }
                         }

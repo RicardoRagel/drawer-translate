@@ -11,6 +11,7 @@ DataManager::DataManager()
   // Init settings
   _settings = new Settings();
   _settings->init();
+  setFramelessWinOnStartup(_settings->framelessWin());
 
   // Init clipboard handler
   _clipboard = QApplication::clipboard();
@@ -44,6 +45,12 @@ DataManager::~DataManager()
 void DataManager::setSettings(Settings *settings)
 {
     _settings = settings;
+}
+
+void DataManager::setFramelessWinOnStartup(bool frameless_win_on_startup)
+{
+    _frameless_win_on_startup = frameless_win_on_startup;
+    emit framelessWinOnStartupChanged();
 }
 
 void DataManager::setInputText(QString input_text)

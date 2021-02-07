@@ -46,7 +46,7 @@ ApplicationWindow
     visible: false
     title: qsTr(Constants.appTitle)
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
-    flags:  DataManager.settings.framelessWin?
+    flags:  DataManager.framelessWinOnStartup?
                 Qt.Window
                 | Qt.FramelessWindowHint        // Frameless window
                 | Qt.WindowStaysOnTopHint       // Always on top
@@ -97,7 +97,7 @@ ApplicationWindow
     {
         id: topArea
         height: 20
-        enabled: DataManager.settings.framelessWin
+        enabled: DataManager.framelessWinOnStartup
 
         anchors
         {
@@ -372,8 +372,8 @@ ApplicationWindow
         margins: root.margins
         Component.onCompleted:
         {
-            width = 600
-            height = 400
+            width = 700
+            height = 500
             x = Screen.width/2 - width/2
             y = Screen.height/2 - height/2
             minimumHeight = height

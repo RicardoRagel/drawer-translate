@@ -30,6 +30,7 @@ public:
 
   // QML properties declarations
   Q_PROPERTY(Settings* settings READ settings WRITE setSettings NOTIFY settingsChanged)
+  Q_PROPERTY(bool framelessWinOnStartup READ framelessWinOnStartup WRITE setFramelessWinOnStartup NOTIFY framelessWinOnStartupChanged)
   Q_PROPERTY(QString inputText READ inputText WRITE setInputText NOTIFY inputTextChanged)
   Q_PROPERTY(QString outputText READ outputText WRITE setOutputText NOTIFY outputTextChanged)
   Q_PROPERTY(QStringListModel* languageCodes READ languageCodes NOTIFY languageCodesChanged)
@@ -37,6 +38,7 @@ public:
 
   // QML Invokable properties getters
   Settings* settings() {return _settings;}
+  bool framelessWinOnStartup() {return _frameless_win_on_startup;}
   QString inputText() {return _input_text;}
   QString outputText() {return _output_text;}
   QStringListModel* languageCodes() {return &_language_codes;}
@@ -44,6 +46,7 @@ public:
 
   // QML Invokable properties setters
   Q_INVOKABLE void setSettings(Settings* settings);
+  Q_INVOKABLE void setFramelessWinOnStartup(bool frameless_win_on_startup);
   Q_INVOKABLE void setInputText(QString input_text);
   Q_INVOKABLE void setOutputText(QString output_text);
 
@@ -56,6 +59,7 @@ signals:
 
   // QML properties signals
   void settingsChanged();
+  void framelessWinOnStartupChanged();
   void inputTextChanged();
   void outputTextChanged();
   void languageCodesChanged();
@@ -77,6 +81,7 @@ private:
 
   // Variables
   Settings *_settings;                          // App Settings from .ini file
+  bool _frameless_win_on_startup;               // Setting FrameLessWin value on the app startup
   QString _input_text;                          // User input text to be translated
   QString _output_text;                         // Translated text to be shown
   QStringList _translations;                    // List of translated text results
