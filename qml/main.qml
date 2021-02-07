@@ -356,7 +356,7 @@ ApplicationWindow
     {
         id: settingsWindow
         visible: false
-        flags: Qt.WindowStaysOnTopHint    // Always on top
+        flags: Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
         title: root.title + " - Settings"
         buttonSize: root.buttonSize * 2
         fontPixelSize: root.fontPixelSize
@@ -368,10 +368,14 @@ ApplicationWindow
         margins: root.margins
         Component.onCompleted:
         {
-            width = Screen.width * 2/4
-            height = Screen.height * 2/4
-            x = Screen.width * 2/8
-            y = Screen.height * 2/8
+            width = 600
+            height = 400
+            x = Screen.width/2 - width/2
+            y = Screen.height/2 - height/2
+            minimumHeight = height
+            maximumHeight = height
+            minimumWidth = width
+            maximumWidth = width
         }
     }
 }

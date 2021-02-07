@@ -346,7 +346,7 @@ Window
                 Rectangle
                 {
                     id: whiteSpace
-                    height: 1
+                    height: 10
                     width: 1
                     color: "transparent"
                 }
