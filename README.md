@@ -16,6 +16,10 @@ It is a simple Qt Application with a front-end developed using QML.
 
 Just open the project file [translator_app.pro](translator_app.pro) using **QtCreator**, configure the project using the default settings and compile.
 
+## Settings
+
+Although the app has a setting window where you can change and save the most of the app setting values, you can also modify all of them directly editing the file: `C:\Users\<USER>\AppData\Roaming\TranslatorMinimalApp\TranslatorApp.ini` on Windows and `~/.config/TranslatorMinimalApp/TranslatorApp.ini` on Linux.
+
 ## Known issues
 
 1. QNetworkManager library usage throws the following errors on Windows:
