@@ -25,10 +25,6 @@ TranslatorApp::TranslatorApp(int& argc, char* argv[]) : QApplication(argc, argv)
 
   // Set Application Version
   _app->setApplicationVersion(APP_VERSION);
-
-  // Use OpenGL emulation by software. It fixes FrameLess jittering window issues
-  // Ref: https://stackoverflow.com/questions/30818886/qml-window-resize-move-flicker
-  _app->setAttribute(Qt::AA_UseSoftwareOpenGL);
 }
 
 TranslatorApp::~TranslatorApp()

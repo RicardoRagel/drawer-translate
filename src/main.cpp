@@ -2,6 +2,10 @@
 
 int main(int argc, char **argv)
 {
+    // Use OpenGL emulation by software. It fixes FrameLess jittering window issues
+    // Ref: https://stackoverflow.com/questions/30818886/qml-window-resize-move-flicker
+    QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
+
     // Init our QApplication
     TranslatorApp* app = new TranslatorApp(argc,argv);
 
