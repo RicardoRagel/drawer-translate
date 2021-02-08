@@ -42,6 +42,7 @@ ApplicationWindow
     width: Screen.desktopAvailableWidth
     y:  Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (1.0 - heightFactor):Screen.height * (1.0 - heightFactor)
     height: Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (heightFactor):Screen.height * (heightFactor)
+    minimumHeight: forceMinimumHeight
     color: "transparent"
     visible: false
     title: qsTr(Constants.appTitle)
@@ -131,6 +132,15 @@ ApplicationWindow
         }
     }
 
+    // Some contents opacity controller
+    property double contentsOpacity: 1.0
+    property double maxHop: 2.25 * root.minimumHeight
+    property double minHop: 1.25 * root.minimumHeight
+    onHeightChanged:
+    {
+        contentsOpacity = root.height > maxHop? 1.0 : (root.height - minHop)/ (maxHop - minHop)
+    }
+
     /*
         CONTENTS
     */
@@ -142,91 +152,168 @@ ApplicationWindow
         color: appWindowColor
         radius: 10
 
-        // Window Buttons
+
+        // Window Header
         Rectangle
         {
-            id: winButtonsRect
+            id: headerRect
             anchors.top: parent.top
-            anchors.right: parent.right
             anchors.topMargin: margins
-            anchors.rightMargin: margins
+            anchors.horizontalCenter: parent.horizontalCenter
             color: "transparent"
-            width: buttonSize * 3 + margins*2
+            width: parent.width - 2*margins
             height: buttonSize
-            Row
+
+            // Source Language Indicator
+            Rectangle
             {
-                id: winButtonsRow
-                spacing: margins
-                anchors.centerIn: parent
+                id: sourceLangTagRect
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: margins
+                height: parent.height
+                width: sourceLangTag.paintedWidth + 10
+                color: "black"
+                opacity: contentsOpacity
 
-                // Settings
-                CustomButton2
+                Text
                 {
-                    id: winButtonMinimize
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: buttonSize
-                    height: buttonSize
-                    imgSizeFactor: 1.0
-                    imgOpacity: 1.0
-                    image_url: "qrc:/resources/decrement.svg"
-                    onClickedChanged:
-                    {
-                        if(clicked)
-                        {
-                            clicked = false
-                            root.showMinimized()
-                        }
-                    }
+                    id: sourceLangTag
+                    anchors.centerIn: parent
+                    text: DataManager.settings.sourceLang
+                    font.pixelSize:fontPixelSize
+                    font.capitalization: Font.AllUppercase
+                    color: fontColor
                 }
 
-                // Settings
-                CustomButton2
+                MouseArea
                 {
-                    id: winButtonSettings
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: buttonSize
-                    height: buttonSize
-                    imgSizeFactor: 1.0
-                    imgOpacity: 1.0
-                    image_url: "qrc:/resources/settings.svg"
-                    onClickedChanged:
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked:
                     {
-                        console.log("Width " + root.width)
-                        if(clicked)
-                        {
-                            clicked = false
-                            settingsWindow.visible = true
-                        }
+                        settingsWindow.visible = true
                     }
                 }
+            }
 
-                // Exit
-                CustomButton2
+            // Target Language Indicator
+            Rectangle
+            {
+                id: targetLangTagRect
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: margins + headerRect.width/2
+                height: parent.height
+                width: targetLangTag.paintedWidth + 10
+                color: "black"
+                opacity: contentsOpacity
+
+                Text
                 {
-                    id: winButtonsExit
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: buttonSize
-                    height: buttonSize
-                    imgSizeFactor: 1.0
-                    imgOpacity: 1.0
-                    image_url: "qrc:/resources/cancel.svg"
-                    onClickedChanged:
+                    id: targetLangTag
+                    anchors.centerIn: parent
+                    text: DataManager.settings.targetLang
+                    font.pixelSize:fontPixelSize
+                    font.capitalization: Font.AllUppercase
+                    color: fontColor
+                }
+
+                MouseArea
+                {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked:
                     {
-                        if(clicked)
-                        {
-                            clicked = false
-                            root.close()    // close the entire app
-                        }
+                        settingsWindow.visible = true
                     }
                 }
-            }//row
-        }//window buttons
+            }
 
+            // Buttons
+            Rectangle
+            {
+                id: buttonsRect
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: margins
+                color: "transparent"
+                width: buttonSize * 3 + margins*2
+                height: parent.height
+                Row
+                {
+                    id: winButtonsRow
+                    spacing: margins
+                    anchors.centerIn: parent
+
+                    // Settings
+                    CustomButton2
+                    {
+                        id: winButtonMinimize
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: buttonSize
+                        height: buttonSize
+                        imgSizeFactor: 1.0
+                        imgOpacity: 1.0
+                        image_url: "qrc:/resources/decrement.svg"
+                        onClickedChanged:
+                        {
+                            if(clicked)
+                            {
+                                clicked = false
+                                root.showMinimized()
+                            }
+                        }
+                    }
+
+                    // Settings
+                    CustomButton2
+                    {
+                        id: winButtonSettings
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: buttonSize
+                        height: buttonSize
+                        imgSizeFactor: 1.0
+                        imgOpacity: 1.0
+                        image_url: "qrc:/resources/settings.svg"
+                        onClickedChanged:
+                        {
+                            console.log("Width " + root.width)
+                            if(clicked)
+                            {
+                                clicked = false
+                                settingsWindow.visible = true
+                            }
+                        }
+                    }
+
+                    // Exit
+                    CustomButton2
+                    {
+                        id: winButtonsExit
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: buttonSize
+                        height: buttonSize
+                        imgSizeFactor: 1.0
+                        imgOpacity: 1.0
+                        image_url: "qrc:/resources/cancel.svg"
+                        onClickedChanged:
+                        {
+                            if(clicked)
+                            {
+                                clicked = false
+                                root.close()    // close the entire app
+                            }
+                        }
+                    }
+                }//row
+            }//window buttons
+        }
         //  Window Content
         Rectangle
         {
             id: contentRect
-            anchors.top: winButtonsRect.bottom
+            anchors.top: headerRect.bottom
             anchors.bottom: parent.bottom
             anchors.topMargin: margins
             anchors.bottomMargin: margins
@@ -234,6 +321,7 @@ ApplicationWindow
             width: parent.width - 2*margins
             color: "transparent"
             clip: true
+            opacity: contentsOpacity
 
             Row
             {
