@@ -11,6 +11,12 @@ Rectangle
     property string text: ""
     property color textColor: "black"
     property int textSize: 12
+    property bool textAllUppercase: false
+    property bool textBold: false
+
+    property color buttonColor: "transparent"
+    property color buttonHoveredColor: Qt.rgba(255/255, 255/255, 255/255, 0.1)
+    property color buttonPresedColor:  Qt.rgba(255/255, 255/255, 255/255, 0.2)
 
     property bool clicked: false
 
@@ -30,7 +36,7 @@ Rectangle
         anchors.right: parent.right
         background: Rectangle
         {
-            color: "transparent"
+            color: button.pressed? buttonPresedColor : button.hovered? buttonHoveredColor : buttonColor
             radius: 1
         }
 
@@ -41,7 +47,7 @@ Rectangle
             fillMode: Image.PreserveAspectFit
             anchors.centerIn: parent
             source: image_url
-            opacity: button.pressed?imgOpacity*0.5:imgOpacity
+            opacity: imgOpacity
         }
 
         Text
@@ -51,6 +57,8 @@ Rectangle
             text: root.text
             color: textColor
             font.pixelSize: textSize
+            font.capitalization: textAllUppercase? Font.AllUppercase: Font.Normal
+            font.bold: textBold
         }
 
         onClicked:

@@ -29,6 +29,8 @@ Window
     property int widthColum2: 250
     property int heightColumns: 30
 
+    property double unhoveredOpacity: 0.75
+
     // Set the current settings values
     onVisibleChanged:
     {
@@ -117,18 +119,24 @@ Window
                         anchors.verticalCenter: parent.verticalCenter
                         width: widthColum2
                         height: heightColumns
-                        color: "transparent"
+                        color: editableSpaceColor
+                        opacity: unhoveredOpacity
 
                         TextField
                         {
                             id: apiKey
                             anchors.fill: parent
-                            background: Rectangle { color: editableSpaceColor }
+                            background: Rectangle { color: "transparent"}
                             font.pixelSize: fontPixelSize
                             color: fontColor
                             horizontalAlignment: TextInput.AlignHCenter
                             verticalAlignment: TextInput.AlignVCenter
-                            selectByMouse: false
+                            selectByMouse: true
+
+                            onHoveredChanged:
+                            {
+                                parent.opacity = hovered? 1.0 : unhoveredOpacity
+                            }
                         }
                     }
                 }
@@ -161,7 +169,8 @@ Window
                         anchors.verticalCenter: parent.verticalCenter
                         width: widthColum2
                         height: heightColumns
-                        color: "transparent"
+                        color: editableSpaceColor
+                        opacity: unhoveredOpacity
 
                         CustomComboBox
                         {
@@ -169,11 +178,11 @@ Window
                             height: parent.height
                             width: parent.width
                             anchors.centerIn: parent
-                            backgroundColor: editableSpaceColor
+                            backgroundColor: "transparent"
                             textColor: fontColor
                             fontSize: fontPixelSize
                             dropDownMaxHeight: root.height/2
-                            dropDownArrowColor: buttonPressedColor
+                            dropDownArrowColor: backgroundColor
                             currentIndex: 0
                             textRole: "display"
                             model: DataManager.languageNamesAndCodes
@@ -181,6 +190,10 @@ Window
                             {
                                 console.log("ComboBox: " + sourceLang.currentText)
                                 console.log("ComboBox: " + sourceLang.textAt(3))
+                            }
+                            onHoveredChanged:
+                            {
+                                parent.opacity = hovered? 1.0 : unhoveredOpacity
                             }
                         }
                     }
@@ -215,7 +228,8 @@ Window
                         anchors.verticalCenter: parent.verticalCenter
                         width: widthColum2
                         height: heightColumns
-                        color: "transparent"
+                        color: editableSpaceColor
+                        opacity: unhoveredOpacity
 
                         CustomComboBox
                         {
@@ -223,11 +237,11 @@ Window
                             height: parent.height
                             width: parent.width
                             anchors.centerIn: parent
-                            backgroundColor: editableSpaceColor
+                            backgroundColor: "transparent"
                             textColor: fontColor
                             fontSize: fontPixelSize
                             dropDownMaxHeight: root.height/2
-                            dropDownArrowColor: buttonPressedColor
+                            dropDownArrowColor: backgroundColor
                             currentIndex: 0
                             textRole: "display"
                             model: DataManager.languageNamesAndCodes
@@ -235,6 +249,10 @@ Window
                             {
                                 console.log("ComboBox: " + targetLang.currentText)
                                 console.log("ComboBox: " + targetLang.textAt(3))
+                            }
+                            onHoveredChanged:
+                            {
+                                parent.opacity = hovered? 1.0 : unhoveredOpacity
                             }
                         }
                     }
@@ -294,7 +312,8 @@ Window
                             id: onSelection
                             anchors.centerIn: parent
                             box_width: buttonSize/2
-                            border_color: "transparent"
+                            border_color: hovered? "black" : "transparent"
+                            border_width: 1
                             tool_tip:  "Enable translate selected text directly"
                         }
                     }
@@ -336,7 +355,8 @@ Window
                             id: onCopy
                             anchors.centerIn: parent
                             box_width: buttonSize/2
-                            border_color: "transparent"
+                            border_color: hovered? "black" : "transparent"
+                            border_width: 1
                             tool_tip:  "Enable translate copied text directly"
                         }
                     }
@@ -396,7 +416,8 @@ Window
                             id: borderLess
                             anchors.centerIn: parent
                             box_width: buttonSize/2
-                            border_color: "transparent"
+                            border_color: hovered? "black" : "transparent"
+                            border_width: 1
                             tool_tip:  "Disable the OS window frame"
                         }
                     }
@@ -430,6 +451,7 @@ Window
 
                         pressedColor: buttonPressedColor
                         unpressedColor: buttonUnpressedColor
+                        hoveredColor: editableSpaceColor
                         image_url: "qrc:/resources/accept.svg"
 
                         onClickedChanged:
@@ -458,6 +480,7 @@ Window
 
                         pressedColor: buttonPressedColor
                         unpressedColor: buttonUnpressedColor
+                        hoveredColor: editableSpaceColor
                         image_url: "qrc:/resources/cancel.svg"
 
                         onClickedChanged:

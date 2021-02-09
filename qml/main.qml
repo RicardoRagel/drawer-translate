@@ -23,15 +23,16 @@ ApplicationWindow
     id: root
 
     // Design
-    property int fontPixelSize:             14
-    property int buttonSize: 15
+    property int fontPixelSize: 14
+    property int buttonSize:    20
+    property int buttonSize2:   30
     property color fontColor:               Qt.rgba(242/255, 242/255, 242/255, 1)
     property color appWindowColor:          Qt.rgba(30/255, 30/255, 30/255, 1)
     property color appSectionColor:         Qt.rgba(93/255, 99/255, 99/255, 1)
     property color appSectionBorderColor:   Qt.rgba(150/255, 150/255, 150/255, 1)
     property color appEditableSpaceColor:   Qt.rgba(93/255, 99/255, 99/255, 1)
-    property color appButtonUnpressedColor: Qt.rgba(93/255, 99/255, 99/255, 1)
-    property color appButtonPressedColor:   Qt.rgba(50/255, 50/255, 50/255, 1)
+    property color appButtonUnpressedColor: Qt.rgba(110/255, 110/255, 110/255, 1)
+    property color appButtonPressedColor:   Qt.rgba(80/255, 80/255, 80/255, 1)
     property real heightFactor: 0.10
     property int margins: 10
     property int forceMinimumHeight: buttonSize + margins * 2
@@ -164,67 +165,51 @@ ApplicationWindow
             width: parent.width - 2*margins
             height: buttonSize
 
-            // Source Language Indicator
-            Rectangle
+            // Source Language Indicator and button
+            CustomButton2
             {
-                id: sourceLangTagRect
+                id: sourceLangTagButton
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: margins
-                height: parent.height
-                width: sourceLangTag.paintedWidth + 10
-                color: "black"
+                width: buttonSize2
+                height: buttonSize
+                text: DataManager.settings.sourceLang
+                textColor: fontColor
+                textSize: fontPixelSize
+                textAllUppercase: true
+                textBold: true
                 opacity: contentsOpacity
-
-                Text
+                onClickedChanged:
                 {
-                    id: sourceLangTag
-                    anchors.centerIn: parent
-                    text: DataManager.settings.sourceLang
-                    font.pixelSize:fontPixelSize
-                    font.capitalization: Font.AllUppercase
-                    color: fontColor
-                }
-
-                MouseArea
-                {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked:
+                    if(clicked)
                     {
+                        clicked = false
                         settingsWindow.visible = true
                     }
                 }
             }
 
-            // Target Language Indicator
-            Rectangle
+            // Target Language Indicator and button
+            CustomButton2
             {
-                id: targetLangTagRect
+                id: targetLangTagButton
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: margins + headerRect.width/2
-                height: parent.height
-                width: targetLangTag.paintedWidth + 10
-                color: "black"
+                width: buttonSize2
+                height: buttonSize
+                text: DataManager.settings.targetLang
+                textColor: fontColor
+                textSize: fontPixelSize
+                textAllUppercase: true
+                textBold: true
                 opacity: contentsOpacity
-
-                Text
+                onClickedChanged:
                 {
-                    id: targetLangTag
-                    anchors.centerIn: parent
-                    text: DataManager.settings.targetLang
-                    font.pixelSize:fontPixelSize
-                    font.capitalization: Font.AllUppercase
-                    color: fontColor
-                }
-
-                MouseArea
-                {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
-                    onClicked:
+                    if(clicked)
                     {
+                        clicked = false
                         settingsWindow.visible = true
                     }
                 }
@@ -238,12 +223,12 @@ ApplicationWindow
                 anchors.right: parent.right
                 anchors.rightMargin: margins
                 color: "transparent"
-                width: buttonSize * 3 + margins*2
+                width: buttonSize2 * 3
                 height: parent.height
                 Row
                 {
                     id: winButtonsRow
-                    spacing: margins
+                    spacing: 0
                     anchors.centerIn: parent
 
                     // Settings
@@ -251,9 +236,9 @@ ApplicationWindow
                     {
                         id: winButtonMinimize
                         anchors.verticalCenter: parent.verticalCenter
-                        width: buttonSize
+                        width: buttonSize2
                         height: buttonSize
-                        imgSizeFactor: 1.0
+                        imgSizeFactor: 0.6
                         imgOpacity: 1.0
                         image_url: "qrc:/resources/decrement.svg"
                         onClickedChanged:
@@ -271,9 +256,9 @@ ApplicationWindow
                     {
                         id: winButtonSettings
                         anchors.verticalCenter: parent.verticalCenter
-                        width: buttonSize
+                        width: buttonSize2
                         height: buttonSize
-                        imgSizeFactor: 1.0
+                        imgSizeFactor: 0.6
                         imgOpacity: 1.0
                         image_url: "qrc:/resources/settings.svg"
                         onClickedChanged:
@@ -292,9 +277,9 @@ ApplicationWindow
                     {
                         id: winButtonsExit
                         anchors.verticalCenter: parent.verticalCenter
-                        width: buttonSize
+                        width: buttonSize2
                         height: buttonSize
-                        imgSizeFactor: 1.0
+                        imgSizeFactor: 0.6
                         imgOpacity: 1.0
                         image_url: "qrc:/resources/cancel.svg"
                         onClickedChanged:
@@ -450,7 +435,7 @@ ApplicationWindow
         visible: false
         flags: Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
         title: root.title + " - Settings"
-        buttonSize: root.buttonSize * 2
+        buttonSize: root.buttonSize2
         fontPixelSize: root.fontPixelSize
         fontColor: root.fontColor
         backgroundColor: root.appWindowColor

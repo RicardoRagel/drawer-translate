@@ -7,6 +7,7 @@ Rectangle
     id: root
     property color unpressedColor: "white"
     property color pressedColor: "gray"
+    property color hoveredColor: "yellow"
     property string image_url: ""
     property real imgSizeFactor: 1.0
     property real imgOpacity: 1.0
@@ -48,7 +49,7 @@ Rectangle
         {
             background: Rectangle
             {
-                color: control.pressed ? pressedColor:unpressedColor
+                color: control.pressed ? pressedColor : control.hovered? hoveredColor : unpressedColor
                 radius: 1
             }
         }
