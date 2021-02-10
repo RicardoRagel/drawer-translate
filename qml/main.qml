@@ -115,11 +115,8 @@ ApplicationWindow
         // When changing a position, we recalculate the position of the window, and its height
         onMouseYChanged:
         {
-            //var dy = mouseY - previousY
-            //root.y = root.y + dy
-            //root.height = Screen.height - root.y
-
-            if(Math.abs(MouseProvider.cursorPos().y - previousY) > 10)
+            // If the OS is Linux, check a minimum displacemnt to avoid flickering and/or flashing
+            if(Qt.platform.os === "windows" || Math.abs(MouseProvider.cursorPos().y - previousY) > 10)
             {
                 previousY = MouseProvider.cursorPos().y
                 var new_height = Qt.platform.os === "windows"?Screen.desktopAvailableHeight - MouseProvider.cursorPos().y:Screen.height - MouseProvider.cursorPos().y
@@ -136,18 +133,20 @@ ApplicationWindow
     property bool appHide: false
     property int  unhideLastY
     property int  unhideLastHeight
+    property int hideAnimationDuration: 1000
     function showHide()
     {
-        console.log("show hide function")
         if(appHide)
         {
-            appHide = false
+            hideAnimationDuration = Math.abs(5 * (root.height - unhideLastHeight))
             unhideAnimation.running = true
+            appHide = false
         }
         else
         {
             unhideLastY = root.y
             unhideLastHeight = root.height
+            hideAnimationDuration = Math.abs(5 * (root.height - root.minimumHeight))
             hideAnimation.running = true
             appHide = true
         }
@@ -157,15 +156,39 @@ ApplicationWindow
     {
         id: hideAnimation
         running: false
-        NumberAnimation { target: root; property: "height"; to: root.minimumHeight;                 duration: 1000 }
-        NumberAnimation { target: root; property: "y";      to: Screen.height - root.minimumHeight; duration: 1000 }
+        NumberAnimation
+        {
+            target: root;
+            property: "height";
+            to: root.minimumHeight;
+            duration: hideAnimationDuration
+        }
+        NumberAnimation
+        {
+            target: root;
+            property: "y";
+            to: Qt.platform.os === "windows"?Screen.desktopAvailableHeight - root.minimumHeight : Screen.height - root.minimumHeight;
+            duration: hideAnimationDuration
+        }
     }
     ParallelAnimation
     {
         id: unhideAnimation
         running: false
-        NumberAnimation { target: root; property: "height"; to: root.unhideLastHeight;  duration: 1000 }
-        NumberAnimation { target: root; property: "y";      to: root.unhideLastY;       duration: 1000 }
+        NumberAnimation
+        {
+            target: root;
+            property: "height";
+            to: root.unhideLastHeight;
+            duration: hideAnimationDuration
+        }
+        NumberAnimation
+        {
+            target: root;
+            property: "y";
+            to: root.unhideLastY;
+            duration: hideAnimationDuration
+        }
     }
 
 
