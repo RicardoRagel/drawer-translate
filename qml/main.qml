@@ -111,7 +111,7 @@ ApplicationWindow
         cursorShape: enabled?Qt.SizeVerCursor:Qt.ArrowCursor
 
         // We memorize the position along the Y axis
-        onPressed: { previousY = mouseY }
+        onPressed: { previousY = MouseProvider.cursorPos().y }
         // When changing a position, we recalculate the position of the window, and its height
         onMouseYChanged:
         {
@@ -119,11 +119,15 @@ ApplicationWindow
             //root.y = root.y + dy
             //root.height = Screen.height - root.y
 
-            var new_height = Qt.platform.os === "windows"?Screen.desktopAvailableHeight - MouseProvider.cursorPos().y:Screen.height - MouseProvider.cursorPos().y
-            if(new_height > forceMinimumHeight)
+            if(Math.abs(MouseProvider.cursorPos().y - previousY) > 10)
             {
-                root.y = MouseProvider.cursorPos().y
-                root.height = new_height
+                previousY = MouseProvider.cursorPos().y
+                var new_height = Qt.platform.os === "windows"?Screen.desktopAvailableHeight - MouseProvider.cursorPos().y:Screen.height - MouseProvider.cursorPos().y
+                if(new_height > forceMinimumHeight)
+                {
+                    root.y = MouseProvider.cursorPos().y
+                    root.height = new_height
+                }
             }
         }
     }
@@ -153,15 +157,15 @@ ApplicationWindow
     {
         id: hideAnimation
         running: false
-        NumberAnimation { target: root; property: "height"; to: root.minimumHeight;                 duration: 2000 }
-        NumberAnimation { target: root; property: "y";      to: Screen.height - root.minimumHeight; duration: 2000 }
+        NumberAnimation { target: root; property: "height"; to: root.minimumHeight;                 duration: 1000 }
+        NumberAnimation { target: root; property: "y";      to: Screen.height - root.minimumHeight; duration: 1000 }
     }
     ParallelAnimation
     {
         id: unhideAnimation
         running: false
-        NumberAnimation { target: root; property: "height"; to: root.unhideLastHeight;  duration: 2000 }
-        NumberAnimation { target: root; property: "y";      to: root.unhideLastY;       duration: 2000 }
+        NumberAnimation { target: root; property: "height"; to: root.unhideLastHeight;  duration: 1000 }
+        NumberAnimation { target: root; property: "y";      to: root.unhideLastY;       duration: 1000 }
     }
 
 
