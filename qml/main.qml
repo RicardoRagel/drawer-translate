@@ -52,7 +52,7 @@ ApplicationWindow
                 Qt.Window
                 | Qt.FramelessWindowHint        // Frameless window
                 | Qt.WindowStaysOnTopHint       // Always on top
-                | Qt.X11BypassWindowManagerHint // Avoid flickering in Linux
+                //| Qt.X11BypassWindowManagerHint // Avoid flickering in Linux, but it disables keyboard inputs
             :   flags
 
     // Manage the app starup, fixing some issues found for multiple monitors:
@@ -110,12 +110,8 @@ ApplicationWindow
         // We set the shape of the cursor so that it is clear that this resizing
         cursorShape: enabled?Qt.SizeVerCursor:Qt.ArrowCursor
 
-        onPressed:
-        {
-            // We memorize the position along the Y axis
-            previousY = mouseY
-        }
-
+        // We memorize the position along the Y axis
+        onPressed: { previousY = mouseY }
         // When changing a position, we recalculate the position of the window, and its height
         onMouseYChanged:
         {
@@ -124,7 +120,6 @@ ApplicationWindow
             //root.height = Screen.height - root.y
 
             var new_height = Qt.platform.os === "windows"?Screen.desktopAvailableHeight - MouseProvider.cursorPos().y:Screen.height - MouseProvider.cursorPos().y
-
             if(new_height > forceMinimumHeight)
             {
                 root.y = MouseProvider.cursorPos().y
@@ -132,6 +127,43 @@ ApplicationWindow
             }
         }
     }
+
+    // Hide App
+    property bool appHide: false
+    property int  unhideLastY
+    property int  unhideLastHeight
+    function showHide()
+    {
+        console.log("show hide function")
+        if(appHide)
+        {
+            appHide = false
+            unhideAnimation.running = true
+        }
+        else
+        {
+            unhideLastY = root.y
+            unhideLastHeight = root.height
+            hideAnimation.running = true
+            appHide = true
+        }
+    }
+    // Animations
+    ParallelAnimation
+    {
+        id: hideAnimation
+        running: false
+        NumberAnimation { target: root; property: "height"; to: root.minimumHeight;                 duration: 2000 }
+        NumberAnimation { target: root; property: "y";      to: Screen.height - root.minimumHeight; duration: 2000 }
+    }
+    ParallelAnimation
+    {
+        id: unhideAnimation
+        running: false
+        NumberAnimation { target: root; property: "height"; to: root.unhideLastHeight;  duration: 2000 }
+        NumberAnimation { target: root; property: "y";      to: root.unhideLastY;       duration: 2000 }
+    }
+
 
     // Some contents opacity controller
     property double contentsOpacity: 1.0
@@ -223,7 +255,7 @@ ApplicationWindow
                 anchors.right: parent.right
                 anchors.rightMargin: margins
                 color: "transparent"
-                width: buttonSize2 * 3
+                width: buttonSize2 * 4
                 height: parent.height
                 Row
                 {
@@ -231,7 +263,27 @@ ApplicationWindow
                     spacing: 0
                     anchors.centerIn: parent
 
-                    // Settings
+                    // Hide
+                    CustomButton2
+                    {
+                        id: winButtonHide
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: buttonSize2
+                        height: buttonSize
+                        imgSizeFactor: 0.6
+                        imgOpacity: 1.0
+                        image_url: appHide? "qrc:/resources/arrow_up_white.svg" : "qrc:/resources/arrow_down_white.svg"
+                        onClickedChanged:
+                        {
+                            if(clicked)
+                            {
+                                clicked = false
+                                root.showHide()
+                            }
+                        }
+                    }
+
+                    // Minimize
                     CustomButton2
                     {
                         id: winButtonMinimize
