@@ -46,6 +46,7 @@ Window
             onSelection.checked = DataManager.settings.translateOnSelection
             onCopy.checked = DataManager.settings.translateOnCopy
             borderLess.checked = DataManager.settings.framelessWin
+            autoHide.checked = DataManager.settings.autoHideWin
         }
     }
 
@@ -70,7 +71,7 @@ Window
             {
                 id: column
                 anchors.centerIn: parent
-                spacing: 10
+                spacing: 5
 
                 // SECTION - Translation
                 Rectangle
@@ -382,6 +383,7 @@ Window
                     }
                 }
 
+                // FrameLess
                 Row
                 {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -421,7 +423,48 @@ Window
                             tool_tip:  "Disable the OS window frame"
                         }
                     }
+                }
 
+                // AutoHide
+                Row
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    Auto-hide: "
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: "transparent"
+
+                        CustomCheckBox
+                        {
+                            id: autoHide
+                            anchors.centerIn: parent
+                            box_width: buttonSize/2
+                            border_color: hovered? "black" : "transparent"
+                            border_width: 1
+                            tool_tip:  "Auto-hide window in case of non-interaction"
+                        }
+                    }
                 }
 
                 // Some Space
@@ -466,6 +509,7 @@ Window
                                 DataManager.setSourceLanguage(sourceLang.currentText)
                                 DataManager.setTargetLanguage(targetLang.currentText)
                                 DataManager.settings.setFramelessWin(borderLess.checked)
+                                DataManager.settings.setAutoHideWin(autoHide.checked)
                                 root.visible = false
                             }
                         }

@@ -33,7 +33,7 @@ ApplicationWindow
     property color appEditableSpaceColor:   Qt.rgba(93/255, 99/255, 99/255, 1)
     property color appButtonUnpressedColor: Qt.rgba(110/255, 110/255, 110/255, 1)
     property color appButtonPressedColor:   Qt.rgba(80/255, 80/255, 80/255, 1)
-    property real heightFactor: 0.10
+    property real heightFactor: 0.15
     property int margins: 10
     property int forceMinimumHeight: buttonSize + margins * 2
 
@@ -103,23 +103,32 @@ ApplicationWindow
         id: topArea
         height: 20
         enabled: DataManager.framelessWinOnStartup
-
+        hoverEnabled: true
         anchors
         {
             top: parent.top
             left: parent.left
             right: parent.right
         }
+
         // We set the shape of the cursor so that it is clear that this resizing
         cursorShape: enabled?Qt.SizeVerCursor:Qt.ArrowCursor
 
         // When changing a position, we recalculate the position of the window, and its height
         onMouseYChanged:
         {
-            targetHeight = Qt.platform.os === "windows"? Screen.desktopAvailableHeight - MouseProvider.cursorPos().y : Screen.height - MouseProvider.cursorPos().y
+            if(pressed)
+                targetHeight = Qt.platform.os === "windows"? Screen.desktopAvailableHeight - MouseProvider.cursorPos().y : Screen.height - MouseProvider.cursorPos().y
+        }
+
+        onHoveredChanged:
+        {
+            if(DataManager.settings.autoHideWin && appHide)
+                showHide()
         }
     }
 
+    // Height controller
     onTargetHeightChanged:
     {
         // If the OS is Linux, check a minimum displacemnt to avoid flickering and/or flashing
@@ -133,7 +142,22 @@ ApplicationWindow
         }
     }
 
-    // Hide App
+    // AutoHide controller
+    Timer
+    {
+        id: autoHideTimer
+        interval: 5000
+        running: DataManager.settings.autoHideWin
+        repeat: true
+        onTriggered:
+        {
+            console.log("AutoHide triggered!")
+            if(!appHide)
+                showHide()
+        }
+    }
+
+    // Hide App Functions
     property bool appHide: false
     property int  unhideLastHeight
     property int hideAnimationDuration: 1000
@@ -153,7 +177,8 @@ ApplicationWindow
             appHide = true
         }
     }
-    // Animations: Hide and Unhide modifying the height
+
+    // Hide App Animations
     ParallelAnimation
     {
         id: hideAnimation
@@ -179,11 +204,10 @@ ApplicationWindow
         }
     }
 
-
-    // Some contents opacity controller
+    // Contents opacity controller
     property double contentsOpacity: 1.0
     property double maxHop: 2.25 * root.minimumHeight
-    property double minHop: 1.25 * root.minimumHeight
+    property double minHop: 1.5 * root.minimumHeight
     onHeightChanged:
     {
         contentsOpacity = root.height > maxHop? 1.0 : (root.height - minHop)/ (maxHop - minHop)
@@ -199,7 +223,6 @@ ApplicationWindow
         anchors.fill: parent
         color: appWindowColor
         radius: 10
-
 
         // Window Header
         Rectangle
@@ -270,50 +293,31 @@ ApplicationWindow
                 anchors.right: parent.right
                 anchors.rightMargin: margins
                 color: "transparent"
-                width: buttonSize2 * 4
+                width:  DataManager.settings.autoHideWin? buttonSize2 * 3 : buttonSize2 * 4
                 height: parent.height
                 Row
                 {
                     id: winButtonsRow
                     spacing: 0
-                    anchors.centerIn: parent
+                    anchors.verticalCenter: parent.verticalCenter
+                    layoutDirection: "RightToLeft"
 
-                    // Hide
+                    // Exit
                     CustomButton2
                     {
-                        id: winButtonHide
+                        id: winButtonsExit
                         anchors.verticalCenter: parent.verticalCenter
                         width: buttonSize2
                         height: buttonSize
                         imgSizeFactor: 0.6
                         imgOpacity: 1.0
-                        image_url: appHide? "qrc:/resources/arrow_up_white.svg" : "qrc:/resources/arrow_down_white.svg"
+                        image_url: "qrc:/resources/cancel.svg"
                         onClickedChanged:
                         {
                             if(clicked)
                             {
                                 clicked = false
-                                root.showHide()
-                            }
-                        }
-                    }
-
-                    // Minimize
-                    CustomButton2
-                    {
-                        id: winButtonMinimize
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: buttonSize2
-                        height: buttonSize
-                        imgSizeFactor: 0.6
-                        imgOpacity: 1.0
-                        image_url: "qrc:/resources/decrement.svg"
-                        onClickedChanged:
-                        {
-                            if(clicked)
-                            {
-                                clicked = false
-                                root.showMinimized()
+                                root.close()    // close the entire app
                             }
                         }
                     }
@@ -339,22 +343,43 @@ ApplicationWindow
                         }
                     }
 
-                    // Exit
+                    // Minimize
                     CustomButton2
                     {
-                        id: winButtonsExit
+                        id: winButtonMinimize
                         anchors.verticalCenter: parent.verticalCenter
                         width: buttonSize2
                         height: buttonSize
                         imgSizeFactor: 0.6
                         imgOpacity: 1.0
-                        image_url: "qrc:/resources/cancel.svg"
+                        image_url: "qrc:/resources/decrement.svg"
                         onClickedChanged:
                         {
                             if(clicked)
                             {
                                 clicked = false
-                                root.close()    // close the entire app
+                                root.showMinimized()
+                            }
+                        }
+                    }
+
+                    // Hide
+                    CustomButton2
+                    {
+                        id: winButtonHide
+                        visible: DataManager.settings.autoHideWin? false: true
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: buttonSize2
+                        height: buttonSize
+                        imgSizeFactor: 0.6
+                        imgOpacity: 1.0
+                        image_url: appHide? "qrc:/resources/arrow_up_white.svg" : "qrc:/resources/arrow_down_white.svg"
+                        onClickedChanged:
+                        {
+                            if(clicked)
+                            {
+                                clicked = false
+                                root.showHide()
                             }
                         }
                     }
@@ -420,6 +445,17 @@ ApplicationWindow
                             fixMultipleMonitorIssueTimer.running = false
                         }
 
+                        onHoveredChanged:
+                        {
+                            if(DataManager.settings.autoHideWin)
+                            {
+                                if(hovered)
+                                    autoHideTimer.running = false
+                                else
+                                    autoHideTimer.running = true
+                            }
+                        }
+
                         // It seems placeholderText doesn't work properly on Win10, adding placeHolderInputText
                         //placeholderText: 'Write here your text ...'
                         property string placeholderTextFixed: 'Write here your text ...'
@@ -467,6 +503,17 @@ ApplicationWindow
                         wrapMode: TextEdit.Wrap
 
                         text: DataManager.outputText
+
+                        onHoveredChanged:
+                        {
+                            if(DataManager.settings.autoHideWin)
+                            {
+                                if(hovered)
+                                    autoHideTimer.running = false
+                                else
+                                    autoHideTimer.running = true
+                            }
+                        }
 
                         // It seems placeholderText doesn't work properly on Win10, adding placeHolderOutputText
                         //placeholderText: 'Write here your text ...

@@ -31,6 +31,17 @@ void Settings::init()
         qDebug() << "(Settings) FrameLess Window:" << framelessWin();
     }
 
+    if(!_settingsHandler->contains("Window/autoHide"))
+    {
+        qDebug() << "(Settings) Initializing AutoHide Window to" << DEFAULT_AUTOHIDE_WIN;
+        setAutoHideWin(DEFAULT_AUTOHIDE_WIN);
+    }
+    else
+    {
+        setAutoHideWin(_settingsHandler->value("Window/autoHide").toBool());
+        qDebug() << "(Settings) AutoHide Window:" << autoHideWin();
+    }
+
     if(!_settingsHandler->contains("Input/translateOnSelection"))
     {
         qDebug() << "(Settings) Initializing Translate on Selection to" << DEFAULT_TRANSLATE_ON_SELECTION;
@@ -95,6 +106,13 @@ void Settings::setFramelessWin(bool frameless_win)
     _settingsHandler->setValue("Window/frameLess", frameless_win);
     _frameless_win = frameless_win;
     emit framelessWinChanged();
+}
+
+void Settings::setAutoHideWin(bool autohide_win)
+{
+    _settingsHandler->setValue("Window/autoHide", autohide_win);
+    _autohide_win = autohide_win;
+    emit autoHideWinChanged();
 }
 
 void Settings::setTranslateOnSelection(bool translate_on_selection)
