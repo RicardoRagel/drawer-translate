@@ -68,6 +68,8 @@ ApplicationWindow
         }
         else
             root.visible = true
+
+        targetHeight = root.height
     }
     Timer
     {
@@ -95,6 +97,7 @@ ApplicationWindow
     // Reference: https://evileg.com/en/post/280/
     property int previousX
     property int previousY
+    property int targetHeight
     MouseArea
     {
         id: topArea
@@ -110,28 +113,28 @@ ApplicationWindow
         // We set the shape of the cursor so that it is clear that this resizing
         cursorShape: enabled?Qt.SizeVerCursor:Qt.ArrowCursor
 
-        // We memorize the position along the Y axis
-        onPressed: { previousY = MouseProvider.cursorPos().y }
         // When changing a position, we recalculate the position of the window, and its height
         onMouseYChanged:
         {
-            // If the OS is Linux, check a minimum displacemnt to avoid flickering and/or flashing
-            if(Qt.platform.os === "windows" || Math.abs(MouseProvider.cursorPos().y - previousY) > 10)
+            targetHeight = Qt.platform.os === "windows"? Screen.desktopAvailableHeight - MouseProvider.cursorPos().y : Screen.height - MouseProvider.cursorPos().y
+        }
+    }
+
+    onTargetHeightChanged:
+    {
+        // If the OS is Linux, check a minimum displacemnt to avoid flickering and/or flashing
+        if(Qt.platform.os === "windows" || Math.abs(root.height - targetHeight) > 10)
+        {
+            if(targetHeight > forceMinimumHeight)
             {
-                previousY = MouseProvider.cursorPos().y
-                var new_height = Qt.platform.os === "windows"?Screen.desktopAvailableHeight - MouseProvider.cursorPos().y:Screen.height - MouseProvider.cursorPos().y
-                if(new_height > forceMinimumHeight)
-                {
-                    root.y = MouseProvider.cursorPos().y
-                    root.height = new_height
-                }
+                root.height = targetHeight
+                root.y = Qt.platform.os === "windows"? Screen.desktopAvailableHeight - targetHeight : Screen.height - targetHeight
             }
         }
     }
 
     // Hide App
     property bool appHide: false
-    property int  unhideLastY
     property int  unhideLastHeight
     property int hideAnimationDuration: 1000
     function showHide()
@@ -144,14 +147,13 @@ ApplicationWindow
         }
         else
         {
-            unhideLastY = root.y
             unhideLastHeight = root.height
             hideAnimationDuration = Math.abs(5 * (root.height - root.minimumHeight))
             hideAnimation.running = true
             appHide = true
         }
     }
-    // Animations
+    // Animations: Hide and Unhide modifying the height
     ParallelAnimation
     {
         id: hideAnimation
@@ -159,15 +161,8 @@ ApplicationWindow
         NumberAnimation
         {
             target: root;
-            property: "height";
+            property: "targetHeight";
             to: root.minimumHeight;
-            duration: hideAnimationDuration
-        }
-        NumberAnimation
-        {
-            target: root;
-            property: "y";
-            to: Qt.platform.os === "windows"?Screen.desktopAvailableHeight - root.minimumHeight : Screen.height - root.minimumHeight;
             duration: hideAnimationDuration
         }
     }
@@ -178,15 +173,8 @@ ApplicationWindow
         NumberAnimation
         {
             target: root;
-            property: "height";
+            property: "targetHeight";
             to: root.unhideLastHeight;
-            duration: hideAnimationDuration
-        }
-        NumberAnimation
-        {
-            target: root;
-            property: "y";
-            to: root.unhideLastY;
             duration: hideAnimationDuration
         }
     }
