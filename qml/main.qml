@@ -1,4 +1,4 @@
-import QtQuick 2.14
+﻿import QtQuick 2.14
 import QtQuick.Window 2.3
 
 import QtQuick.Controls 2.14
@@ -154,6 +154,24 @@ ApplicationWindow
             console.log("AutoHide triggered!")
             if(!appHide)
                 showHide()
+        }
+    }
+    Connections
+    {
+        target: DataManager.settings
+        onAutoHideWinChanged:
+        {
+            console.log("HOla!")
+            if(DataManager.settings.autoHideWin)
+            {
+                console.log("RUNNING")
+                autoHideTimer.running = true
+            }
+            else
+            {
+                console.log("STOPPED")
+                autoHideTimer.running = false
+            }
         }
     }
 
@@ -437,12 +455,14 @@ ApplicationWindow
                         {
                             if(text !== DataManager.inputText)
                                 DataManager.setInputText(text)
-                        }
 
-                        onPressed:
-                        {
-                            // stop the dummy timer
-                            fixMultipleMonitorIssueTimer.running = false
+                            if(DataManager.settings.autoHideWin)
+                            {
+                                if(appHide)
+                                    showHide()
+
+                                autoHideTimer.restart()
+                            }
                         }
 
                         onHoveredChanged:
@@ -454,6 +474,12 @@ ApplicationWindow
                                 else
                                     autoHideTimer.running = true
                             }
+                        }
+
+                        onPressed:
+                        {
+                            // stop the dummy timer
+                            fixMultipleMonitorIssueTimer.running = false
                         }
 
                         // It seems placeholderText doesn't work properly on Win10, adding placeHolderInputText
