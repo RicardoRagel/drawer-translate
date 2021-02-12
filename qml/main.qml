@@ -45,6 +45,7 @@ ApplicationWindow
     //height: Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (heightFactor):Screen.height * (heightFactor)
     property int targetHeight
     minimumHeight: forceMinimumHeight
+    minimumWidth: 400
     color: "transparent"
     visible: false
     title: qsTr(Constants.appTitle)
