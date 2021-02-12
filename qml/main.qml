@@ -41,8 +41,9 @@ ApplicationWindow
     x: Screen.width - Screen.desktopAvailableWidth > 0? Screen.width - Screen.desktopAvailableWidth : 0
     //x: 0
     width: Screen.desktopAvailableWidth
-    y:  Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (1.0 - heightFactor):Screen.height * (1.0 - heightFactor)
-    height: Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (heightFactor):Screen.height * (heightFactor)
+    //y:  Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (1.0 - heightFactor):Screen.height * (1.0 - heightFactor)
+    //height: Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (heightFactor):Screen.height * (heightFactor)
+    property int targetHeight
     minimumHeight: forceMinimumHeight
     color: "transparent"
     visible: false
@@ -69,7 +70,7 @@ ApplicationWindow
         else
             root.visible = true
 
-        targetHeight = root.height
+        targetHeight = Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (heightFactor):Screen.height * (heightFactor)
     }
     Timer
     {
@@ -97,7 +98,6 @@ ApplicationWindow
     // Reference: https://evileg.com/en/post/280/
     property int previousX
     property int previousY
-    property int targetHeight
     MouseArea
     {
         id: topArea
@@ -122,8 +122,18 @@ ApplicationWindow
 
         onHoveredChanged:
         {
+            // unhide
             if(DataManager.settings.autoHideWin && appHide)
                 showHide()
+
+            // stop and start autoHide
+            if(DataManager.settings.autoHideWin)
+            {
+                if(containsMouse)
+                    autoHideTimer.running = false
+                else
+                    autoHideTimer.running = true
+            }
         }
     }
 
@@ -160,15 +170,12 @@ ApplicationWindow
         target: DataManager.settings
         onAutoHideWinChanged:
         {
-            console.log("HOla!")
             if(DataManager.settings.autoHideWin)
             {
-                console.log("RUNNING")
                 autoHideTimer.running = true
             }
             else
             {
-                console.log("STOPPED")
                 autoHideTimer.running = false
             }
         }
