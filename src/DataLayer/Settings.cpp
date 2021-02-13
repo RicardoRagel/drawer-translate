@@ -64,15 +64,26 @@ void Settings::init()
         qDebug() << "(Settings) Translate on Copy:" << translateOnCopy();
     }
 
-    if(!_settingsHandler->contains("Translator/apiKey"))
+    if(!_settingsHandler->contains("Translator/engine"))
     {
-        qDebug() << "(Settings) Initializing API Key to" << DEFAULT_API_KEY;
-        setApiKey(DEFAULT_API_KEY);
+        qDebug() << "(Settings) Initializing Translator Engine to" << DEFAULT_TRANSLATOR_ENGINE;
+        setTranslatorEngine(DEFAULT_TRANSLATOR_ENGINE);
     }
     else
     {
-        setApiKey(_settingsHandler->value("Translator/apiKey").toString());
-        qDebug() << "(Settings) API KEY:" << apiKey();
+        setTranslatorEngine(_settingsHandler->value("Translator/engine").toString());
+        qDebug() << "(Settings) Translator Engine:" << translatorEngine();
+    }
+
+    if(!_settingsHandler->contains("Translator/googleApiKey"))
+    {
+        qDebug() << "(Settings) Initializing API Key to" << DEFAULT_GOOGLE_API_KEY;
+        setGoogleApiKey(DEFAULT_GOOGLE_API_KEY);
+    }
+    else
+    {
+        setGoogleApiKey(_settingsHandler->value("Translator/googleApiKey").toString());
+        qDebug() << "(Settings) API Key:" << googleApiKey();
     }
 
     if(!_settingsHandler->contains("Translator/sourceLang"))
@@ -129,11 +140,18 @@ void Settings::setTranslateOnCopy(bool translate_on_copy)
     emit translateOnCopyChanged();
 }
 
-void Settings::setApiKey(QString api_key)
+void Settings::setTranslatorEngine(QString translator_engine)
 {
-    _settingsHandler->setValue("Translator/apiKey", api_key);
-    _api_key = api_key;
-    emit apiKeyChanged();
+    _settingsHandler->setValue("Translator/engine", translator_engine);
+    _translator_engine = translator_engine;
+    emit translatorEngineChanged();
+}
+
+void Settings::setGoogleApiKey(QString api_key)
+{
+    _settingsHandler->setValue("Translator/googleApiKey", api_key);
+    _google_api_key = api_key;
+    emit googleApiKeyChanged();
 }
 
 void Settings::setSourceLang(QString source_lang)
@@ -149,3 +167,8 @@ void Settings::setTargetLang(QString target_lang)
     _target_lang = target_lang;
     emit targetLangChanged();
 }
+
+/** *********************************
+ *  Static and constant Settings
+ ** ********************************/
+QStringList Settings::default_language_list = {"en", "es"};

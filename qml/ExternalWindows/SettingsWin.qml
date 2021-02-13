@@ -20,6 +20,7 @@ Window
     property int fontPixelSize: 10
     property color fontColor: "white"
     property color backgroundColor: "white"
+    property color comboBoxColor: "black"
     property color editableSpaceColor: "black"
     property color buttonUnpressedColor: "lightgray"
     property color buttonPressedColor: "yellow"
@@ -36,11 +37,9 @@ Window
     {
         if(visible)
         {
-            // Call to update available languages
-            DataManager.updateAvailableLanguageCode()
-
             // Update current settings
-            apiKey.text = DataManager.settings.apiKey
+            translatorEngine.currentIndex = translatorEngine.find(DataManager.settings.translatorEngine)
+            googleApiKey.text = DataManager.settings.googleApiKey
             sourceLang.currentIndex = sourceLang.find("[" + DataManager.settings.sourceLang + "]", Qt.MatchContains)
             targetLang.currentIndex = targetLang.find("[" + DataManager.settings.targetLang + "]", Qt.MatchContains)
             onSelection.checked = DataManager.settings.translateOnSelection
@@ -92,9 +91,68 @@ Window
                     }
                 }
 
+                // Translator Engines
+                Row
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    Engine:"
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: comboBoxColor
+                        opacity: unhoveredOpacity
+
+                        CustomComboBox
+                        {
+                            id: translatorEngine
+                            height: parent.height
+                            width: parent.width
+                            anchors.centerIn: parent
+                            backgroundColor: "transparent"
+                            textColor: fontColor
+                            fontSize: fontPixelSize
+                            dropDownMaxHeight: root.height/2
+                            dropDownArrowColor: backgroundColor
+                            currentIndex: 0
+                            textRole: "display"
+                            model: DataManager.translatorEngines
+                            onCurrentTextChanged:
+                            {
+                                // Call to update available languages
+                                DataManager.updateAvailableLanguageCode(translatorEngine.currentText)
+                            }
+                            onHoveredChanged:
+                            {
+                                parent.opacity = hovered? 1.0 : unhoveredOpacity
+                            }
+                        }
+                    }
+                }
+
                 // API Key
                 Row
                 {
+                    visible: translatorEngine.currentText === Constants.googleTranslateApiName
                     anchors.horizontalCenter: parent.horizontalCenter
                     spacing: 2
 
@@ -125,7 +183,7 @@ Window
 
                         TextField
                         {
-                            id: apiKey
+                            id: googleApiKey
                             anchors.fill: parent
                             background: Rectangle { color: "transparent"}
                             font.pixelSize: fontPixelSize
@@ -170,7 +228,7 @@ Window
                         anchors.verticalCenter: parent.verticalCenter
                         width: widthColum2
                         height: heightColumns
-                        color: editableSpaceColor
+                        color: comboBoxColor
                         opacity: unhoveredOpacity
 
                         CustomComboBox
@@ -187,11 +245,6 @@ Window
                             currentIndex: 0
                             textRole: "display"
                             model: DataManager.languageNamesAndCodes
-                            onCurrentIndexChanged:
-                            {
-                                console.log("ComboBox: " + sourceLang.currentText)
-                                console.log("ComboBox: " + sourceLang.textAt(3))
-                            }
                             onHoveredChanged:
                             {
                                 parent.opacity = hovered? 1.0 : unhoveredOpacity
@@ -229,7 +282,7 @@ Window
                         anchors.verticalCenter: parent.verticalCenter
                         width: widthColum2
                         height: heightColumns
-                        color: editableSpaceColor
+                        color: comboBoxColor
                         opacity: unhoveredOpacity
 
                         CustomComboBox
@@ -246,11 +299,6 @@ Window
                             currentIndex: 0
                             textRole: "display"
                             model: DataManager.languageNamesAndCodes
-                            onCurrentIndexChanged:
-                            {
-                                console.log("ComboBox: " + targetLang.currentText)
-                                console.log("ComboBox: " + targetLang.textAt(3))
-                            }
                             onHoveredChanged:
                             {
                                 parent.opacity = hovered? 1.0 : unhoveredOpacity
@@ -494,7 +542,7 @@ Window
 
                         pressedColor: buttonPressedColor
                         unpressedColor: buttonUnpressedColor
-                        hoveredColor: editableSpaceColor
+                        hoveredColor: comboBoxColor
                         image_url: "qrc:/resources/accept.svg"
 
                         onClickedChanged:
@@ -503,7 +551,8 @@ Window
                             {
                                 clicked = false
                                 console.log("Setting new configuration")
-                                DataManager.settings.setApiKey(apiKey.text)
+                                DataManager.settings.setTranslatorEngine(translatorEngine.currentText)
+                                DataManager.settings.setGoogleApiKey(googleApiKey.text)
                                 DataManager.settings.setTranslateOnSelection(onSelection.checked)
                                 DataManager.settings.setTranslateOnCopy(onCopy.checked)
                                 DataManager.setSourceLanguage(sourceLang.currentText)
@@ -524,7 +573,7 @@ Window
 
                         pressedColor: buttonPressedColor
                         unpressedColor: buttonUnpressedColor
-                        hoveredColor: editableSpaceColor
+                        hoveredColor: comboBoxColor
                         image_url: "qrc:/resources/cancel.svg"
 
                         onClickedChanged:

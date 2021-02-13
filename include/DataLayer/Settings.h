@@ -1,17 +1,19 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include <QObject>
+#include <QtQml>
+#include <QSettings>
+#include <Constants.h>
+
 #define DEFAULT_FRAMELESS_WIN true          // FrameLess App Window flag
 #define DEFAULT_AUTOHIDE_WIN false          // AutoHide App Window flag
 #define DEFAULT_TRANSLATE_ON_SELECTION true // Enable input text from clipboard selection
 #define DEFAULT_TRANSLATE_ON_COPY true      // Enable input text from clipboard copy
-#define DEFAULT_API_KEY ""                  // Google Translate API Key. Get one from https://cloud.google.com/translate/docs/setup
+#define DEFAULT_TRANSLATOR_ENGINE GOOGLE_TRANSLATE_API_NAME // Select the default Translation engine
+#define DEFAULT_GOOGLE_API_KEY ""           // Google Translate API Key. Get one from https://cloud.google.com/translate/docs/setup
 #define DEFAULT_SOURCE_LANG "en"            // Input text language code from https://cloud.google.com/translate/docs/languages
 #define DEFAULT_TARGET_LANG "es"            // Output text language code from https://cloud.google.com/translate/docs/languages
-
-#include <QObject>
-#include <QtQml>
-#include <QSettings>
 
 class Settings : public QObject
 {
@@ -33,7 +35,8 @@ public:
     Q_PROPERTY(bool autoHideWin READ autoHideWin WRITE setAutoHideWin NOTIFY autoHideWinChanged)
     Q_PROPERTY(bool translateOnSelection READ translateOnSelection WRITE setTranslateOnSelection NOTIFY translateOnSelectionChanged)
     Q_PROPERTY(bool translateOnCopy READ translateOnCopy WRITE setTranslateOnCopy NOTIFY translateOnCopyChanged)
-    Q_PROPERTY(QString apiKey READ apiKey WRITE setApiKey NOTIFY apiKeyChanged)
+    Q_PROPERTY(QString translatorEngine READ translatorEngine WRITE setTranslatorEngine NOTIFY translatorEngineChanged)
+    Q_PROPERTY(QString googleApiKey READ googleApiKey WRITE setGoogleApiKey NOTIFY googleApiKeyChanged)
     Q_PROPERTY(QString sourceLang READ sourceLang WRITE setSourceLang NOTIFY sourceLangChanged)
     Q_PROPERTY(QString targetLang READ targetLang WRITE setTargetLang NOTIFY targetLangChanged)
 
@@ -42,7 +45,8 @@ public:
     bool autoHideWin()          {return _autohide_win;}
     bool translateOnSelection() {return _translate_on_selection;}
     bool translateOnCopy()      {return _translate_on_copy;}
-    QString apiKey()            {return _api_key;}
+    QString googleApiKey()      {return _google_api_key;}
+    QString translatorEngine()  {return _translator_engine;}
     QString sourceLang()        {return _source_lang;}
     QString targetLang()        {return _target_lang;}
 
@@ -51,9 +55,13 @@ public:
     Q_INVOKABLE void setAutoHideWin(bool autohide_win);
     Q_INVOKABLE void setTranslateOnSelection(bool translate_on_selection);
     Q_INVOKABLE void setTranslateOnCopy(bool translate_on_copy);
-    Q_INVOKABLE void setApiKey(QString api_key);
+    Q_INVOKABLE void setTranslatorEngine(QString translator_engine);
+    Q_INVOKABLE void setGoogleApiKey(QString api_key);
     Q_INVOKABLE void setSourceLang(QString source_lang);
     Q_INVOKABLE void setTargetLang(QString target_lang);
+
+    // Static and constant settings
+    static QStringList default_language_list;
 
 signals:
 
@@ -62,7 +70,8 @@ signals:
     void autoHideWinChanged();
     void translateOnSelectionChanged();
     void translateOnCopyChanged();
-    void apiKeyChanged();
+    void translatorEngineChanged();
+    void googleApiKeyChanged();
     void sourceLangChanged();
     void targetLangChanged();
 
@@ -76,7 +85,8 @@ private:
     bool _autohide_win;
     bool _translate_on_selection;
     bool _translate_on_copy;
-    QString _api_key;
+    QString _translator_engine;
+    QString _google_api_key;
     QString _source_lang;
     QString _target_lang;
 };

@@ -31,6 +31,7 @@ ApplicationWindow
     property color appSectionColor:         Qt.rgba(93/255, 99/255, 99/255, 1)
     property color appSectionBorderColor:   Qt.rgba(150/255, 150/255, 150/255, 1)
     property color appEditableSpaceColor:   Qt.rgba(93/255, 99/255, 99/255, 1)
+    property color appEditableSpaceColor2:  Qt.rgba(50/255, 50/255, 50/255, 1)
     property color appButtonUnpressedColor: Qt.rgba(110/255, 110/255, 110/255, 1)
     property color appButtonPressedColor:   Qt.rgba(80/255, 80/255, 80/255, 1)
     property real heightFactor: 0.15
@@ -586,7 +587,8 @@ ApplicationWindow
         fontPixelSize: root.fontPixelSize
         fontColor: root.fontColor
         backgroundColor: root.appWindowColor
-        editableSpaceColor: root.appEditableSpaceColor
+        comboBoxColor: root.appEditableSpaceColor
+        editableSpaceColor: root.appEditableSpaceColor2
         buttonUnpressedColor: root.appButtonUnpressedColor
         buttonPressedColor: root.appButtonPressedColor
         margins: root.margins

@@ -1,4 +1,4 @@
-#ifndef DATAMANAGER_H
+﻿#ifndef DATAMANAGER_H
 #define DATAMANAGER_H
 
 #include <QObject>
@@ -8,11 +8,11 @@
 #include <QTimer>
 #include <QClipboard>
 #include <QApplication>
-#include <QNetworkAccessManager>
 
 #include "Constants.h"
 #include "Settings.h"
 #include "LanguageISOCodes.h"
+#include "GoogleTranslatorApi.h"
 
 using namespace std;
 
@@ -35,6 +35,7 @@ public:
   Q_PROPERTY(QString outputText READ outputText WRITE setOutputText NOTIFY outputTextChanged)
   Q_PROPERTY(QStringListModel* languageCodes READ languageCodes NOTIFY languageCodesChanged)
   Q_PROPERTY(QStringListModel* languageNamesAndCodes READ languageNamesAndCodes NOTIFY languageNamesAndCodesChanged)
+  Q_PROPERTY(QStringListModel* translatorEngines READ translatorEngines NOTIFY translatorEnginesChanged)
 
   // QML Invokable properties getters
   Settings* settings() {return _settings;}
@@ -43,6 +44,7 @@ public:
   QString outputText() {return _output_text;}
   QStringListModel* languageCodes() {return &_language_codes;}
   QStringListModel* languageNamesAndCodes() {return &_language_names_and_codes;}
+  QStringListModel* translatorEngines() {return &_translator_engines;}
 
   // QML Invokable properties setters
   Q_INVOKABLE void setSettings(Settings* settings);
@@ -51,7 +53,7 @@ public:
   Q_INVOKABLE void setOutputText(QString output_text);
 
   // QML Invokable functions
-  Q_INVOKABLE void updateAvailableLanguageCode();
+  Q_INVOKABLE void updateAvailableLanguageCode(QString translator_engine);
   Q_INVOKABLE void setSourceLanguage(QString source_lang);
   Q_INVOKABLE void setTargetLanguage(QString target_lang);
 
@@ -64,6 +66,7 @@ signals:
   void outputTextChanged();
   void languageCodesChanged();
   void languageNamesAndCodesChanged();
+  void translatorEnginesChanged();
 
 private slots:
 
@@ -74,8 +77,10 @@ private slots:
   // Timer callback to trigger the translateText()
   void translateTimerCallback();
 
-  // Receive QNetworkAccessManager replies
-  void onTranslationNetworkAnswer(QNetworkReply* reply);
+  // Receive Google Translator API Results
+  void onGoogleApiTranslationResult(QString result);
+  void onGoogleApiLanguagesResult(QStringList result);
+  void onGoogleApiError(QString error);
 
 private:
 
@@ -84,19 +89,18 @@ private:
   bool _frameless_win_on_startup;               // Setting FrameLessWin value on the app startup
   QString _input_text;                          // User input text to be translated
   QString _output_text;                         // Translated text to be shown
-  QStringList _translations;                    // List of translated text results
+  QClipboard *_clipboard;                       // System clipboard handler
+  QTimer *_translate_timer;                     // Timer to post the translation
   QStringListModel _language_codes;             // List of available language codes
   QStringListModel _language_names_and_codes;   // List of available language names and codes as "<NAME> [<CODE>]"
-  QClipboard *_clipboard;                       // System clipboard handler
-  QNetworkAccessManager *_network_manager;      // System network handler to post request to the online translator
-  QTimer *_translate_timer;                     // Timer to post the translation
+  QStringListModel _translator_engines;         // List of available translator engines
+  GoogleTranslatorApi *_translator_api_google;  // Google Translator API Handler
 
   // Functions
-  void sendTranslationNetworkRequest(QString input_text);       // Send the text to be trasnslated to the Network translation API. Its answer will be received by onTranslationNetworkAnswer()
-  void sendLanguagesNetworkRequest(QString target = "");        // Send a request of the available languages to the Network translation API. Its answer will be received by onTranslationNetworkAnswer()
   void setLanguageCodes(QStringList language_codes);            // Set the available language codes
   void setLanguageNamesAndCodes(QStringList language_codes);    // Set the available language codes and names
   QString extractLanguageCode(QString language_name_and_code);  // Extract the language code from a human-readable string "Name [code]"
+  void setTranslatorEngines(QStringList translator_engines);    // Set the available translator engines list
 };
 
 #endif // DATAMANAGER_H

@@ -11,16 +11,18 @@ INCLUDEPATH += include/Core \
                include/Utils
 HEADERS += \
     include/Core/TranslatorApp.h \
-    include/DataLayer/Constants.h \
-    include/DataLayer/Settings.h \
     include/DataLayer/DataManager.h \
+    include/DataLayer/Constants.h \
+    include/DataLayer/GoogleTranslatorApi.h \
+    include/DataLayer/Settings.h \
     include/Utils/CursorPosProvider.h \
     include/Utils/LanguageISOCodes.h
 
 SOURCES += \
     src/Core/TranslatorApp.cpp \
-    src/DataLayer/Settings.cpp \
     src/DataLayer/DataManager.cpp \
+    src/DataLayer/GooglTranslatorApi.cpp \
+    src/DataLayer/Settings.cpp \
     src/Utils/LanguageISOCodes.cpp \
     src/main.cpp
 
