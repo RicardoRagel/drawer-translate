@@ -34,9 +34,15 @@ DataManager::DataManager()
 
   // Init Google API and connect results to this app
   _translator_api_google = new GoogleTranslatorApi();
-  connect(_translator_api_google, SIGNAL(onTranslationResult(QString)), this, SLOT(onGoogleApiTranslationResult(QString)));
-  connect(_translator_api_google, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onGoogleApiLanguagesResult(QStringList)));
-  connect(_translator_api_google, SIGNAL(onErrorResult(QString)), this, SLOT(onGoogleApiError(QString)));
+  connect(_translator_api_google, SIGNAL(onTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
+  connect(_translator_api_google, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
+  connect(_translator_api_google, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
+
+  // Init MyMemory API and connect results to this app
+  _translator_api_mymemory = new MyMemoryTranslatorApi();
+  connect(_translator_api_mymemory, SIGNAL(onTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
+  connect(_translator_api_mymemory, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
+  connect(_translator_api_mymemory, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
 
   // Update available languages
   updateAvailableLanguageCode(_settings->translatorEngine());
@@ -85,13 +91,18 @@ void DataManager::setOutputText(QString output_text)
 /** *********************************
  *  QML Invokable functions
  ** ********************************/
-
 void DataManager::updateAvailableLanguageCode(QString translator_engine)
 {
     // Trigger network available language request for the selected engine
     if(translator_engine == GOOGLE_TRANSLATE_API_NAME)
     {
+        qDebug() << "(DataManager) Available languages using Google API...";
         _translator_api_google->sendLanguagesNetworkRequest(_settings->googleApiKey());
+    }
+    else if(translator_engine == MY_MEMORY_TRANSLATE_API_NAME)
+    {
+        qDebug() << "(DataManager) Available languages using MyMemory API...";
+        _translator_api_mymemory->sendLanguagesNetworkRequest();
     }
     else
     {
@@ -145,21 +156,30 @@ void DataManager::translateTimerCallback()
 {
      qDebug() << "(DataManager) Translation Timer callback";
 
-     _translator_api_google->sendTranslationNetworkRequest( _input_text, _settings->googleApiKey(), _settings->sourceLang(), _settings->targetLang());
+     if(_settings->translatorEngine() == GOOGLE_TRANSLATE_API_NAME)
+     {
+         qDebug() << "(DataManager) Translation using Google API...";
+         _translator_api_google->sendTranslationNetworkRequest(_input_text, _settings->googleApiKey(), _settings->sourceLang(), _settings->targetLang());
+     }
+     else if(_settings->translatorEngine() == MY_MEMORY_TRANSLATE_API_NAME)
+     {
+         qDebug() << "(DataManager) Translation using MyMemory API...";
+         _translator_api_mymemory->sendTranslationNetworkRequest(_input_text, "", _settings->sourceLang(), _settings->targetLang());
+     }
 }
 
-void DataManager::onGoogleApiTranslationResult(QString result)
+void DataManager::onTranslationApiResult(QString result)
 {
     setOutputText(result);
 }
 
-void DataManager::onGoogleApiLanguagesResult(QStringList result)
+void DataManager::onTranslationApiLanguagesResult(QStringList result)
 {
     setLanguageCodes(result);
     setLanguageNamesAndCodes(result);
 }
 
-void DataManager::onGoogleApiError(QString error)
+void DataManager::onTranslationApiError(QString error)
 {
     setOutputText(QString(TRANSLATION_ERROR_MSG) + ": " + error);
 }

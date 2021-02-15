@@ -1,4 +1,4 @@
-#include "GoogleTranslatorApi.h"
+#include "TranslatorAPIs/GoogleTranslatorApi.h"
 
 GoogleTranslatorApi::GoogleTranslatorApi()
 {

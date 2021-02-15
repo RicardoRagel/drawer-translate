@@ -139,7 +139,8 @@ Window
                             onCurrentTextChanged:
                             {
                                 // Call to update available languages
-                                DataManager.updateAvailableLanguageCode(translatorEngine.currentText)
+                                if(root.visible)
+                                    DataManager.updateAvailableLanguageCode(translatorEngine.currentText)
                             }
                             onHoveredChanged:
                             {

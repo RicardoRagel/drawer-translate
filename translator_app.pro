@@ -13,16 +13,18 @@ HEADERS += \
     include/Core/TranslatorApp.h \
     include/DataLayer/DataManager.h \
     include/DataLayer/Constants.h \
-    include/DataLayer/GoogleTranslatorApi.h \
     include/DataLayer/Settings.h \
+    include/DataLayer/TranslatorAPIs/GoogleTranslatorApi.h \
+    include/DataLayer/TranslatorAPIs/MyMemoryTranslatorApi.h \
     include/Utils/CursorPosProvider.h \
     include/Utils/LanguageISOCodes.h
 
 SOURCES += \
     src/Core/TranslatorApp.cpp \
     src/DataLayer/DataManager.cpp \
-    src/DataLayer/GooglTranslatorApi.cpp \
     src/DataLayer/Settings.cpp \
+    src/DataLayer/TranslatorAPIs/GoogleTranslatorApi.cpp \
+    src/DataLayer/TranslatorAPIs/MyMemoryTranslatorApi.cpp \
     src/Utils/LanguageISOCodes.cpp \
     src/main.cpp
 

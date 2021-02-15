@@ -12,7 +12,8 @@
 #include "Constants.h"
 #include "Settings.h"
 #include "LanguageISOCodes.h"
-#include "GoogleTranslatorApi.h"
+#include "TranslatorAPIs/GoogleTranslatorApi.h"
+#include "TranslatorAPIs/MyMemoryTranslatorApi.h"
 
 using namespace std;
 
@@ -77,24 +78,25 @@ private slots:
   // Timer callback to trigger the translateText()
   void translateTimerCallback();
 
-  // Receive Google Translator API Results
-  void onGoogleApiTranslationResult(QString result);
-  void onGoogleApiLanguagesResult(QStringList result);
-  void onGoogleApiError(QString error);
+  // Receive Translator APIs Results
+  void onTranslationApiResult(QString result);
+  void onTranslationApiLanguagesResult(QStringList result);
+  void onTranslationApiError(QString error);
 
 private:
 
   // Variables
-  Settings *_settings;                          // App Settings from .ini file
-  bool _frameless_win_on_startup;               // Setting FrameLessWin value on the app startup
-  QString _input_text;                          // User input text to be translated
-  QString _output_text;                         // Translated text to be shown
-  QClipboard *_clipboard;                       // System clipboard handler
-  QTimer *_translate_timer;                     // Timer to post the translation
-  QStringListModel _language_codes;             // List of available language codes
-  QStringListModel _language_names_and_codes;   // List of available language names and codes as "<NAME> [<CODE>]"
-  QStringListModel _translator_engines;         // List of available translator engines
-  GoogleTranslatorApi *_translator_api_google;  // Google Translator API Handler
+  Settings *_settings;                              // App Settings from .ini file
+  bool _frameless_win_on_startup;                   // Setting FrameLessWin value on the app startup
+  QString _input_text;                              // User input text to be translated
+  QString _output_text;                             // Translated text to be shown
+  QClipboard *_clipboard;                           // System clipboard handler
+  QTimer *_translate_timer;                         // Timer to post the translation
+  QStringListModel _language_codes;                 // List of available language codes
+  QStringListModel _language_names_and_codes;       // List of available language names and codes as "<NAME> [<CODE>]"
+  QStringListModel _translator_engines;             // List of available translator engines
+  GoogleTranslatorApi *_translator_api_google;      // Google Translator API Handler
+  MyMemoryTranslatorApi *_translator_api_mymemory;  // MyMemory Translator API Handler
 
   // Functions
   void setLanguageCodes(QStringList language_codes);            // Set the available language codes

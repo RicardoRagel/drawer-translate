@@ -171,4 +171,4 @@ void Settings::setTargetLang(QString target_lang)
 /** *********************************
  *  Static and constant Settings
  ** ********************************/
-QStringList Settings::default_language_list = {"en", "es"};
+QStringList Settings::default_language_list = {"en", "es", "fr", "it", "jp", "de"};
