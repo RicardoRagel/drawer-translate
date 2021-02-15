@@ -164,7 +164,7 @@ void DataManager::translateTimerCallback()
      else if(_settings->translatorEngine() == MY_MEMORY_TRANSLATE_API_NAME)
      {
          qDebug() << "(DataManager) Translation using MyMemory API...";
-         _translator_api_mymemory->sendTranslationNetworkRequest(_input_text, "", _settings->sourceLang(), _settings->targetLang());
+         _translator_api_mymemory->sendTranslationNetworkRequest(_input_text, _settings->sourceLang(), _settings->targetLang(), _settings->email());
      }
 }
 

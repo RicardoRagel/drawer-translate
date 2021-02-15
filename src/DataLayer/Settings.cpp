@@ -107,6 +107,17 @@ void Settings::init()
         setTargetLang(_settingsHandler->value("Translator/targetLang").toString());
         qDebug() << "(Settings) Target Lang:" << targetLang();
     }
+
+    if(!_settingsHandler->contains("Translator/email"))
+    {
+        qDebug() << "(Settings) Initializing Email to" << DEFAULT_EMAIL;
+        setEmail(DEFAULT_EMAIL);
+    }
+    else
+    {
+        setEmail(_settingsHandler->value("Translator/email").toString());
+        qDebug() << "(Settings) Email:" << email();
+    }
 }
 
 /** *********************************
@@ -166,6 +177,13 @@ void Settings::setTargetLang(QString target_lang)
     _settingsHandler->setValue("Translator/targetLang", target_lang);
     _target_lang = target_lang;
     emit targetLangChanged();
+}
+
+void Settings::setEmail(QString email)
+{
+    _settingsHandler->setValue("Translator/email", email);
+    _email = email;
+    emit emailChanged();
 }
 
 /** *********************************

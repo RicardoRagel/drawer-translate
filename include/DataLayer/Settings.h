@@ -14,6 +14,7 @@
 #define DEFAULT_GOOGLE_API_KEY ""           // Google Translate API Key. Get one from https://cloud.google.com/translate/docs/setup
 #define DEFAULT_SOURCE_LANG "en"            // Input text language code from https://cloud.google.com/translate/docs/languages
 #define DEFAULT_TARGET_LANG "es"            // Output text language code from https://cloud.google.com/translate/docs/languages
+#define DEFAULT_EMAIL ""                    // User email
 
 class Settings : public QObject
 {
@@ -39,6 +40,7 @@ public:
     Q_PROPERTY(QString googleApiKey READ googleApiKey WRITE setGoogleApiKey NOTIFY googleApiKeyChanged)
     Q_PROPERTY(QString sourceLang READ sourceLang WRITE setSourceLang NOTIFY sourceLangChanged)
     Q_PROPERTY(QString targetLang READ targetLang WRITE setTargetLang NOTIFY targetLangChanged)
+    Q_PROPERTY(QString email READ email WRITE setEmail NOTIFY emailChanged)
 
     // QML properties getters
     bool framelessWin()         {return _frameless_win;}
@@ -49,6 +51,7 @@ public:
     QString translatorEngine()  {return _translator_engine;}
     QString sourceLang()        {return _source_lang;}
     QString targetLang()        {return _target_lang;}
+    QString email()             {return _email;}
 
     // QML Invokable properties setters
     Q_INVOKABLE void setFramelessWin(bool frameless_win);
@@ -59,6 +62,7 @@ public:
     Q_INVOKABLE void setGoogleApiKey(QString api_key);
     Q_INVOKABLE void setSourceLang(QString source_lang);
     Q_INVOKABLE void setTargetLang(QString target_lang);
+    Q_INVOKABLE void setEmail(QString email);
 
     // Static and constant settings
     static QStringList default_language_list;
@@ -74,6 +78,7 @@ signals:
     void googleApiKeyChanged();
     void sourceLangChanged();
     void targetLangChanged();
+    void emailChanged();
 
 private:
 
@@ -89,6 +94,7 @@ private:
     QString _google_api_key;
     QString _source_lang;
     QString _target_lang;
+    QString _email;
 };
 
 

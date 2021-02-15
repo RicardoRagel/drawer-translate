@@ -26,7 +26,7 @@ public:
   ~MyMemoryTranslatorApi();
 
   // Send available language list request
-  void sendTranslationNetworkRequest(QString input_text, QString key, QString source_lang, QString target_lang, QString model = "nmt");
+  void sendTranslationNetworkRequest(QString input_text, QString source_lang, QString target_lang, QString email = "", QString model = "1");
 
   // Send available language list request
   void sendLanguagesNetworkRequest();

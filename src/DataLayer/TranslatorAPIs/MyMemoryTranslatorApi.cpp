@@ -17,16 +17,20 @@ MyMemoryTranslatorApi::~MyMemoryTranslatorApi()
 
 }
 
-void MyMemoryTranslatorApi::sendTranslationNetworkRequest(QString input_text, QString key, QString source_lang, QString target_lang, QString model)
+void MyMemoryTranslatorApi::sendTranslationNetworkRequest(QString input_text, QString source_lang, QString target_lang, QString email, QString model)
 {
     // Reference https://mymemory.translated.net/doc/spec.php -> GET
     // * Free, anonymous usage is limited to 1000 words/day.
-    // * Provide a valid email ('de' parameter), where we can reach you in case of troubles, and enjoy 10000 words/day.
     QUrl serviceUrl = QUrl(_translation_url);
 
     QUrlQuery query;
     query.addQueryItem("q", input_text.toStdString().c_str());          // the text to be translated
     query.addQueryItem("langpair", source_lang + "|" + target_lang);    // the language of the source text
+    query.addQueryItem("mt", model);    // (1) Enables Machine Translation in results. (0) You can turn it off if you want just human segments
+
+    // (Optional) Provide an email to enjoy 10000 words/day.
+    if(email.trimmed() != "")
+        query.addQueryItem("de", email.trimmed());
 
     QByteArray postData;
     postData = query.toString(QUrl::FullyEncoded).toUtf8();

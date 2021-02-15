@@ -39,9 +39,10 @@ Window
         {
             // Update current settings
             translatorEngine.currentIndex = translatorEngine.find(DataManager.settings.translatorEngine)
-            googleApiKey.text = DataManager.settings.googleApiKey
             sourceLang.currentIndex = sourceLang.find("[" + DataManager.settings.sourceLang + "]", Qt.MatchContains)
             targetLang.currentIndex = targetLang.find("[" + DataManager.settings.targetLang + "]", Qt.MatchContains)
+            googleApiKey.text = DataManager.settings.googleApiKey
+            email.text = DataManager.settings.email
             onSelection.checked = DataManager.settings.translateOnSelection
             onCopy.checked = DataManager.settings.translateOnCopy
             borderLess.checked = DataManager.settings.framelessWin
@@ -150,57 +151,6 @@ Window
                     }
                 }
 
-                // API Key
-                Row
-                {
-                    visible: translatorEngine.currentText === Constants.googleTranslateApiName
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 2
-
-                    Rectangle
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: widthColum1
-                        height: heightColumns
-                        color: "transparent"
-
-                        Text
-                        {
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            font.pixelSize: fontPixelSize
-                            font.bold: false
-                            color: fontColor
-                            text: "    API Key:"
-                        }
-                    }
-                    Rectangle
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: widthColum2
-                        height: heightColumns
-                        color: editableSpaceColor
-                        opacity: unhoveredOpacity
-
-                        TextField
-                        {
-                            id: googleApiKey
-                            anchors.fill: parent
-                            background: Rectangle { color: "transparent"}
-                            font.pixelSize: fontPixelSize
-                            color: fontColor
-                            horizontalAlignment: TextInput.AlignHCenter
-                            verticalAlignment: TextInput.AlignVCenter
-                            selectByMouse: true
-
-                            onHoveredChanged:
-                            {
-                                parent.opacity = hovered? 1.0 : unhoveredOpacity
-                            }
-                        }
-                    }
-                }
-
                 // Source Language
                 Row
                 {
@@ -300,6 +250,108 @@ Window
                             currentIndex: 0
                             textRole: "display"
                             model: DataManager.languageNamesAndCodes
+                            onHoveredChanged:
+                            {
+                                parent.opacity = hovered? 1.0 : unhoveredOpacity
+                            }
+                        }
+                    }
+                }
+
+                // API Key (Google Only)
+                Row
+                {
+                    visible: translatorEngine.currentText === Constants.googleTranslateApiName
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    API Key (required):"
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: editableSpaceColor
+                        opacity: unhoveredOpacity
+
+                        TextField
+                        {
+                            id: googleApiKey
+                            anchors.fill: parent
+                            background: Rectangle { color: "transparent"}
+                            font.pixelSize: fontPixelSize
+                            color: fontColor
+                            horizontalAlignment: TextInput.AlignHCenter
+                            verticalAlignment: TextInput.AlignVCenter
+                            selectByMouse: true
+
+                            onHoveredChanged:
+                            {
+                                parent.opacity = hovered? 1.0 : unhoveredOpacity
+                            }
+                        }
+                    }
+                }
+
+                // Email (MyMemory Only)
+                Row
+                {
+                    visible: translatorEngine.currentText === Constants.myMemoryTranslateApiName
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    E-mail (Optional):"
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: editableSpaceColor
+                        opacity: unhoveredOpacity
+
+                        TextField
+                        {
+                            id: email
+                            anchors.fill: parent
+                            background: Rectangle { color: "transparent"}
+                            font.pixelSize: fontPixelSize
+                            color: fontColor
+                            horizontalAlignment: TextInput.AlignHCenter
+                            verticalAlignment: TextInput.AlignVCenter
+                            selectByMouse: true
+
                             onHoveredChanged:
                             {
                                 parent.opacity = hovered? 1.0 : unhoveredOpacity
@@ -553,11 +605,12 @@ Window
                                 clicked = false
                                 console.log("Setting new configuration")
                                 DataManager.settings.setTranslatorEngine(translatorEngine.currentText)
-                                DataManager.settings.setGoogleApiKey(googleApiKey.text)
-                                DataManager.settings.setTranslateOnSelection(onSelection.checked)
-                                DataManager.settings.setTranslateOnCopy(onCopy.checked)
                                 DataManager.setSourceLanguage(sourceLang.currentText)
                                 DataManager.setTargetLanguage(targetLang.currentText)
+                                DataManager.settings.setGoogleApiKey(googleApiKey.text)
+                                DataManager.settings.setEmail(email.text)
+                                DataManager.settings.setTranslateOnSelection(onSelection.checked)
+                                DataManager.settings.setTranslateOnCopy(onCopy.checked)
                                 DataManager.settings.setFramelessWin(borderLess.checked)
                                 DataManager.settings.setAutoHideWin(autoHide.checked)
                                 root.visible = false
