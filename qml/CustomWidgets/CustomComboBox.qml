@@ -106,7 +106,25 @@ T.ComboBox {
                 border.color: backgroundColor
             }
 
-            T.ScrollIndicator.vertical: ScrollIndicator { }
+//            T.ScrollIndicator.vertical: ScrollIndicator { }
+            T.ScrollBar.vertical: ScrollBar
+            {
+                id: control2
+                size: 0.3
+                position: 0.2
+                //active: true
+                orientation: Qt.Vertical
+                visible: handle.height < parent.height - 4
+
+                contentItem: Rectangle
+                {
+                    id: handle
+                    implicitWidth: 10
+                    implicitHeight: 100
+                    radius: width / 2
+                    color: control2.pressed ? "gray" : "darkGray"
+                }
+            }
         }
 
         background: Rectangle {

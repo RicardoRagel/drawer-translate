@@ -1,6 +1,6 @@
 #include "TranslatorAPIs/MyMemoryTranslatorApi.h"
 
-MyMemoryTranslatorApi::MyMemoryTranslatorApi()
+MyMemoryTranslatorApi::MyMemoryTranslatorApi(bool use_local_lang_codes)
 {
   qDebug() << "(MyMemoryTranslatorApi) Initialization ...";
 
@@ -9,7 +9,9 @@ MyMemoryTranslatorApi::MyMemoryTranslatorApi()
   connect(_network_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onTranslationNetworkAnswer(QNetworkReply*)));
 
   // Init local language code list
-  initLocalLanguageCodes();
+  _use_local_language_codes = use_local_lang_codes;
+  if(_use_local_language_codes)
+    initLocalLanguageCodes();
 }
 
 MyMemoryTranslatorApi::~MyMemoryTranslatorApi()
@@ -43,9 +45,22 @@ void MyMemoryTranslatorApi::sendTranslationNetworkRequest(QString input_text, QS
 
 void MyMemoryTranslatorApi::sendLanguagesNetworkRequest()
 {
-    // MyMemory API doesn't provide a network request to get the available language codes
-    // so, we return here the local list directly:
-    emit onLanguagesResult(_languages_codes);
+    // MyMemory provides ~400 languages and most of them are not working yet.
+    // So, return here the local list directly in the appropriate case:
+    if(_use_local_language_codes)
+    {
+        emit onLanguagesResult(_local_languages_codes);
+    }
+    else
+    {
+        // Reference: https://cloud.google.com/translate/docs/reference/rest/v2/languages
+        QUrl serviceUrl = QUrl(_languages_url);
+
+        QNetworkRequest networkRequest(serviceUrl);
+        networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
+
+        _network_manager->get(networkRequest);
+    }
 }
 
 void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
@@ -54,12 +69,12 @@ void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
     QByteArray result = reply->readAll();
     qDebug() << "(MyMemoryTranslatorApi) Network reply: " << result;
     //(MyMemoryTranslatorApi) Network reply:  "{\"responseData\":{\"translatedText\":\"Hola\",\"match\":1},\"quotaFinished\":false,\"mtLangSupported\":null,\"responseDetails\":\"\",\"responseStatus\":200,\"responderId\":\"45\",\"exception_code\":null,\"matches\":[{\"id\":\"659225237\",\"segment\":\"Hello\",\"translation\":\"Hola\",\"source\":\"en-GB\",\"target\":\"es-ES\",\"quality\":\"74\",\"reference\":null,\"usage-count\":81,\"subject\":\"All\",\"created-by\":\"MateCat\",\"last-updated-by\":\"MateCat\",\"create-date\":\"2020-11-08 18:45:51\",\"last-update-date\":\"2020-11-08 18:45:51\",\"match\":1},{\"id\":\"644686192\",\"segment\":\"Hello\",\"translation\":\"Hello\",\"source\":\"en-US\",\"target\":\"es-ES\",\"quality\":\"74\",\"reference\":null,\"usage-count\":5,\"subject\":\"All\",\"created-by\":\"MateCat\",\"last-updated-by\":\"MateCat\",\"create-date\":\"2020-04-19 14:22:35\",\"last-update-date\":\"2020-04-19 14:22:35\",\"match\":0.99},{\"id\":\"654051149\",\"segment\":\"Hello\",\"translation\":\"Buenas tardes\",\"source\":\"en-US\",\"target\":\"es-419\",\"quality\":\"74\",\"reference\":null,\"usage-count\":1,\"subject\":\"All\",\"created-by\":\"MateCat\",\"last-updated-by\":\"MateCat\",\"create-date\":\"2020-09-29 16:16:06\",\"last-update-date\":\"2020-09-29 16:16:06\",\"match\":0.98}]}"
+    //(MyMemoryTranslatorApi) Network reply:  "{\"Achinese\":{\"2\":\"ace\",\"3\":\"ace\",\"c\":\"ID\",\"3066\":\"ace-ID\"},\"Adyghe\":{\"2\":\"ady\",\"3\":\"ady\",\"c\":\"RU\",\"3066\":\"ady-RU\"},\"Afrikaans\":{\"2\":\"af\",\"3\":\"afr\",\"c\":\"ZA\",\"3066\":\"af-ZA\"},\"Ainu\":{\"2\":\"ain\",\"3\":\"ain\",\"c\":\"JA\",\"3066\":\"ain-JA\"},\"Akan\":{\"2\":\"aka\",\"3\":\"aka\",\"c\":\"RU\",\"3066\":\"aka-GH\"}, .....
 
     // Parse to JSON and get translations
     QJsonDocument document = QJsonDocument::fromJson(result);
     QJsonObject object = document.object();
     QJsonObject data = object["responseData"].toObject();
-
     // Check if it is a translation result or a languages list request
     if(data.find("translatedText") != data.end())
     {
@@ -69,30 +84,45 @@ void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
     }
     else
     {
-        emit onErrorResult("MyMemory Translation API answers with an unexpected reply");
+        if(object.size() > 0)
+        {
+            QStringList tmp_lang_codes;
+            for(const auto value : object)
+            {
+                QJsonObject obj = value.toObject();
+                tmp_lang_codes.append(QString(obj["2"].toString()));
+                qDebug() << "(MyMemoryTranslatorApi) Lang Code: " << obj["2"].toString();
+            }
+
+            emit onLanguagesResult(tmp_lang_codes);
+        }
+        else
+        {
+            emit onErrorResult("MyMemory Translation API answers with an unexpected reply");
+        }
     }
 }
 
 void MyMemoryTranslatorApi::initLocalLanguageCodes()
 {
-    _languages_codes << "af" << "sq" << "am" << "ar" << "hy" << "az" << "bjs"
-                     << "rm" << "eu" << "bem" << "bn" << "be" << "bi" << "bs"
-                     << "br" << "bg" << "my" << "ca" << "cb" << "cha" << "zh-CN"
-                     << "zh-TW" << "zdj" << "cop" << "aig" << "bah" << "gcl" << "gyn"
-                     << "jam" << "svc" << "vic" << "ht" << "acf" << "crs" << "pov"
-                     << "hr" << "cs" << "da" << "nl" << "dzo" << "en" << "eo" << "et"
-                     << "fn" << "fo" << "fi" << "fr" << "gl" << "ka" << "de" << "el"
-                     << "grc" << "gu" << "ha" << "haw" << "he" << "hi" << "hu" << "is"
-                     << "id" << "kal" << "ga" << "it" << "ja" << "jv" << "kea" << "kab"
-                     << "kn" << "kk" << "km" << "rw" << "run" << "ko" << "ku" << "ku"
-                     << "ky" << "lo" << "la" << "lv" << "lt" << "lb" << "mk" << "mg"
-                     << "ms" << "div" << "mt" << "gv" << "mi" << "mh" << "men" << "mn"
-                     << "mfe" << "ne" << "niu" << "no" << "ny" << "ur" << "pau" << "pa"
-                     << "pap" << "ps" << "fa" << "pis" << "pl" << "pt" << "pot" << "qu"
-                     << "ro" << "ru" << "smo" << "sg" << "gd" << "sr" << "sna" << "si"
-                     << "sk" << "sl" << "so" << "nso" << "es" << "srn" << "sw" << "sv"
-                     << "de" << "syc" << "tl" << "tg" << "tmh" << "ta" << "te" << "tet"
-                     << "th" << "bod" << "ti" << "tpi" << "tkl" << "ton" << "tn" << "tr"
-                     << "tk" << "tvl" << "uk" << "ppk" << "uz" << "vi" << "wls" << "cy"
-                     << "wo" << "xh" << "yi" << "zu";
+    _local_languages_codes   << "af" << "sq" << "am" << "ar" << "hy" << "az" << "bjs"
+                             << "rm" << "eu" << "bem" << "bn" << "be" << "bi" << "bs"
+                             << "br" << "bg" << "my" << "ca" << "cb" << "cha" << "zh-CN"
+                             << "zh-TW" << "zdj" << "cop" << "aig" << "bah" << "gcl" << "gyn"
+                             << "jam" << "svc" << "vic" << "ht" << "acf" << "crs" << "pov"
+                             << "hr" << "cs" << "da" << "nl" << "dzo" << "en" << "eo" << "et"
+                             << "fn" << "fo" << "fi" << "fr" << "gl" << "ka" << "de" << "el"
+                             << "grc" << "gu" << "ha" << "haw" << "he" << "hi" << "hu" << "is"
+                             << "id" << "kal" << "ga" << "it" << "ja" << "jv" << "kea" << "kab"
+                             << "kn" << "kk" << "km" << "rw" << "run" << "ko" << "ku" << "ku"
+                             << "ky" << "lo" << "la" << "lv" << "lt" << "lb" << "mk" << "mg"
+                             << "ms" << "div" << "mt" << "gv" << "mi" << "mh" << "men" << "mn"
+                             << "mfe" << "ne" << "niu" << "no" << "ny" << "ur" << "pau" << "pa"
+                             << "pap" << "ps" << "fa" << "pis" << "pl" << "pt" << "pot" << "qu"
+                             << "ro" << "ru" << "smo" << "sg" << "gd" << "sr" << "sna" << "si"
+                             << "sk" << "sl" << "so" << "nso" << "es" << "srn" << "sw" << "sv"
+                             << "de" << "syc" << "tl" << "tg" << "tmh" << "ta" << "te" << "tet"
+                             << "th" << "bod" << "ti" << "tpi" << "tkl" << "ton" << "tn" << "tr"
+                             << "tk" << "tvl" << "uk" << "ppk" << "uz" << "vi" << "wls" << "cy"
+                             << "wo" << "xh" << "yi" << "zu";
 }

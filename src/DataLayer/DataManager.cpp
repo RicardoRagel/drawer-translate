@@ -39,7 +39,7 @@ DataManager::DataManager()
   connect(_translator_api_google, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
 
   // Init MyMemory API and connect results to this app
-  _translator_api_mymemory = new MyMemoryTranslatorApi();
+  _translator_api_mymemory = new MyMemoryTranslatorApi(true); // arg: enable use the local language list
   connect(_translator_api_mymemory, SIGNAL(onTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
   connect(_translator_api_mymemory, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
   connect(_translator_api_mymemory, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
@@ -93,6 +93,10 @@ void DataManager::setOutputText(QString output_text)
  ** ********************************/
 void DataManager::updateAvailableLanguageCode(QString translator_engine)
 {
+    // Clear Language Codes
+    _language_codes.setStringList(QStringList{});
+    _language_names_and_codes.setStringList(QStringList{});
+
     // Trigger network available language request for the selected engine
     if(translator_engine == GOOGLE_TRANSLATE_API_NAME)
     {

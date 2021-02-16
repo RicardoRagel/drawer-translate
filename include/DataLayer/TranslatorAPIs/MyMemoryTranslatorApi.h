@@ -20,7 +20,7 @@ class MyMemoryTranslatorApi : public QObject
 public:
 
   // Constructor
-  MyMemoryTranslatorApi();
+  MyMemoryTranslatorApi(bool use_local_lang_codes = false);
 
   // Destuctor
   ~MyMemoryTranslatorApi();
@@ -45,8 +45,12 @@ private:
 
   // Variables
   QNetworkAccessManager *_network_manager;      // System network handler to post request to the online translator
-  QStringList _languages_codes;                 // Languages Codes list. MyMemory doesn't provide a network request for it.
-  QString _translation_url { "https://api.mymemory.translated.net/get" };
+  QString _translation_url  { "https://api.mymemory.translated.net/get" };
+  QString _languages_url    { "https://api.mymemory.translated.net/languages" };
+
+  // Local languages codes list. MyMemory provides ~400 languages and most of them are not working yet
+  QStringList _local_languages_codes;
+  bool _use_local_language_codes;
 
   // Functions
   void initLocalLanguageCodes();

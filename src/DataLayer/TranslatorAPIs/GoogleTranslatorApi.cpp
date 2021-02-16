@@ -34,23 +34,6 @@ void GoogleTranslatorApi::sendTranslationNetworkRequest(QString input_text, QStr
     networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
 
     _network_manager->post(networkRequest,postData);
-
-    ///DEBUG https://mymemory.translated.net/doc/spec.php -> GET
-    /// Free, anonymous usage is limited to 1000 words/day.
-    /// Provide a valid email ('de' parameter), where we can reach you in case of troubles, and enjoy 10000 words/day.
-    //    QUrl serviceUrl = QUrl("https://api.mymemory.translated.net/get");
-
-    //    QUrlQuery query;
-    //    query.addQueryItem("q", input_text.toStdString().c_str());  // the text to be translated
-    //    query.addQueryItem("langpair", "en|es");      // the language of the source text
-
-    //    QByteArray postData;
-    //    postData = query.toString(QUrl::FullyEncoded).toUtf8();
-
-    //    QNetworkRequest networkRequest(serviceUrl);
-    //    networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-
-    //    _network_manager->post(networkRequest,postData);
 }
 
 void GoogleTranslatorApi::sendLanguagesNetworkRequest(QString key, QString target_lang, QString model)

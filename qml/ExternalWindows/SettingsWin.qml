@@ -32,6 +32,9 @@ Window
 
     property double unhoveredOpacity: 0.75
 
+    property string lastSourceLanguage: ""
+    property string lastTargetLanguage: ""
+
     // Set the current settings values
     onVisibleChanged:
     {
@@ -139,6 +142,10 @@ Window
                             model: DataManager.translatorEngines
                             onCurrentTextChanged:
                             {
+                                // Save last languages to set the same if the languages lists are updated (engine changed)
+                                lastSourceLanguage = sourceLang.currentText
+                                lastTargetLanguage = targetLang.currentText
+
                                 // Call to update available languages
                                 if(root.visible)
                                     DataManager.updateAvailableLanguageCode(translatorEngine.currentText)
@@ -201,6 +208,15 @@ Window
                                 parent.opacity = hovered? 1.0 : unhoveredOpacity
                             }
                         }
+                        Connections
+                        {
+                            target: DataManager
+                            onLanguageNamesAndCodesChanged:
+                            {
+                                console.log("Setting source Language to the prevopus one: " + lastSourceLanguage)
+                                sourceLang.currentIndex = sourceLang.find(lastSourceLanguage)
+                            }
+                        }
                     }
                 }
 
@@ -253,6 +269,15 @@ Window
                             onHoveredChanged:
                             {
                                 parent.opacity = hovered? 1.0 : unhoveredOpacity
+                            }
+                        }
+                        Connections
+                        {
+                            target: DataManager
+                            onLanguageNamesAndCodesChanged:
+                            {
+                                console.log("Setting target Language to the prevopus one: " + lastTargetLanguage)
+                                targetLang.currentIndex = targetLang.find(lastTargetLanguage)
                             }
                         }
                     }
