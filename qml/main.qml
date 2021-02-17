@@ -39,17 +39,14 @@ ApplicationWindow
     property int forceMinimumHeight: buttonSize + margins * 2
 
     // Windows Configuration
+    title: qsTr(Constants.appTitle)
+    visible: false
+    color: "transparent"
     x: Screen.width - Screen.desktopAvailableWidth > 0? Screen.width - Screen.desktopAvailableWidth : 0
-    //x: 0
     width: Screen.desktopAvailableWidth
-    //y:  Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (1.0 - heightFactor):Screen.height * (1.0 - heightFactor)
-    //height: Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (heightFactor):Screen.height * (heightFactor)
-    property int targetHeight
+    property int targetHeight       // y and height are controlled by this property
     minimumHeight: forceMinimumHeight
     minimumWidth: 400
-    color: "transparent"
-    visible: false
-    title: qsTr(Constants.appTitle)
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
     flags:  DataManager.framelessWinOnStartup?
                 Qt.Window
@@ -125,7 +122,7 @@ ApplicationWindow
         onHoveredChanged:
         {
             // unhide
-            if(DataManager.settings.autoHideWin && appHide)
+            if(DataManager.settings.autoHideWin && appHidden)
                 showHide()
 
             // stop and start autoHide
@@ -163,7 +160,7 @@ ApplicationWindow
         onTriggered:
         {
             console.log("AutoHide triggered!")
-            if(!appHide)
+            if(!appHidden)
                 showHide()
         }
     }
@@ -184,23 +181,23 @@ ApplicationWindow
     }
 
     // Hide App Functions
-    property bool appHide: false
+    property bool appHidden: false
     property int  unhideLastHeight
     property int hideAnimationDuration: 1000
     function showHide()
     {
-        if(appHide)
+        if(appHidden)
         {
             hideAnimationDuration = Math.abs(5 * (root.height - unhideLastHeight))
             unhideAnimation.running = true
-            appHide = false
+            appHidden = false
         }
         else
         {
             unhideLastHeight = root.height
             hideAnimationDuration = Math.abs(5 * (root.height - root.minimumHeight))
             hideAnimation.running = true
-            appHide = true
+            appHidden = true
         }
     }
 
@@ -251,169 +248,31 @@ ApplicationWindow
         radius: 10
 
         // Window Header
-        Rectangle
+        Header
         {
             id: headerRect
             anchors.top: parent.top
-            anchors.topMargin: margins
+            anchors.topMargin: root.margins
             anchors.horizontalCenter: parent.horizontalCenter
             color: "transparent"
-            width: parent.width - 2*margins
+            width: parent.width - 2*root.margins
             height: buttonSize
+            buttonsWidth: buttonSize2
+            buttonsHeight: buttonSize
+            margins: root.margins
+            fontColor: root.fontColor
+            fontPixelSize: root.fontPixelSize
+            contentsOpacity: root.contentsOpacity
+            isHidden: appHidden
 
-            // Source Language Indicator and button
-            CustomButton2
-            {
-                id: sourceLangTagButton
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: margins
-                width: buttonSize2
-                height: buttonSize
-                text: DataManager.settings.sourceLang
-                textColor: fontColor
-                textSize: fontPixelSize
-                textAllUppercase: true
-                textBold: true
-                opacity: contentsOpacity
-                onClickedChanged:
-                {
-                    if(clicked)
-                    {
-                        clicked = false
-                        settingsWindow.visible = true
-                    }
-                }
-            }
+            onSeetingsButtonPressed: { settingsWindow.visible = true }
+            onExitButtonPressed: { root.close() }
+            onMinimizeButtonPressed: { root.showMinimized() }
+            onHideButtonPressed: { root.showHide() }
+        }//header
 
-            // Target Language Indicator and button
-            CustomButton2
-            {
-                id: targetLangTagButton
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: margins + headerRect.width/2
-                width: buttonSize2
-                height: buttonSize
-                text: DataManager.settings.targetLang
-                textColor: fontColor
-                textSize: fontPixelSize
-                textAllUppercase: true
-                textBold: true
-                opacity: contentsOpacity
-                onClickedChanged:
-                {
-                    if(clicked)
-                    {
-                        clicked = false
-                        settingsWindow.visible = true
-                    }
-                }
-            }
-
-            // Buttons
-            Rectangle
-            {
-                id: buttonsRect
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: margins
-                color: "transparent"
-                width:  DataManager.settings.autoHideWin? buttonSize2 * 3 : buttonSize2 * 4
-                height: parent.height
-                Row
-                {
-                    id: winButtonsRow
-                    spacing: 0
-                    anchors.verticalCenter: parent.verticalCenter
-                    layoutDirection: "RightToLeft"
-
-                    // Exit
-                    CustomButton2
-                    {
-                        id: winButtonsExit
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: buttonSize2
-                        height: buttonSize
-                        imgSizeFactor: 0.6
-                        imgOpacity: 1.0
-                        image_url: "qrc:/resources/cancel.svg"
-                        onClickedChanged:
-                        {
-                            if(clicked)
-                            {
-                                clicked = false
-                                root.close()    // close the entire app
-                            }
-                        }
-                    }
-
-                    // Settings
-                    CustomButton2
-                    {
-                        id: winButtonSettings
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: buttonSize2
-                        height: buttonSize
-                        imgSizeFactor: 0.6
-                        imgOpacity: 1.0
-                        image_url: "qrc:/resources/settings.svg"
-                        onClickedChanged:
-                        {
-                            console.log("Width " + root.width)
-                            if(clicked)
-                            {
-                                clicked = false
-                                settingsWindow.visible = true
-                            }
-                        }
-                    }
-
-                    // Minimize
-                    CustomButton2
-                    {
-                        id: winButtonMinimize
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: buttonSize2
-                        height: buttonSize
-                        imgSizeFactor: 0.6
-                        imgOpacity: 1.0
-                        image_url: "qrc:/resources/decrement.svg"
-                        onClickedChanged:
-                        {
-                            if(clicked)
-                            {
-                                clicked = false
-                                root.showMinimized()
-                            }
-                        }
-                    }
-
-                    // Hide
-                    CustomButton2
-                    {
-                        id: winButtonHide
-                        visible: DataManager.settings.autoHideWin? false: true
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: buttonSize2
-                        height: buttonSize
-                        imgSizeFactor: 0.6
-                        imgOpacity: 1.0
-                        image_url: appHide? "qrc:/resources/arrow_up_white.svg" : "qrc:/resources/arrow_down_white.svg"
-                        onClickedChanged:
-                        {
-                            if(clicked)
-                            {
-                                clicked = false
-                                root.showHide()
-                            }
-                        }
-                    }
-                }//row
-            }//window buttons
-        }
         //  Window Content
-        Rectangle
+        Content
         {
             id: contentRect
             anchors.top: headerRect.bottom
@@ -425,154 +284,42 @@ ApplicationWindow
             color: "transparent"
             clip: true
             opacity: contentsOpacity
+            sectionsColor: appSectionColor
+            sectionsBordersColor: appSectionBorderColor
+            fontColor: root.fontColor
+            fontPixelSize: root.fontPixelSize
 
-            Row
+            onInputTextChanged:
             {
-                id: contentRow
-                anchors.centerIn: parent
-                spacing: 10
-                clip: true
-
-                Rectangle
+                // Control autoHide
+                if(DataManager.settings.autoHideWin)
                 {
-                    id: inputTextRect
-                    width: contentRect.width/2 - contentRow.spacing/2
-                    height: contentRect.height
-                    color: appSectionColor
-                    radius: 10
-                    clip: true
-                    border.width: inputText.hovered?1:0
-                    border.color: appSectionBorderColor
+                    if(appHidden)
+                        showHide()
 
-                    TextArea
-                    {
-                        id: inputText
-                        anchors.fill: parent
-                        background: Rectangle { color: "transparent" }
-                        color: fontColor
-                        font.pixelSize: fontPixelSize
-                        horizontalAlignment: TextInput.AlignHCenter
-                        verticalAlignment: TextInput.AlignVCenter
-                        selectByMouse: true
-                        wrapMode: TextEdit.Wrap
-                        clip: true
-
-                        text: DataManager.inputText
-
-                        onTextChanged:
-                        {
-                            if(text !== DataManager.inputText)
-                                DataManager.setInputText(text)
-
-                            if(DataManager.settings.autoHideWin)
-                            {
-                                if(appHide)
-                                    showHide()
-
-                                autoHideTimer.restart()
-                            }
-                        }
-
-                        onHoveredChanged:
-                        {
-                            if(DataManager.settings.autoHideWin)
-                            {
-                                if(hovered)
-                                    autoHideTimer.running = false
-                                else
-                                    autoHideTimer.running = true
-                            }
-                        }
-
-                        onPressed:
-                        {
-                            // stop the dummy timer
-                            fixMultipleMonitorIssueTimer.running = false
-                        }
-
-                        // It seems placeholderText doesn't work properly on Win10, adding placeHolderInputText
-                        //placeholderText: 'Write here your text ...'
-                        property string placeholderTextFixed: 'Write here your text ...'
-                    }
-                    Text
-                    {
-                        id: placeHolderInputText
-                        width: parent.width
-                        anchors.centerIn: parent
-                        font.pixelSize: fontPixelSize
-                        horizontalAlignment: TextInput.AlignHCenter
-                        verticalAlignment: TextInput.AlignVCenter
-                        font.italic: true
-                        color: fontColor
-                        opacity: inputText.opacity * 0.5
-                        text: inputText.placeholderTextFixed
-                        wrapMode: TextEdit.Wrap
-                        //visible: !inputText.text
-                        visible: !(inputText.text || inputText.activeFocus)
-                    }
-                }
-
-                Rectangle
-                {
-                    id: outputTextRect
-                    width: contentRect.width/2 - contentRow.spacing/2
-                    height: contentRect.height
-                    color: appSectionColor
-                    radius: 10
-                    clip: true
-
-                    border.width: outputText.hovered?1:0
-                    border.color: appSectionBorderColor
-
-                    TextArea
-                    {
-                        id: outputText
-                        anchors.fill: parent
-                        background: Rectangle { color: "transparent" }
-                        color: fontColor
-                        font.pixelSize: fontPixelSize
-                        horizontalAlignment: TextInput.AlignHCenter
-                        verticalAlignment: TextInput.AlignVCenter
-                        selectByMouse: true
-                        wrapMode: TextEdit.Wrap
-
-                        text: DataManager.outputText
-
-                        onHoveredChanged:
-                        {
-                            if(DataManager.settings.autoHideWin)
-                            {
-                                if(hovered)
-                                    autoHideTimer.running = false
-                                else
-                                    autoHideTimer.running = true
-                            }
-                        }
-
-                        // It seems placeholderText doesn't work properly on Win10, adding placeHolderOutputText
-                        //placeholderText: 'Write here your text ...
-                        property string placeholderTextFixed: 'Translation result will be shown here ...'
-                    }
-                    Text
-                    {
-                        id: placeHolderOutputText
-                        width: parent.width
-                        anchors.centerIn: parent
-                        font.pixelSize: fontPixelSize
-                        font.italic: true
-                        horizontalAlignment: TextInput.AlignHCenter
-                        verticalAlignment: TextInput.AlignVCenter
-                        color: fontColor
-                        opacity: outputText.opacity * 0.5
-                        text: outputText.placeholderTextFixed
-                        wrapMode: TextEdit.Wrap
-                        //visible: !outputText.text
-                        visible: !(outputText.text || outputText.activeFocus)
-                    }
+                    autoHideTimer.restart()
                 }
             }
-        }
-    }//background
+
+            onSectionHoveredChanged:
+            {
+                // Control autoHide
+                if(DataManager.settings.autoHideWin)
+                {
+                    if(hovered)
+                        autoHideTimer.running = false
+                    else
+                        autoHideTimer.running = true
+                }
+            }
+
+            onSectionPressed:
+            {
+                // stop the dummy timer
+                fixMultipleMonitorIssueTimer.running = false
+            }
+        }//content
+    }//appBackground
 
     /*
         EXTERNAL WINDOWS

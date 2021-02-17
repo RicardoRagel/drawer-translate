@@ -83,6 +83,9 @@ private slots:
   void onTranslationApiLanguagesResult(QStringList result);
   void onTranslationApiError(QString error);
 
+  // Special slot for MyMemory results info
+  void onMyMemoryTranslationResultInfo(MyMemoryResultInfo info);
+
 private:
 
   // Variables

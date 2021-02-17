@@ -53,7 +53,7 @@ void MyMemoryTranslatorApi::sendLanguagesNetworkRequest()
     }
     else
     {
-        // Reference: https://cloud.google.com/translate/docs/reference/rest/v2/languages
+        // Reference: https://www.matecat.com/api/docs#Languages
         QUrl serviceUrl = QUrl(_languages_url);
 
         QNetworkRequest networkRequest(serviceUrl);
@@ -78,9 +78,32 @@ void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
     // Check if it is a translation result or a languages list request
     if(data.find("translatedText") != data.end())
     {
+        // Publish the translation result using the standard signal
         qDebug() << "(MyMemoryTranslatorApi) Translation result:" << data["translatedText"].toString();
-
         emit onTranslationResult(data["translatedText"].toString());
+
+        // Fill and publish the MyMemory extra info using the special signal
+        MyMemoryResultInfo info;
+        info.result = data["translatedText"].toString().toStdString();
+        info.confidence = data["match"].toDouble();
+        info.quotaFinished = object["quotaFinished"].toBool();
+        QJsonArray matches_array = object["matches"].toArray();
+        for(const auto match : matches_array)
+        {
+            QJsonObject obj = match.toObject();
+            MyMemoryResultMatch new_match;
+            new_match.source_text       = obj["segment"].toString().toStdString();
+            new_match.translated_text   = obj["translation"].toString().toStdString();
+            new_match.source_lang       = obj["source"].toString().toStdString();
+            new_match.translated_lang   = obj["target"].toString().toStdString();
+            new_match.confidence        = obj["confidence"].toDouble();
+            new_match.quality           = obj["quality"].toDouble();
+            new_match.reference         = obj["reference"].toString().toStdString();
+            new_match.created_by        = obj["created-by"].toString().toStdString();
+            info.matches.push_back(new_match);
+        }
+
+        emit onTranslationResultInfo(info);
     }
     else
     {

@@ -7,5 +7,7 @@
         <file>qml/CustomWidgets/CustomButton2.qml</file>
         <file>qml/ExternalWindows/SettingsWin.qml</file>
         <file>qml/CustomWidgets/CustomComboBox.qml</file>
+        <file>qml/Content.qml</file>
+        <file>qml/Header.qml</file>
     </qresource>
 </RCC>

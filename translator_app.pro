@@ -35,6 +35,8 @@ OTHER_FILES += \
     qml/CustomWidgets/CustomComboBox.qml \
     qml/CustomWidgets/CustomScrollView.qml \
     qml/ExternalWindows/SettingsWin.qml \
+    qml/Header.qml \
+    qml/Content.qml \
     qml/main.qml
 
 RESOURCES += \

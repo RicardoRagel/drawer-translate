@@ -43,6 +43,7 @@ DataManager::DataManager()
   connect(_translator_api_mymemory, SIGNAL(onTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
   connect(_translator_api_mymemory, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
   connect(_translator_api_mymemory, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
+  connect(_translator_api_mymemory, SIGNAL(onTranslationResultInfo(MyMemoryResultInfo)), this, SLOT(onMyMemoryTranslationResultInfo(MyMemoryResultInfo)));
 
   // Update available languages
   updateAvailableLanguageCode(_settings->translatorEngine());
@@ -186,6 +187,11 @@ void DataManager::onTranslationApiLanguagesResult(QStringList result)
 void DataManager::onTranslationApiError(QString error)
 {
     setOutputText(QString(TRANSLATION_ERROR_MSG) + ": " + error);
+}
+
+void DataManager::onMyMemoryTranslationResultInfo(MyMemoryResultInfo info)
+{
+    qDebug() << "(DataManager) MyMemory result Info received";
 }
 
 /** *********************************
