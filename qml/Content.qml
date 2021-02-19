@@ -75,7 +75,7 @@ Rectangle
                 color: sectionsColor
                 radius: 10
                 clip: true
-                border.width: inputText.hovered?1:0
+                border.width: inputText.hovered? 2 : 0
                 border.color: sectionsBordersColor
 
                 ScrollView
@@ -89,10 +89,11 @@ Rectangle
                         id: inputText
                         height: inputTextRect.height
                         width: inputTextRect.width
+                        padding: fontPixelSize
                         background: Rectangle { color: "transparent" }
                         color: fontColor
                         font.pixelSize: fontPixelSize
-                        horizontalAlignment: TextInput.AlignHCenter
+                        horizontalAlignment: lineCount > 1 ? TextInput.AlignLeft : TextInput.AlignHCenter
                         verticalAlignment: TextInput.AlignVCenter
                         selectByMouse: true
                         wrapMode: TextEdit.Wrap
@@ -138,7 +139,7 @@ Rectangle
                         //visible: !inputText.text
                         visible: !(inputText.text || inputText.activeFocus)
                     }
-                }
+                }//scrollview
             }
         }
 
@@ -163,7 +164,7 @@ Rectangle
                 color: sectionsColor
                 radius: 10
                 clip: true
-                border.width: outputText.hovered?1:0
+                border.width: outputText.hovered || extraInfoButton.hovered ? 2 : 0
                 border.color: sectionsBordersColor
 
                 ScrollView
@@ -177,10 +178,11 @@ Rectangle
                         id: outputText
                         height: outputTextRect.height
                         width: outputTextRect.width
+                        padding: fontPixelSize
                         background: Rectangle { color: "transparent" }
                         color: fontColor
                         font.pixelSize: fontPixelSize
-                        horizontalAlignment: TextInput.AlignHCenter
+                        horizontalAlignment: lineCount > 1 ? TextInput.AlignLeft : TextInput.AlignHCenter
                         verticalAlignment: TextInput.AlignVCenter
                         selectByMouse: true
                         wrapMode: TextEdit.Wrap
@@ -218,7 +220,33 @@ Rectangle
                         //visible: !outputText.text
                         visible: !(outputText.text || outputText.activeFocus)
                     }
+                }//scrollview
 
+                Rectangle
+                {
+                    id: extraInfoButtonRect
+                    anchors.bottom: parent.bottom
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width
+                    radius: parent.radius
+                    height: 7
+                    clip: true
+                    color: Qt.rgba(150/255, 150/255, 150/255, 1.0)
+
+                    CustomButton2
+                    {
+                        id: extraInfoButton
+                        visible: true //TODO change by a DataManager variable true when extra info
+                        width: 50
+                        height: 7
+                        radius: 5
+                        anchors.bottom: parent.bottom
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        image_url: "qrc:/resources/arrow_up.svg"
+                        buttonColor: Qt.rgba(200/255, 200/255, 200/255, 1.0)
+                        buttonHoveredColor:  Qt.rgba(220/255, 220/255, 220/255, 1.0)
+                        buttonPresedColor: Qt.rgba(240/255, 240/255, 240/255, 1.0)
+                    }
                 }
             }
         }//view2

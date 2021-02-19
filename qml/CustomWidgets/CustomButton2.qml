@@ -19,6 +19,7 @@ Rectangle
     property color buttonPresedColor:  Qt.rgba(255/255, 255/255, 255/255, 0.2)
 
     property bool clicked: false
+    property bool hovered: false
 
     width: 50
     height: 50
@@ -37,7 +38,7 @@ Rectangle
         background: Rectangle
         {
             color: button.pressed? buttonPresedColor : button.hovered? buttonHoveredColor : buttonColor
-            radius: 1
+            radius: root.radius
         }
 
         Image
@@ -65,6 +66,11 @@ Rectangle
         {
             //console.log("clicked")
             root.clicked = true
+        }
+
+        onHoveredChanged:
+        {
+            root.hovered = hovered
         }
     }
 }

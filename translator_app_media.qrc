@@ -29,5 +29,6 @@
         <file>resources/arrow_down.svg</file>
         <file>resources/arrow_down_white.svg</file>
         <file>resources/arrow_up_white.svg</file>
+        <file>resources/arrow_up.svg</file>
     </qresource>
 </RCC>
