@@ -81,7 +81,8 @@ void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
         // Publish the translation result using the standard signal
         QString translated_text = data["translatedText"].toString();
         qDebug() << "(MyMemoryTranslatorApi) Translation result:" << translated_text;
-        QString escaped_text = translated_text.replace("&#10;","\n");
+        QString escaped_text = translated_text.replace("&#10;","\n");   // New line from HTML to unicode \n
+        escaped_text.remove(QRegularExpression("<.*/>"));               // Remove unexpected XML sub-strings
         emit onTranslationResult(escaped_text);
 
         // Fill and publish the MyMemory extra info using the special signal

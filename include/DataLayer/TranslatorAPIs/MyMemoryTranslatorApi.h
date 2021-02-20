@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QDebug>
 #include <QString>
+#include <QRegularExpression>
 #include <QUrlQuery>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
