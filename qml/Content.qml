@@ -165,8 +165,6 @@ Rectangle
                 color: sectionsColor
                 radius: 10
                 clip: true
-                border.width: outputTextSv.hovered || outputText.hovered || extraInfoButton.hovered || extraInfoRect.hovered ? 2 : 0
-                border.color: sectionsBordersColor
 
                 ScrollView
                 {
@@ -224,22 +222,23 @@ Rectangle
                     }
                 }//scrollview
 
+                // Extra Info
                 Rectangle
                 {
-
                     id: extraInfoRect
-                    anchors.bottom: parent.bottom
-                    anchors.bottomMargin: parent.border.width
+
+                    anchors.top: parent.top
+                    anchors.topMargin: parent.height - 10
                     anchors.horizontalCenter: parent.horizontalCenter
-                    height: 7
-                    width: parent.width - 6
+                    height: parent.height
+                    width: parent.width - 2 * parent.radius
                     radius: parent.radius
                     color: Qt.rgba(150/255, 150/255, 150/255, 1.0)
+
                     property bool hovered: false
-                    HoverHandler
-                    {
-                        onHoveredChanged: { parent.hovered = hovered }
-                    }
+                    HoverHandler { onHoveredChanged: { parent.hovered = hovered } }
+
+                    property bool shown: false
                     CustomButton2
                     {
                         id: extraInfoButton
@@ -247,15 +246,82 @@ Rectangle
                         width: 50
                         height: 7
                         radius: 5
-                        anchors.bottom: parent.bottom
+                        anchors.top: parent.top
                         anchors.horizontalCenter: parent.horizontalCenter
-                        image_url: "qrc:/resources/arrow_up.svg"
+                        image_url: extraInfoRect.shown? "qrc:/resources/arrow_down.svg":"qrc:/resources/arrow_up.svg"
                         buttonColor: Qt.rgba(200/255, 200/255, 200/255, 1.0)
                         buttonHoveredColor:  Qt.rgba(220/255, 220/255, 220/255, 1.0)
                         buttonPresedColor: Qt.rgba(240/255, 240/255, 240/255, 1.0)
+                        onClickedChanged:
+                        {
+                            if(clicked)
+                            {
+                                if(!extraInfoRect.shown)
+                                {
+                                    console.log("Showing extra info")
+                                    showExtraInfo.running = true
+                                }
+                                else
+                                {
+                                    console.log("Hidding extra info")
+                                    hideExtraInfo.running = true
+                                }
+                                extraInfoRect.shown = !extraInfoRect.shown
+                                clicked = false
+                            }
+                        }
+                    }
+
+                    SequentialAnimation
+                    {
+                        id: showExtraInfo
+                        running: false
+                        NumberAnimation
+                        {
+                            target: extraInfoRect
+                            property: "anchors.topMargin"
+                            to: 0
+                            duration: 2000
+                        }
+                        NumberAnimation
+                        {
+                            target: extraInfoRect
+                            property: "width"
+                            to: outputTextRect.width
+                            duration: 500
+                        }
+                    }
+                    SequentialAnimation
+                    {
+                        id: hideExtraInfo
+                        running: false
+                        NumberAnimation
+                        {
+                            target: extraInfoRect
+                            property: "width"
+                            to: outputTextRect.width - 2 * outputTextRect.radius
+                            duration: 500
+                        }
+                        NumberAnimation
+                        {
+                            target: extraInfoRect
+                            property: "anchors.topMargin"
+                            to: outputTextRect.height - 10
+                            duration: 2000
+                        }
                     }
                 }
             }//outputTextRect
+            Rectangle
+            {
+                id: outputTextRectBorders
+                visible: !extraInfoRect.shown
+                anchors.fill: outputTextRect
+                border.width: outputTextSv.hovered || outputText.hovered || extraInfoButton.hovered || extraInfoRect.hovered ? 2 : 0
+                border.color: sectionsBordersColor
+                color: "transparent"
+                radius: outputTextRect.radius
+            }
         }//view2
     }//splitview
 }
