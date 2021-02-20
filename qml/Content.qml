@@ -227,18 +227,21 @@ Rectangle
                 {
                     id: extraInfoRect
 
+                    property bool shown: false
+                    property double topMarginFactor: 1.0
+                    property double widthReductionFactor: 1.0
+
                     anchors.top: parent.top
-                    anchors.topMargin: parent.height - 10
                     anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.topMargin: (parent.height - 10) * topMarginFactor
                     height: parent.height
-                    width: parent.width - 2 * parent.radius
+                    width: parent.width - (2 * parent.radius) * widthReductionFactor
                     radius: parent.radius
                     color: Qt.rgba(150/255, 150/255, 150/255, 1.0)
 
                     property bool hovered: false
                     HoverHandler { onHoveredChanged: { parent.hovered = hovered } }
 
-                    property bool shown: false
                     CustomButton2
                     {
                         id: extraInfoButton
@@ -279,15 +282,15 @@ Rectangle
                         NumberAnimation
                         {
                             target: extraInfoRect
-                            property: "anchors.topMargin"
-                            to: 0
+                            property: "topMarginFactor"
+                            to: 0.0
                             duration: 2000
                         }
                         NumberAnimation
                         {
                             target: extraInfoRect
-                            property: "width"
-                            to: outputTextRect.width
+                            property: "widthReductionFactor"
+                            to: 0.0
                             duration: 500
                         }
                     }
@@ -298,15 +301,15 @@ Rectangle
                         NumberAnimation
                         {
                             target: extraInfoRect
-                            property: "width"
-                            to: outputTextRect.width - 2 * outputTextRect.radius
+                            property: "widthReductionFactor"
+                            to: 1.0
                             duration: 500
                         }
                         NumberAnimation
                         {
                             target: extraInfoRect
-                            property: "anchors.topMargin"
-                            to: outputTextRect.height - 10
+                            property: "topMarginFactor"
+                            to: 1.0
                             duration: 2000
                         }
                     }
