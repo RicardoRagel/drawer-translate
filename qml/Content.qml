@@ -75,11 +75,12 @@ Rectangle
                 color: sectionsColor
                 radius: 10
                 clip: true
-                border.width: inputText.hovered? 2 : 0
+                border.width: inputTextSv.hovered || inputText.hovered? 2 : 0
                 border.color: sectionsBordersColor
 
                 ScrollView
                 {
+                    id: inputTextSv
                     anchors.centerIn: parent
                     height: inputTextRect.height
                     width: inputTextRect.width
@@ -164,11 +165,12 @@ Rectangle
                 color: sectionsColor
                 radius: 10
                 clip: true
-                border.width: outputText.hovered || extraInfoButton.hovered ? 2 : 0
+                border.width: outputTextSv.hovered || outputText.hovered || extraInfoButton.hovered || extraInfoRect.hovered ? 2 : 0
                 border.color: sectionsBordersColor
 
                 ScrollView
                 {
+                    id: outputTextSv
                     anchors.fill: parent
                     height: outputTextRect.height
                     width: outputTextRect.width
@@ -224,15 +226,20 @@ Rectangle
 
                 Rectangle
                 {
-                    id: extraInfoButtonRect
-                    anchors.bottom: parent.bottom
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width
-                    radius: parent.radius
-                    height: 7
-                    clip: true
-                    color: Qt.rgba(150/255, 150/255, 150/255, 1.0)
 
+                    id: extraInfoRect
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: parent.border.width
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    height: 7
+                    width: parent.width - 6
+                    radius: parent.radius
+                    color: Qt.rgba(150/255, 150/255, 150/255, 1.0)
+                    property bool hovered: false
+                    HoverHandler
+                    {
+                        onHoveredChanged: { parent.hovered = hovered }
+                    }
                     CustomButton2
                     {
                         id: extraInfoButton
@@ -248,7 +255,7 @@ Rectangle
                         buttonPresedColor: Qt.rgba(240/255, 240/255, 240/255, 1.0)
                     }
                 }
-            }
+            }//outputTextRect
         }//view2
     }//splitview
 }
