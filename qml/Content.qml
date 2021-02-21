@@ -233,8 +233,9 @@ Rectangle
                     width: parent.width - (2 * parent.radius) * widthReductionFactor
                     radius: parent.radius
                     color: Qt.rgba(150/255, 150/255, 150/255, 1.0)
+                    fontColor: "black"
                     fontPixelSize: root.fontPixelSize
-                    fontColor: root.fontColor
+                    margins: root.margins
                 }
             }//outputTextRect
 

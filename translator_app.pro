@@ -14,6 +14,7 @@ HEADERS += \
     include/DataLayer/DataManager.h \
     include/DataLayer/Constants.h \
     include/DataLayer/Settings.h \
+    include/DataLayer/TranslationExtraInfo.h \
     include/DataLayer/TranslatorAPIs/GoogleTranslatorApi.h \
     include/DataLayer/TranslatorAPIs/MyMemoryTranslatorApi.h \
     include/Utils/CursorPosProvider.h \
@@ -23,6 +24,7 @@ SOURCES += \
     src/Core/TranslatorApp.cpp \
     src/DataLayer/DataManager.cpp \
     src/DataLayer/Settings.cpp \
+    src/DataLayer/TranslationExtraInfo.cpp \
     src/DataLayer/TranslatorAPIs/GoogleTranslatorApi.cpp \
     src/DataLayer/TranslatorAPIs/MyMemoryTranslatorApi.cpp \
     src/Utils/LanguageISOCodes.cpp \

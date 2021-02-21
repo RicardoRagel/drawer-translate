@@ -14,6 +14,7 @@ Rectangle
 
     property int fontPixelSize: 14
     property color fontColor: "black"
+    property int margins: 10
     property bool shown: false
     property double topMarginFactor: 1.0
     property double widthReductionFactor: 1.0
@@ -100,13 +101,99 @@ Rectangle
 
 
     // Content
-    Text
+    ScrollView
     {
-        id: translation
+        id: sv
         anchors.centerIn: parent
-        color: root.fontColor
-        font.pixelSize: root.fontPixelSize
-        text: qsTr("text")
+        height: parent.height - 2 * margins
+        width: parent.width - 2 * margins
+        clip: true
+        Column
+        {
+            id: col
+            spacing: margins
+
+            // Translation result
+            Row
+            {
+                id: resultRow
+                spacing: margins
+                anchors.left: parent.left
+
+                Text
+                {
+                    id: translationTitle
+                    text: qsTr("Translation: ")
+                    color: root.fontColor
+                    font.pixelSize: root.fontPixelSize
+                    font.bold: true
+                }
+                Text
+                {
+                    id: translation
+                    color: root.fontColor
+                    font.pixelSize: root.fontPixelSize
+                    text: DataManager.translationExtraInfo.result
+                    elide: Text.ElideRight
+                    width: sv.width - translationTitle.width - resultRow.spacing
+                }
+            }
+
+            // Translation confidence
+            Row
+            {
+                id: confidenceRow
+                spacing: margins
+                anchors.left: parent.left
+
+                Text
+                {
+                    id: confidenceTitle
+                    text: qsTr("Confidence: ")
+                    color: root.fontColor
+                    font.pixelSize: root.fontPixelSize
+                    font.bold: true
+                }
+                Text
+                {
+                    id: confidence
+                    color: root.fontColor
+                    font.pixelSize: root.fontPixelSize
+                    text: DataManager.translationExtraInfo.confidence.toFixed(2)
+                    elide: Text.ElideRight
+                    width: sv.width - confidenceTitle.width - confidenceRow.spacing
+                }
+            }
+
+            // Matches
+            Text
+            {
+                id: matchesTitle
+                text: qsTr("Matches: ")
+                color: root.fontColor
+                font.pixelSize: root.fontPixelSize
+                font.bold: true
+            }
+            Column
+            {
+                id: matchesCol
+                spacing: col.spacing/2
+                Repeater
+                {
+                    model: DataManager.translationExtraInfo.matchesSources
+                    delegate: Text
+                    {
+                        id: matchSource
+                        color: root.fontColor
+                        font.pixelSize: root.fontPixelSize
+                        text: display
+                        elide: Text.ElideRight
+                        width: 200
+                    }
+                }
+
+            }
+        }
     }
 }
 

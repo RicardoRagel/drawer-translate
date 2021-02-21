@@ -11,6 +11,7 @@
 
 #include "Constants.h"
 #include "Settings.h"
+#include "TranslationExtraInfo.h"
 #include "LanguageISOCodes.h"
 #include "TranslatorAPIs/GoogleTranslatorApi.h"
 #include "TranslatorAPIs/MyMemoryTranslatorApi.h"
@@ -37,6 +38,7 @@ public:
   Q_PROPERTY(QStringListModel* languageCodes READ languageCodes NOTIFY languageCodesChanged)
   Q_PROPERTY(QStringListModel* languageNamesAndCodes READ languageNamesAndCodes NOTIFY languageNamesAndCodesChanged)
   Q_PROPERTY(QStringListModel* translatorEngines READ translatorEngines NOTIFY translatorEnginesChanged)
+  Q_PROPERTY(TranslationExtraInfo* translationExtraInfo READ translationExtraInfo NOTIFY translationExtraInfoChanged)
 
   // QML Invokable properties getters
   Settings* settings() {return _settings;}
@@ -46,6 +48,7 @@ public:
   QStringListModel* languageCodes() {return &_language_codes;}
   QStringListModel* languageNamesAndCodes() {return &_language_names_and_codes;}
   QStringListModel* translatorEngines() {return &_translator_engines;}
+  TranslationExtraInfo* translationExtraInfo() {return &_translation_extra_info;}
 
   // QML Invokable properties setters
   Q_INVOKABLE void setSettings(Settings* settings);
@@ -68,6 +71,7 @@ signals:
   void languageCodesChanged();
   void languageNamesAndCodesChanged();
   void translatorEnginesChanged();
+  void translationExtraInfoChanged();
 
 private slots:
 
@@ -100,6 +104,7 @@ private:
   QStringListModel _translator_engines;             // List of available translator engines
   GoogleTranslatorApi *_translator_api_google;      // Google Translator API Handler
   MyMemoryTranslatorApi *_translator_api_mymemory;  // MyMemory Translator API Handler
+  TranslationExtraInfo _translation_extra_info;     // Extra info about the translation result
 
   // Functions
   void setLanguageCodes(QStringList language_codes);            // Set the available language codes

@@ -81,15 +81,14 @@ void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
         // Publish the translation result using the standard signal
         QString translated_text = data["translatedText"].toString();
         qDebug() << "(MyMemoryTranslatorApi) Translation result:" << translated_text;
-        QString escaped_text = translated_text.replace("&#10;","\n");   // New line from HTML to unicode \n
-        escaped_text.remove(QRegularExpression("<.*/>"));               // Remove unexpected XML sub-strings
+        QString escaped_text = parseHtmlUnicodes(translated_text);
         emit onTranslationResult(escaped_text);
 
         // Fill and publish the MyMemory extra info using the special signal
         MyMemoryResultInfo info;
-        info.result = data["translatedText"].toString().toStdString();
+        info.result = parseHtmlUnicodes( QString(data["translatedText"].toString()) ).toStdString();
         info.confidence = data["match"].toDouble();
-        info.quotaFinished = object["quotaFinished"].toBool();
+        info.quota_finished = object["quotaFinished"].toBool();
         QJsonArray matches_array = object["matches"].toArray();
         for(const auto match : matches_array)
         {
@@ -151,4 +150,13 @@ void MyMemoryTranslatorApi::initLocalLanguageCodes()
                              << "th" << "bod" << "ti" << "tpi" << "tkl" << "ton" << "tn" << "tr"
                              << "tk" << "tvl" << "uk" << "ppk" << "uz" << "vi" << "wls" << "cy"
                              << "wo" << "xh" << "yi" << "zu";
+}
+
+QString MyMemoryTranslatorApi::parseHtmlUnicodes(QString input)
+{
+    QString escaped_text = input.replace("&#10;","\n");   // New line from HTML to unicode \n
+    escaped_text.replace("&#39;","'");                              // Apostrophe from HTML to unicode \n
+    escaped_text.remove(QRegularExpression("<.*/>"));               // Remove unexpected XML sub-strings
+
+    return escaped_text;
 }

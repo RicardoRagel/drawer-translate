@@ -192,6 +192,17 @@ void DataManager::onTranslationApiError(QString error)
 void DataManager::onMyMemoryTranslationResultInfo(MyMemoryResultInfo info)
 {
     qDebug() << "(DataManager) MyMemory result Info received";
+    _translation_extra_info.setResult(QString(info.result.c_str()));
+    _translation_extra_info.setConfidence(info.confidence);
+    _translation_extra_info.setQuotaFinished(info.quota_finished);
+    QStringList matches_sources;
+    for(const auto match : info.matches)
+    {
+        matches_sources.push_back(QString(match.source_text.c_str()));
+    }
+    _translation_extra_info.setMatchesSources(matches_sources);
+
+    emit translationExtraInfoChanged();
 }
 
 /** *********************************

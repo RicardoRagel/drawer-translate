@@ -15,7 +15,6 @@
 
 using namespace std;
 
-///TODO: perhaps it should be class <> : public QObject to be accesible by QML
 struct MyMemoryResultMatch
 {
     string source_text;
@@ -32,7 +31,7 @@ struct MyMemoryResultInfo
 {
     string result;      // translation result
     float confidence;   // translation confidence (0.0 to 1.0)
-    bool quotaFinished; // true in case the max number of request has been reached
+    bool quota_finished; // true in case the max number of request has been reached
     std::vector<MyMemoryResultMatch> matches; // Database matches for the result
 };
 
@@ -78,6 +77,7 @@ private:
 
   // Functions
   void initLocalLanguageCodes();
+  QString parseHtmlUnicodes(QString input);
 };
 
 #endif // MYMEMORYTRANSLATORAPI_H
