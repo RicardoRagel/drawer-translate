@@ -134,8 +134,8 @@ Rectangle
                     color: root.fontColor
                     font.pixelSize: root.fontPixelSize
                     text: DataManager.translationExtraInfo.result
-                    elide: Text.ElideRight
-                    width: sv.width - translationTitle.width - resultRow.spacing
+                    //elide: Text.ElideRight
+                    //width: sv.width - translationTitle.width - resultRow.spacing
                 }
             }
 
@@ -160,8 +160,8 @@ Rectangle
                     color: root.fontColor
                     font.pixelSize: root.fontPixelSize
                     text: DataManager.translationExtraInfo.confidence.toFixed(2)
-                    elide: Text.ElideRight
-                    width: sv.width - confidenceTitle.width - confidenceRow.spacing
+                    //elide: Text.ElideRight
+                    //width: sv.width - confidenceTitle.width - confidenceRow.spacing
                 }
             }
 
@@ -174,24 +174,94 @@ Rectangle
                 font.pixelSize: root.fontPixelSize
                 font.bold: true
             }
-            Column
+            Row
             {
-                id: matchesCol
-                spacing: col.spacing/2
-                Repeater
+
+                id: matchesRowl
+                spacing: col.spacing
+
+                // Sources
+                Column
                 {
-                    model: DataManager.translationExtraInfo.matchesSources
-                    delegate: Text
+                    id: sourcesCol
+                    spacing: col.spacing/2
+                    Text
                     {
-                        id: matchSource
+                        id: matchesSourceTitle
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: qsTr("Source")
                         color: root.fontColor
                         font.pixelSize: root.fontPixelSize
-                        text: display
-                        elide: Text.ElideRight
-                        width: 200
+                        font.italic: true
+                        font.bold: true
+                    }
+                    Repeater
+                    {
+                        model: DataManager.translationExtraInfo.matchesSources
+                        delegate: Text
+                        {
+                            id: matchSource
+                            color: root.fontColor
+                            font.pixelSize: root.fontPixelSize
+                            text: display
+                        }
+                    }
+                }
+                // Translations
+                Column
+                {
+                    id: translationsCol
+                    spacing: col.spacing/2
+                    Text
+                    {
+                        id: matchesTranslationsTitle
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: qsTr("Translation")
+                        color: root.fontColor
+                        font.pixelSize: root.fontPixelSize
+                        font.italic: true
+                        font.bold: true
+                    }
+                    Repeater
+                    {
+                        model: DataManager.translationExtraInfo.matchesTranslations
+                        delegate: Text
+                        {
+                            id: matchTranslations
+                            color: root.fontColor
+                            font.pixelSize: root.fontPixelSize
+                            text: display
+                        }
                     }
                 }
 
+                // Confidences
+                Column
+                {
+                    id: confidencesCol
+                    spacing: col.spacing/2
+                    Text
+                    {
+                        id: matchesConfidencesTitle
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: qsTr("Match")
+                        color: root.fontColor
+                        font.pixelSize: root.fontPixelSize
+                        font.italic: true
+                        font.bold: true
+                    }
+                    Repeater
+                    {
+                        model: DataManager.translationExtraInfo.matchesConfidences
+                        delegate: Text
+                        {
+                            id: matchConfidence
+                            color: root.fontColor
+                            font.pixelSize: root.fontPixelSize
+                            text: display
+                        }
+                    }
+                }
             }
         }
     }

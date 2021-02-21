@@ -39,3 +39,15 @@ void TranslationExtraInfo::setMatchesSources(QStringList matches_sources)
     _matches_sources.setStringList(matches_sources);
     emit matchesSourcesChanged();
 }
+
+void TranslationExtraInfo::setMatchesTranslations(QStringList matches_translations)
+{
+    _matches_translations.setStringList(matches_translations);
+    emit matchesTranslationsChanged();
+}
+
+void TranslationExtraInfo::setMatchesConfidences(QStringList matches_confidences)
+{
+    _matches_confidences.setStringList(matches_confidences);
+    emit matchesConfidencesChanged();
+}

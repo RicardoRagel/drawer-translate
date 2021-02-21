@@ -86,7 +86,7 @@ void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
 
         // Fill and publish the MyMemory extra info using the special signal
         MyMemoryResultInfo info;
-        info.result = parseHtmlUnicodes( QString(data["translatedText"].toString()) ).toStdString();
+        info.result = parseHtmlUnicodes(data["translatedText"].toString()).toStdString();
         info.confidence = data["match"].toDouble();
         info.quota_finished = object["quotaFinished"].toBool();
         QJsonArray matches_array = object["matches"].toArray();
@@ -94,15 +94,18 @@ void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
         {
             QJsonObject obj = match.toObject();
             MyMemoryResultMatch new_match;
-            new_match.source_text       = obj["segment"].toString().toStdString();
-            new_match.translated_text   = obj["translation"].toString().toStdString();
+            new_match.source_text       = parseHtmlUnicodes(obj["segment"].toString()).toStdString();
+            new_match.translated_text   = parseHtmlUnicodes(obj["translation"].toString()).toStdString();
             new_match.source_lang       = obj["source"].toString().toStdString();
             new_match.translated_lang   = obj["target"].toString().toStdString();
-            new_match.confidence        = obj["confidence"].toDouble();
+            new_match.confidence        = obj["match"].toDouble();
             new_match.quality           = obj["quality"].toDouble();
             new_match.reference         = obj["reference"].toString().toStdString();
             new_match.created_by        = obj["created-by"].toString().toStdString();
-            info.matches.push_back(new_match);
+
+            // Add match if it is different of the main translation
+            if(strcmp(new_match.translated_text.c_str(), escaped_text.toStdString().c_str()) != 0)
+                info.matches.push_back(new_match);
         }
 
         emit onTranslationResultInfo(info);

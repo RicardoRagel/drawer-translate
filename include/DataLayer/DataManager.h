@@ -16,6 +16,8 @@
 #include "TranslatorAPIs/GoogleTranslatorApi.h"
 #include "TranslatorAPIs/MyMemoryTranslatorApi.h"
 
+#include <sstream>
+
 using namespace std;
 
 class DataManager : public QObject

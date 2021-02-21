@@ -195,12 +195,19 @@ void DataManager::onMyMemoryTranslationResultInfo(MyMemoryResultInfo info)
     _translation_extra_info.setResult(QString(info.result.c_str()));
     _translation_extra_info.setConfidence(info.confidence);
     _translation_extra_info.setQuotaFinished(info.quota_finished);
-    QStringList matches_sources;
+    QStringList matches_sources, matches_translations, matches_confidences;
     for(const auto match : info.matches)
     {
         matches_sources.push_back(QString(match.source_text.c_str()));
+        matches_translations.push_back(QString(match.translated_text.c_str()));
+        std::ostringstream out;
+        out.precision(2);
+        out << std::fixed << match.confidence;
+        matches_confidences.push_back(QString(out.str().c_str()));
     }
     _translation_extra_info.setMatchesSources(matches_sources);
+    _translation_extra_info.setMatchesTranslations(matches_translations);
+    _translation_extra_info.setMatchesConfidences(matches_confidences);
 
     emit translationExtraInfoChanged();
 }
