@@ -14,7 +14,7 @@ import "CustomWidgets"
 
 Rectangle
 {
-    id: contentRect
+    id: root
 
     property int fontPixelSize: 14
     property color fontColor: "black"
@@ -61,14 +61,14 @@ Rectangle
             id: view1
             Layout.fillHeight: true
             Layout.minimumWidth: 250
-            width: contentRect.width/2
+            width: root.width/2
 
             color: "transparent"
 
             Rectangle
             {
                 id: inputTextRect
-                height: contentRect.height
+                height: root.height
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width - margins/2
                 anchors.left: parent.left
@@ -158,7 +158,7 @@ Rectangle
             Rectangle
             {
                 id: outputTextRect
-                height: contentRect.height
+                height: root.height
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width - margins/2
                 anchors.right: parent.right
@@ -223,14 +223,9 @@ Rectangle
                 }//scrollview
 
                 // Extra Info
-                Rectangle
+                ExtraInfoPannel
                 {
                     id: extraInfoRect
-
-                    property bool shown: false
-                    property double topMarginFactor: 1.0
-                    property double widthReductionFactor: 1.0
-
                     anchors.top: parent.top
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.topMargin: (parent.height - 10) * topMarginFactor
@@ -238,89 +233,18 @@ Rectangle
                     width: parent.width - (2 * parent.radius) * widthReductionFactor
                     radius: parent.radius
                     color: Qt.rgba(150/255, 150/255, 150/255, 1.0)
-
-                    property bool hovered: false
-                    HoverHandler { onHoveredChanged: { parent.hovered = hovered } }
-
-                    CustomButton2
-                    {
-                        id: extraInfoButton
-                        visible: true //TODO change by a DataManager variable true when extra info
-                        width: 50
-                        height: 7
-                        radius: 5
-                        anchors.top: parent.top
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        image_url: extraInfoRect.shown? "qrc:/resources/arrow_down.svg":"qrc:/resources/arrow_up.svg"
-                        buttonColor: Qt.rgba(200/255, 200/255, 200/255, 1.0)
-                        buttonHoveredColor:  Qt.rgba(220/255, 220/255, 220/255, 1.0)
-                        buttonPresedColor: Qt.rgba(240/255, 240/255, 240/255, 1.0)
-                        onClickedChanged:
-                        {
-                            if(clicked)
-                            {
-                                if(!extraInfoRect.shown)
-                                {
-                                    console.log("Showing extra info")
-                                    showExtraInfo.running = true
-                                }
-                                else
-                                {
-                                    console.log("Hidding extra info")
-                                    hideExtraInfo.running = true
-                                }
-                                extraInfoRect.shown = !extraInfoRect.shown
-                                clicked = false
-                            }
-                        }
-                    }
-
-                    SequentialAnimation
-                    {
-                        id: showExtraInfo
-                        running: false
-                        NumberAnimation
-                        {
-                            target: extraInfoRect
-                            property: "topMarginFactor"
-                            to: 0.0
-                            duration: 2000
-                        }
-                        NumberAnimation
-                        {
-                            target: extraInfoRect
-                            property: "widthReductionFactor"
-                            to: 0.0
-                            duration: 500
-                        }
-                    }
-                    SequentialAnimation
-                    {
-                        id: hideExtraInfo
-                        running: false
-                        NumberAnimation
-                        {
-                            target: extraInfoRect
-                            property: "widthReductionFactor"
-                            to: 1.0
-                            duration: 500
-                        }
-                        NumberAnimation
-                        {
-                            target: extraInfoRect
-                            property: "topMarginFactor"
-                            to: 1.0
-                            duration: 2000
-                        }
-                    }
+                    fontPixelSize: root.fontPixelSize
+                    fontColor: root.fontColor
                 }
             }//outputTextRect
+
+            // Force Border Overlay
             Rectangle
             {
                 id: outputTextRectBorders
                 visible: !extraInfoRect.shown
                 anchors.fill: outputTextRect
-                border.width: outputTextSv.hovered || outputText.hovered || extraInfoButton.hovered || extraInfoRect.hovered ? 2 : 0
+                border.width: outputTextSv.hovered || outputText.hovered || extraInfoRect.hovered ? 2 : 0
                 border.color: sectionsBordersColor
                 color: "transparent"
                 radius: outputTextRect.radius
