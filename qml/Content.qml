@@ -237,6 +237,11 @@ Rectangle
                     fontColor: "black"
                     fontPixelSize: root.fontPixelSize
                     margins: root.margins
+
+                    onHoveredChanged:
+                    {
+                        sectionHoveredChanged(hovered)
+                    }
                 }
             }//outputTextRect
 
