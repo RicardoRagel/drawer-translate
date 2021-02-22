@@ -24,57 +24,70 @@ Rectangle
     signal minimizeButtonPressed()
     signal hideButtonPressed()
 
-    // Source Language Indicator and button
-    CustomButton2
+    // Languages Buttons
+    Row
     {
-        id: sourceLangTagButton
+        id: languagesButtonsRow
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.leftMargin: margins
-        width: buttonsWidth
-        height: buttonsHeight
-        text: DataManager.settings.sourceLang
-        textColor: fontColor
-        textSize: fontPixelSize
-        textAllUppercase: true
-        textBold: true
-        opacity: contentsOpacity
-        onClickedChanged:
+        spacing: margins/2
+
+        // Source Language Indicator and button
+        CustomButton2
         {
-            if(clicked)
+            id: sourceLangTagButton
+            anchors.verticalCenter: parent.verticalCenter
+            width: buttonsWidth
+            height: buttonsHeight
+            text: DataManager.settings.sourceLang
+            textColor: fontColor
+            textSize: fontPixelSize
+            textAllUppercase: true
+            textBold: true
+            opacity: contentsOpacity
+            onClickedChanged:
             {
-                clicked = false
-                seetingsButtonPressed()
+                if(clicked)
+                {
+                    clicked = false
+                    seetingsButtonPressed()
+                }
             }
         }
-    }
 
-    // Target Language Indicator and button
-    CustomButton2
-    {
-        id: targetLangTagButton
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.left: parent.left
-        anchors.leftMargin: margins + root.width/2
-        width: buttonsWidth
-        height: buttonsHeight
-        text: DataManager.settings.targetLang
-        textColor: fontColor
-        textSize: fontPixelSize
-        textAllUppercase: true
-        textBold: true
-        opacity: contentsOpacity
-        onClickedChanged:
+//        // Exchange languages button
+//        CustomButton2
+//        {
+//            id: exchangeLanguagesButton
+
+//        }
+
+        // Target Language Indicator and button
+        CustomButton2
         {
-            if(clicked)
+            id: targetLangTagButton
+            anchors.verticalCenter: parent.verticalCenter
+            width: buttonsWidth
+            height: buttonsHeight
+            text: DataManager.settings.targetLang
+            textColor: fontColor
+            textSize: fontPixelSize
+            textAllUppercase: true
+            textBold: true
+            opacity: contentsOpacity
+            onClickedChanged:
             {
-                clicked = false
-                seetingsButtonPressed()
+                if(clicked)
+                {
+                    clicked = false
+                    seetingsButtonPressed()
+                }
             }
         }
-    }
+    }//languages buttons
 
-    // Buttons
+    // Window Buttons
     Rectangle
     {
         id: buttonsRect

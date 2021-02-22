@@ -226,6 +226,7 @@ Rectangle
                 ExtraInfoPannel
                 {
                     id: extraInfoRect
+                    visible: DataManager.translationExtraInfoVisible
                     anchors.top: parent.top
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.topMargin: (parent.height - 10) * topMarginFactor

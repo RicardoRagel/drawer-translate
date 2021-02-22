@@ -8,8 +8,9 @@ DataManager::DataManager()
 {
   qDebug() << "(DataManager) Initialization ...";
 
-  // Init settings
+  // Init settings and connect to this app
   _settings = new Settings();
+  connect(_settings, SIGNAL(translatorEngineChanged()), this, SLOT(onTranslatorEngineChanged()));
   _settings->init();
   setFramelessWinOnStartup(_settings->framelessWin());
 
@@ -139,6 +140,22 @@ void DataManager::setTargetLanguage(QString target_lang)
 /** *********************************
  *  Slots
  ** ********************************/
+void DataManager::onTranslatorEngineChanged()
+{
+    qDebug() << "(DataManager) Translation Engine changed: " << _settings->translatorEngine();
+
+    if(_settings->translatorEngine() == GOOGLE_TRANSLATE_API_NAME)
+    {
+        _translation_extra_info_visible = false;
+    }
+    else if(_settings->translatorEngine() == MY_MEMORY_TRANSLATE_API_NAME)
+    {
+        _translation_extra_info_visible = true;
+    }
+
+    translationExtraInfoVisibleChanged();
+}
+
 void DataManager::onClipboardDataChanged()
 {
     qDebug() << "(DataManager) Clipboard Data Changed: " << _clipboard->text();

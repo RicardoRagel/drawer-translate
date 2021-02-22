@@ -41,6 +41,7 @@ public:
   Q_PROPERTY(QStringListModel* languageNamesAndCodes READ languageNamesAndCodes NOTIFY languageNamesAndCodesChanged)
   Q_PROPERTY(QStringListModel* translatorEngines READ translatorEngines NOTIFY translatorEnginesChanged)
   Q_PROPERTY(TranslationExtraInfo* translationExtraInfo READ translationExtraInfo NOTIFY translationExtraInfoChanged)
+  Q_PROPERTY(bool translationExtraInfoVisible READ translationExtraInfoVisible NOTIFY translationExtraInfoVisibleChanged)
 
   // QML Invokable properties getters
   Settings* settings() {return _settings;}
@@ -51,6 +52,7 @@ public:
   QStringListModel* languageNamesAndCodes() {return &_language_names_and_codes;}
   QStringListModel* translatorEngines() {return &_translator_engines;}
   TranslationExtraInfo* translationExtraInfo() {return &_translation_extra_info;}
+  bool translationExtraInfoVisible() {return _translation_extra_info_visible;}
 
   // QML Invokable properties setters
   Q_INVOKABLE void setSettings(Settings* settings);
@@ -74,8 +76,12 @@ signals:
   void languageNamesAndCodesChanged();
   void translatorEnginesChanged();
   void translationExtraInfoChanged();
+  void translationExtraInfoVisibleChanged();
 
 private slots:
+
+  // Receive settings changes
+  void onTranslatorEngineChanged();
 
   // Receive system clipboard changes
   void onClipboardDataChanged();
@@ -107,6 +113,7 @@ private:
   GoogleTranslatorApi *_translator_api_google;      // Google Translator API Handler
   MyMemoryTranslatorApi *_translator_api_mymemory;  // MyMemory Translator API Handler
   TranslationExtraInfo _translation_extra_info;     // Extra info about the translation result
+  bool _translation_extra_info_visible;             // Set true to show the Extra info pannel
 
   // Functions
   void setLanguageCodes(QStringList language_codes);            // Set the available language codes

@@ -23,6 +23,13 @@ Rectangle
     // Manage hover
     HoverHandler { onHoveredChanged: { parent.hovered = hovered } }
 
+    // Manage visibility changes
+    onVisibleChanged:
+    {
+        // If visibility changes, get down this pannel
+        hideExtraInfo.running = true
+    }
+
     // Show/hide Button
     CustomButton2
     {
@@ -67,14 +74,14 @@ Rectangle
             target: root
             property: "topMarginFactor"
             to: 0.0
-            duration: 2000
+            duration: Qt.platform.os === "windows"? 2000 : 1000
         }
         NumberAnimation
         {
             target: root
             property: "widthReductionFactor"
             to: 0.0
-            duration: 500
+            duration: Qt.platform.os === "windows"? 500 : 250
         }
     }
 
@@ -88,14 +95,14 @@ Rectangle
             target: root
             property: "widthReductionFactor"
             to: 1.0
-            duration: 500
+            duration: Qt.platform.os === "windows"? 500 : 250
         }
         NumberAnimation
         {
             target: root
             property: "topMarginFactor"
             to: 1.0
-            duration: 2000
+            duration: Qt.platform.os === "windows"? 2000 : 1000
         }
     }
 
