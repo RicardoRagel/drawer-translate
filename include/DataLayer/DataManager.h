@@ -64,6 +64,7 @@ public:
   Q_INVOKABLE void updateAvailableLanguageCode(QString translator_engine);
   Q_INVOKABLE void setSourceLanguage(QString source_lang);
   Q_INVOKABLE void setTargetLanguage(QString target_lang);
+  Q_INVOKABLE void interchangeSourceAndTargetLanguages();
 
 signals:
 

@@ -137,6 +137,14 @@ void DataManager::setTargetLanguage(QString target_lang)
         _settings->setTargetLang(code);
 }
 
+void DataManager::interchangeSourceAndTargetLanguages()
+{
+    QString tmp_source_lang = _settings->sourceLang();
+    QString tmp_target_lang = _settings->targetLang();
+    _settings->setSourceLang(tmp_target_lang);
+    _settings->setTargetLang(tmp_source_lang);
+}
+
 /** *********************************
  *  Slots
  ** ********************************/

@@ -56,12 +56,26 @@ Rectangle
             }
         }
 
-//        // Exchange languages button
-//        CustomButton2
-//        {
-//            id: exchangeLanguagesButton
-
-//        }
+        // Exchange languages button
+        CustomButton2
+        {
+            id: exchangeLanguagesButton
+            anchors.verticalCenter: parent.verticalCenter
+            width: buttonsHeight
+            height: buttonsHeight
+            imgSizeFactor: 0.6
+            imgOpacity: 1.0
+            image_url: "qrc:/resources/interchange.svg"
+            opacity: contentsOpacity
+            onClickedChanged:
+            {
+                if(clicked)
+                {
+                    clicked = false
+                    DataManager.interchangeSourceAndTargetLanguages()
+                }
+            }
+        }
 
         // Target Language Indicator and button
         CustomButton2
