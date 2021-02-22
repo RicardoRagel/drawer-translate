@@ -226,7 +226,6 @@ Rectangle
                 ExtraInfoPannel
                 {
                     id: extraInfoRect
-                    visible: DataManager.translationExtraInfoVisible
                     anchors.top: parent.top
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.topMargin: (parent.height - 10) * topMarginFactor
@@ -238,6 +237,10 @@ Rectangle
                     fontPixelSize: root.fontPixelSize
                     margins: root.margins
 
+                    // Visible if engine provides extra info and actually extra info exist
+                    visible: DataManager.translationExtraInfoVisible && DataManager.translationExtraInfo.result !== ""
+
+                    // Fordware app autohide hovering
                     onHoveredChanged:
                     {
                         sectionHoveredChanged(hovered)
