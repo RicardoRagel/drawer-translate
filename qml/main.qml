@@ -48,12 +48,22 @@ ApplicationWindow
     minimumHeight: forceMinimumHeight
     minimumWidth: 400
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
-    flags:  DataManager.framelessWinOnStartup?
-                Qt.Window
-                | Qt.FramelessWindowHint        // Frameless window
-                | Qt.WindowStaysOnTopHint       // Always on top
-                //| Qt.X11BypassWindowManagerHint // Avoid flickering in Linux, but it disables keyboard inputs
-            :   flags
+
+    Connections
+    {
+        target: DataManager
+
+        onFramelessWinOnStartupChanged:
+        {
+            if(DataManager.framelessWinOnStartup)
+            {
+                root.flags = Qt.Window
+                             | Qt.FramelessWindowHint        // Frameless window
+                             | Qt.WindowStaysOnTopHint       // Always on top
+                             //| Qt.X11BypassWindowManagerHint // Avoid flickering in Linux, but it disables keyboard inputs
+            }
+        }
+    }
 
     // Manage the app starup, fixing some issues found for multiple monitors:
     // the problem is Screen.desktopAvailableWidth doesn't take in account the

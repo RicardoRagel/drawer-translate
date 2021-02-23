@@ -6,15 +6,15 @@
 #include <QSettings>
 #include <Constants.h>
 
-#define DEFAULT_FRAMELESS_WIN true          // FrameLess App Window flag
-#define DEFAULT_AUTOHIDE_WIN false          // AutoHide App Window flag
-#define DEFAULT_TRANSLATE_ON_SELECTION true // Enable input text from clipboard selection
-#define DEFAULT_TRANSLATE_ON_COPY true      // Enable input text from clipboard copy
-#define DEFAULT_TRANSLATOR_ENGINE GOOGLE_TRANSLATE_API_NAME // Select the default Translation engine
-#define DEFAULT_GOOGLE_API_KEY ""           // Google Translate API Key. Get one from https://cloud.google.com/translate/docs/setup
-#define DEFAULT_SOURCE_LANG "en"            // Input text language code from https://cloud.google.com/translate/docs/languages
-#define DEFAULT_TARGET_LANG "es"            // Output text language code from https://cloud.google.com/translate/docs/languages
-#define DEFAULT_EMAIL ""                    // User email
+#define DEFAULT_FRAMELESS_WIN true                          // FrameLess App Window flag
+#define DEFAULT_AUTOHIDE_WIN false                          // AutoHide App Window flag
+#define DEFAULT_TRANSLATE_ON_SELECTION true                 // Enable input text from clipboard selection
+#define DEFAULT_TRANSLATE_ON_COPY true                      // Enable input text from clipboard copy
+#define DEFAULT_TRANSLATOR_ENGINE LIBRE_TRANSLATE_API_NAME  // Select the default Translation engine
+#define DEFAULT_GOOGLE_API_KEY ""                           // Google Translate API Key. Get one from https://cloud.google.com/translate/docs/setup
+#define DEFAULT_SOURCE_LANG "en"                            // Input text language code from https://cloud.google.com/translate/docs/languages
+#define DEFAULT_TARGET_LANG "es"                            // Output text language code from https://cloud.google.com/translate/docs/languages
+#define DEFAULT_EMAIL ""                                    // User email
 
 class Settings : public QObject
 {

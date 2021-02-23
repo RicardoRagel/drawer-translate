@@ -33,6 +33,9 @@ public:
   // Destuctor
   ~DataManager();
 
+  // Initialization (needed for things that must be done after QML is initialised)
+  void init();
+
   // QML properties declarations
   Q_PROPERTY(Settings* settings READ settings WRITE setSettings NOTIFY settingsChanged)
   Q_PROPERTY(bool framelessWinOnStartup READ framelessWinOnStartup WRITE setFramelessWinOnStartup NOTIFY framelessWinOnStartupChanged)

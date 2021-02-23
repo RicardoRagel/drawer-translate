@@ -10,17 +10,18 @@ int main(int argc, char **argv)
 #elif __linux__
     qDebug() << "(TranslatorApp) Using system default graphics redered";
 #endif
+
     // Init our QApplication
     TranslatorApp* app = new TranslatorApp(argc,argv);
-
-    // Init the app's data managers
-    app->initCommon();
 
     // Load the QML front-end
     if (!app->loadQmlEngine())
     {
       return -1;
     }
+
+    // Init the app's data managers
+    app->initCommon();
 
     // Execute App
     int exitCode = 0;

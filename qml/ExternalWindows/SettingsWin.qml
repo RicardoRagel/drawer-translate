@@ -35,24 +35,6 @@ Window
     property string lastSourceLanguage: ""
     property string lastTargetLanguage: ""
 
-    // Set the current settings values
-    onVisibleChanged:
-    {
-        if(visible)
-        {
-            // Update current settings
-            translatorEngine.currentIndex = translatorEngine.find(DataManager.settings.translatorEngine)
-            sourceLang.currentIndex = sourceLang.find("[" + DataManager.settings.sourceLang + "]", Qt.MatchContains)
-            targetLang.currentIndex = targetLang.find("[" + DataManager.settings.targetLang + "]", Qt.MatchContains)
-            googleApiKey.text = DataManager.settings.googleApiKey
-            email.text = DataManager.settings.email
-            onSelection.checked = DataManager.settings.translateOnSelection
-            onCopy.checked = DataManager.settings.translateOnCopy
-            borderLess.checked = DataManager.settings.framelessWin
-            autoHide.checked = DataManager.settings.autoHideWin
-        }
-    }
-
     // Content
     Rectangle
     {
@@ -140,6 +122,17 @@ Window
                             currentIndex: 0
                             textRole: "display"
                             model: DataManager.translatorEngines
+                            Connections
+                            {
+                                target: DataManager.settings
+
+                                onTranslatorEngineChanged:
+                                {
+                                    translatorEngine.currentIndex = translatorEngine.find(DataManager.settings.translatorEngine)
+                                    console.log("Updating translation engine to: " + DataManager.settings.translatorEngine + ", " + translatorEngine.currentIndex)
+                                }
+                            }
+
                             onCurrentTextChanged:
                             {
                                 // Save last languages to set the same if the languages lists are updated (engine changed)
@@ -210,14 +203,21 @@ Window
                         }
                         Connections
                         {
+                            target: DataManager.settings
+
+                            onSourceLangChanged:
+                            {
+                                sourceLang.currentIndex = sourceLang.find("[" + DataManager.settings.sourceLang + "]", Qt.MatchContains)
+                                console.log("Updating Source Language to: " + DataManager.settings.sourceLang + ", " + sourceLang.currentIndex)
+                            }
+                        }
+                        Connections
+                        {
                             target: DataManager
                             onLanguageNamesAndCodesChanged:
                             {
                                 console.log("Setting source Language to the previous one: " + lastSourceLanguage)
-
-                                console.log("CURRENT INDEX: " + sourceLang.currentIndex)
                                 sourceLang.currentIndex = sourceLang.find(lastSourceLanguage)
-                                console.log("FINAL INDEX: " + sourceLang.currentIndex)
                             }
                         }
                     }
@@ -272,6 +272,16 @@ Window
                             onHoveredChanged:
                             {
                                 parent.opacity = hovered? 1.0 : unhoveredOpacity
+                            }
+                        }
+                        Connections
+                        {
+                            target: DataManager.settings
+
+                            onTargetLangChanged:
+                            {
+                                targetLang.currentIndex = targetLang.find("[" + DataManager.settings.targetLang + "]", Qt.MatchContains)
+                                console.log("Updating Target Language to: " + DataManager.settings.targetLang + ", " + targetLang.currentIndex)
                             }
                         }
                         Connections
@@ -334,6 +344,16 @@ Window
                                 parent.opacity = hovered? 1.0 : unhoveredOpacity
                             }
                         }
+                        Connections
+                        {
+                            target: DataManager.settings
+
+                            onGoogleApiKeyChanged:
+                            {
+                                googleApiKey.text = DataManager.settings.googleApiKey
+                                console.log("Updating Google API Key to: " + googleApiKey.text)
+                            }
+                        }
                     }
                 }
 
@@ -383,6 +403,16 @@ Window
                             onHoveredChanged:
                             {
                                 parent.opacity = hovered? 1.0 : unhoveredOpacity
+                            }
+                        }
+                        Connections
+                        {
+                            target: DataManager.settings
+
+                            onEmailChanged:
+                            {
+                                email.text = DataManager.settings.email
+                                console.log("Updating email to: " + email.text)
                             }
                         }
                     }
@@ -446,11 +476,21 @@ Window
                             border_width: 1
                             tool_tip:  "Enable translate selected text directly"
                         }
+                        Connections
+                        {
+                            target: DataManager.settings
+
+                            onTranslateOnSelectionChanged:
+                            {
+                                onSelection.checked = DataManager.settings.translateOnSelection
+                                console.log("Updating onSelection: " + DataManager.settings.translateOnSelection)
+                            }
+                        }
                     }
 
                 }
 
-                // OnSelection
+                // OnCopy
                 Row
                 {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -489,8 +529,17 @@ Window
                             border_width: 1
                             tool_tip:  "Enable translate copied text directly"
                         }
-                    }
+                        Connections
+                        {
+                            target: DataManager.settings
 
+                            onTranslateOnCopyChanged:
+                            {
+                                onCopy.checked = DataManager.settings.translateOnCopy
+                                console.log("Updating onCopy: " + DataManager.settings.translateOnCopy)
+                            }
+                        }
+                    }
                 }
 
                 // SECTION - Window
@@ -551,6 +600,16 @@ Window
                             border_width: 1
                             tool_tip:  "Disable the OS window frame"
                         }
+                        Connections
+                        {
+                            target: DataManager.settings
+
+                            onFramelessWinChanged:
+                            {
+                                borderLess.checked = DataManager.settings.framelessWin
+                                console.log("Updating FrameLess Win: " + DataManager.settings.framelessWin)
+                            }
+                        }
                     }
                 }
 
@@ -592,6 +651,16 @@ Window
                             border_color: hovered? "black" : "transparent"
                             border_width: 1
                             tool_tip:  "Auto-hide window in case of non-interaction"
+                        }
+                        Connections
+                        {
+                            target: DataManager.settings
+
+                            onAutoHideWinChanged:
+                            {
+                                autoHide.checked = DataManager.settings.autoHideWin
+                                console.log("Updating Auto-Hide: " + DataManager.settings.autoHideWin)
+                            }
                         }
                     }
                 }
