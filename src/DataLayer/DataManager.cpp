@@ -31,20 +31,27 @@ DataManager::DataManager()
   QStringList translator_engines_list;
   translator_engines_list.append(GOOGLE_TRANSLATE_API_NAME);
   translator_engines_list.append(MY_MEMORY_TRANSLATE_API_NAME);
+  translator_engines_list.append(LIBRE_TRANSLATE_API_NAME);
   setTranslatorEngines(translator_engines_list);
 
   // Init Google API and connect results to this app
-  _translator_api_google = new GoogleTranslatorApi();
+  _translator_api_google = new GoogleTranslateApi();
   connect(_translator_api_google, SIGNAL(onTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
   connect(_translator_api_google, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
   connect(_translator_api_google, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
 
   // Init MyMemory API and connect results to this app
-  _translator_api_mymemory = new MyMemoryTranslatorApi(true); // arg: enable use the local language list
+  _translator_api_mymemory = new MyMemoryTranslateApi(true); // arg: enable use the local language list
   connect(_translator_api_mymemory, SIGNAL(onTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
   connect(_translator_api_mymemory, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
   connect(_translator_api_mymemory, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
   connect(_translator_api_mymemory, SIGNAL(onTranslationResultInfo(MyMemoryResultInfo)), this, SLOT(onMyMemoryTranslationResultInfo(MyMemoryResultInfo)));
+
+  // Init LibreTranslate API and connect results to this app
+  _translator_api_libre = new LibreTranslateApi();
+  connect(_translator_api_libre, SIGNAL(onTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
+  connect(_translator_api_libre, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
+  connect(_translator_api_libre, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
 
   // Update available languages
   updateAvailableLanguageCode(_settings->translatorEngine());
@@ -110,6 +117,11 @@ void DataManager::updateAvailableLanguageCode(QString translator_engine)
         qDebug() << "(DataManager) Available languages using MyMemory API...";
         _translator_api_mymemory->sendLanguagesNetworkRequest();
     }
+    else if(translator_engine == LIBRE_TRANSLATE_API_NAME)
+    {
+        qDebug() << "(DataManager) Available languages using LibreTranslate API...";
+        _translator_api_libre->sendLanguagesNetworkRequest();
+    }
     else
     {
         // In case the translator engine has not provide an available language
@@ -152,13 +164,14 @@ void DataManager::onTranslatorEngineChanged()
 {
     qDebug() << "(DataManager) Translation Engine changed: " << _settings->translatorEngine();
 
-    if(_settings->translatorEngine() == GOOGLE_TRANSLATE_API_NAME)
-    {
-        _translation_extra_info_visible = false;
-    }
-    else if(_settings->translatorEngine() == MY_MEMORY_TRANSLATE_API_NAME)
+    // Show extra info pannel only for MyMemory engine
+    if(_settings->translatorEngine() == MY_MEMORY_TRANSLATE_API_NAME)
     {
         _translation_extra_info_visible = true;
+    }
+    else
+    {
+        _translation_extra_info_visible = false;
     }
 
     translationExtraInfoVisibleChanged();
@@ -196,6 +209,11 @@ void DataManager::translateTimerCallback()
          qDebug() << "(DataManager) Translation using MyMemory API...";
          _translator_api_mymemory->sendTranslationNetworkRequest(_input_text, _settings->sourceLang(), _settings->targetLang(), _settings->email());
      }
+     else if(_settings->translatorEngine() == LIBRE_TRANSLATE_API_NAME)
+     {
+         qDebug() << "(DataManager) Translation using Libre API...";
+         _translator_api_libre->sendTranslationNetworkRequest(_input_text, _settings->sourceLang(), _settings->targetLang());
+     }
 }
 
 void DataManager::onTranslationApiResult(QString result)
@@ -205,8 +223,11 @@ void DataManager::onTranslationApiResult(QString result)
 
 void DataManager::onTranslationApiLanguagesResult(QStringList result)
 {
+    qDebug() << "(DataManager) Updating languages";
     setLanguageCodes(result);
     setLanguageNamesAndCodes(result);
+
+    qDebug() << "(DataManager) LANGUAGES NUMBER " << _language_names_and_codes.rowCount();
 }
 
 void DataManager::onTranslationApiError(QString error)

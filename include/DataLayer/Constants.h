@@ -14,6 +14,7 @@
 #define TRANSLATION_ERROR_MSG "Error"
 #define GOOGLE_TRANSLATE_API_NAME "Google Translate"
 #define MY_MEMORY_TRANSLATE_API_NAME "MyMemory Translate"
+#define LIBRE_TRANSLATE_API_NAME "Libre Translate"
 
 /*
  *
@@ -51,12 +52,17 @@ public:
     Q_PROPERTY(QString myMemoryTranslateApiName READ myMemoryTranslateApiName NOTIFY myMemoryTranslateApiNameChanged)
     QString myMemoryTranslateApiName(){return my_memory_translate_api_name;}
 
+    QString libre_translate_api_name = LIBRE_TRANSLATE_API_NAME;
+    Q_PROPERTY(QString libreTranslateApiName READ libreTranslateApiName NOTIFY libreTranslateApiNameChanged)
+    QString libreTranslateApiName(){return libre_translate_api_name;}
+
 signals:
   void degToRadChanged();
   void radToDegChanged();
   void appTitleChanged();
   void googleTranslateApiNameChanged();
   void myMemoryTranslateApiNameChanged();
+  void libreTranslateApiNameChanged();
 };
 
 #endif

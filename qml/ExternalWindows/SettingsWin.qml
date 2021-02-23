@@ -213,8 +213,11 @@ Window
                             target: DataManager
                             onLanguageNamesAndCodesChanged:
                             {
-                                console.log("Setting source Language to the prevopus one: " + lastSourceLanguage)
+                                console.log("Setting source Language to the previous one: " + lastSourceLanguage)
+
+                                console.log("CURRENT INDEX: " + sourceLang.currentIndex)
                                 sourceLang.currentIndex = sourceLang.find(lastSourceLanguage)
+                                console.log("FINAL INDEX: " + sourceLang.currentIndex)
                             }
                         }
                     }
@@ -276,7 +279,7 @@ Window
                             target: DataManager
                             onLanguageNamesAndCodesChanged:
                             {
-                                console.log("Setting target Language to the prevopus one: " + lastTargetLanguage)
+                                console.log("Setting target Language to the previous one: " + lastTargetLanguage)
                                 targetLang.currentIndex = targetLang.find(lastTargetLanguage)
                             }
                         }

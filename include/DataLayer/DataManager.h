@@ -13,8 +13,9 @@
 #include "Settings.h"
 #include "TranslationExtraInfo.h"
 #include "LanguageISOCodes.h"
-#include "TranslatorAPIs/GoogleTranslatorApi.h"
-#include "TranslatorAPIs/MyMemoryTranslatorApi.h"
+#include "TranslatorAPIs/GoogleTranslateApi.h"
+#include "TranslatorAPIs/MyMemoryTranslateApi.h"
+#include "TranslatorAPIs/LibreTranslateApi.h"
 
 #include <sstream>
 
@@ -111,8 +112,9 @@ private:
   QStringListModel _language_codes;                 // List of available language codes
   QStringListModel _language_names_and_codes;       // List of available language names and codes as "<NAME> [<CODE>]"
   QStringListModel _translator_engines;             // List of available translator engines
-  GoogleTranslatorApi *_translator_api_google;      // Google Translator API Handler
-  MyMemoryTranslatorApi *_translator_api_mymemory;  // MyMemory Translator API Handler
+  GoogleTranslateApi *_translator_api_google;       // Google Translator API Handler
+  MyMemoryTranslateApi *_translator_api_mymemory;   // MyMemory Translator API Handler
+  LibreTranslateApi *_translator_api_libre;         // MyMemory Translator API Handler
   TranslationExtraInfo _translation_extra_info;     // Extra info about the translation result
   bool _translation_extra_info_visible;             // Set true to show the Extra info pannel
 

@@ -1,5 +1,5 @@
-#ifndef MYMEMORYTRANSLATORAPI_H
-#define MYMEMORYTRANSLATORAPI_H
+#ifndef MYMEMORYTRANSLATEAPI_H
+#define MYMEMORYTRANSLATEAPI_H
 
 #include <QObject>
 #include <QDebug>
@@ -36,17 +36,17 @@ struct MyMemoryResultInfo
     std::vector<MyMemoryResultMatch> matches; // Database matches for the result
 };
 
-class MyMemoryTranslatorApi : public QObject
+class MyMemoryTranslateApi : public QObject
 {
   Q_OBJECT
 
 public:
 
   // Constructor
-  MyMemoryTranslatorApi(bool use_local_lang_codes = false);
+  MyMemoryTranslateApi(bool use_local_lang_codes = false);
 
   // Destuctor
-  ~MyMemoryTranslatorApi();
+  ~MyMemoryTranslateApi();
 
   // Send available language list request
   void sendTranslationNetworkRequest(QString input_text, QString source_lang, QString target_lang, QString email = "", QString model = "1");
@@ -81,4 +81,4 @@ private:
   QString parseHtmlUnicodes(QString input);
 };
 
-#endif // MYMEMORYTRANSLATORAPI_H
+#endif // MYMEMORYTRANSLATEAPI_H

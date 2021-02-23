@@ -1,20 +1,20 @@
-#include "TranslatorAPIs/GoogleTranslatorApi.h"
+#include "TranslatorAPIs/GoogleTranslateApi.h"
 
-GoogleTranslatorApi::GoogleTranslatorApi()
+GoogleTranslateApi::GoogleTranslateApi()
 {
-  qDebug() << "(GoogleTranslatorApi) Initialization ...";
+  qDebug() << "(GoogleTranslateApi) Initialization ...";
 
   // Init network manager to Google Translate API
   _network_manager = new QNetworkAccessManager(this);
   connect(_network_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onTranslationNetworkAnswer(QNetworkReply*)));
 }
 
-GoogleTranslatorApi::~GoogleTranslatorApi()
+GoogleTranslateApi::~GoogleTranslateApi()
 {
 
 }
 
-void GoogleTranslatorApi::sendTranslationNetworkRequest(QString input_text, QString key, QString source_lang, QString target_lang, QString model)
+void GoogleTranslateApi::sendTranslationNetworkRequest(QString input_text, QString key, QString source_lang, QString target_lang, QString model)
 {
     // Reference: https://cloud.google.com/translate/docs/reference/rest/v2/translate
     QUrl serviceUrl = QUrl(_translation_url);
@@ -36,7 +36,7 @@ void GoogleTranslatorApi::sendTranslationNetworkRequest(QString input_text, QStr
     _network_manager->post(networkRequest,postData);
 }
 
-void GoogleTranslatorApi::sendLanguagesNetworkRequest(QString key, QString target_lang, QString model)
+void GoogleTranslateApi::sendLanguagesNetworkRequest(QString key, QString target_lang, QString model)
 {
     // Reference: https://cloud.google.com/translate/docs/reference/rest/v2/languages
     QUrl serviceUrl = QUrl(_languages_url);
@@ -55,13 +55,13 @@ void GoogleTranslatorApi::sendLanguagesNetworkRequest(QString key, QString targe
     _network_manager->post(networkRequest,postData);
 }
 
-void GoogleTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
+void GoogleTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
 {
     // Read result
     QByteArray result = reply->readAll();
-    qDebug() << "(GoogleTranslatorApi) Network reply: " << result;
-    // (GoogleTranslatorApi) Network reply:  "{\n  \"data\": {\n    \"translations\": [\n      {\n        \"translatedText\": \"Hola\",\n        \"model\": \"nmt\"\n      }\n    ]\n  }\n}\n"
-    // (GoogleTranslatorApi) Network reply:  "{\n  \"data\": {\n    \"languages\": [\n      {\n        \"language\": \"af\"\n      },\n      {\n        \"language\": \"am\"\n      },\n      {\n        \"language\": \"ar\"\n      },\n      {\n        \"language\": \"az\"\n      },\n      {\n        \"language\": \"be\"\n      },\n      {\n        \"language\": \"bg\"\n      },\n      {\n        \"language\": \"bn\"\n
+    qDebug() << "(GoogleTranslateApi) Network reply: " << result;
+    // (GoogleTranslateApi) Network reply:  "{\n  \"data\": {\n    \"translations\": [\n      {\n        \"translatedText\": \"Hola\",\n        \"model\": \"nmt\"\n      }\n    ]\n  }\n}\n"
+    // (GoogleTranslateApi) Network reply:  "{\n  \"data\": {\n    \"languages\": [\n      {\n        \"language\": \"af\"\n      },\n      {\n        \"language\": \"am\"\n      },\n      {\n        \"language\": \"ar\"\n      },\n      {\n        \"language\": \"az\"\n      },\n      {\n        \"language\": \"be\"\n      },\n      {\n        \"language\": \"bg\"\n      },\n      {\n        \"language\": \"bn\"\n
 
     // Parse to JSON and get translations
     QJsonDocument document = QJsonDocument::fromJson(result);
@@ -75,7 +75,7 @@ void GoogleTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
         for(const auto value : translations_array)
         {
             QJsonObject obj = value.toObject();
-            qDebug() << "(GoogleTranslatorApi) Translation result:" << obj["translatedText"].toString();
+            qDebug() << "(GoogleTranslateApi) Translation result:" << obj["translatedText"].toString();
 
             emit onTranslationResult(obj["translatedText"].toString());
         }
@@ -88,7 +88,7 @@ void GoogleTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
         {
             QJsonObject obj = value.toObject();
             tmp_lang_codes.append(QString(obj["language"].toString()));
-            //qDebug() << "(GoogleTranslatorApi) Lang Code: " << obj["language"].toString();
+            //qDebug() << "(GoogleTranslateApi) Lang Code: " << obj["language"].toString();
         }
 
         emit onLanguagesResult(tmp_lang_codes);

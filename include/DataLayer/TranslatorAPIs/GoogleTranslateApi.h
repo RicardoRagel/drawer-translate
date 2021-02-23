@@ -1,5 +1,5 @@
-#ifndef GOOGLETRANSLATORAPI_H
-#define GOOGLETRANSLATORAPI_H
+#ifndef GOOGLETRANSLATEAPI_H
+#define GOOGLETRANSLATEAPI_H
 
 #include <QObject>
 #include <QDebug>
@@ -13,17 +13,17 @@
 
 using namespace std;
 
-class GoogleTranslatorApi : public QObject
+class GoogleTranslateApi : public QObject
 {
   Q_OBJECT
 
 public:
 
   // Constructor
-  GoogleTranslatorApi();
+  GoogleTranslateApi();
 
   // Destuctor
-  ~GoogleTranslatorApi();
+  ~GoogleTranslateApi();
 
   // Send available language list request
   void sendTranslationNetworkRequest(QString input_text, QString key, QString source_lang, QString target_lang, QString model = "nmt");
@@ -49,4 +49,4 @@ private:
   QString _languages_url   { "https://translation.googleapis.com/language/translate/v2/languages"};
 };
 
-#endif // GOOGLETRANSLATORAPI_H
+#endif // GOOGLETRANSLATEAPI_H

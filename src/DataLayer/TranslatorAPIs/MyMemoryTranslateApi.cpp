@@ -1,8 +1,8 @@
-#include "TranslatorAPIs/MyMemoryTranslatorApi.h"
+#include "TranslatorAPIs/MyMemoryTranslateApi.h"
 
-MyMemoryTranslatorApi::MyMemoryTranslatorApi(bool use_local_lang_codes)
+MyMemoryTranslateApi::MyMemoryTranslateApi(bool use_local_lang_codes)
 {
-  qDebug() << "(MyMemoryTranslatorApi) Initialization ...";
+  qDebug() << "(MyMemoryTranslateApi) Initialization ...";
 
   // Init network manager to MyMemory Translate API
   _network_manager = new QNetworkAccessManager(this);
@@ -14,12 +14,12 @@ MyMemoryTranslatorApi::MyMemoryTranslatorApi(bool use_local_lang_codes)
     initLocalLanguageCodes();
 }
 
-MyMemoryTranslatorApi::~MyMemoryTranslatorApi()
+MyMemoryTranslateApi::~MyMemoryTranslateApi()
 {
 
 }
 
-void MyMemoryTranslatorApi::sendTranslationNetworkRequest(QString input_text, QString source_lang, QString target_lang, QString email, QString model)
+void MyMemoryTranslateApi::sendTranslationNetworkRequest(QString input_text, QString source_lang, QString target_lang, QString email, QString model)
 {
     // Reference https://mymemory.translated.net/doc/spec.php -> GET
     // * Free, anonymous usage is limited to 1000 words/day.
@@ -43,7 +43,7 @@ void MyMemoryTranslatorApi::sendTranslationNetworkRequest(QString input_text, QS
     _network_manager->post(networkRequest,postData);
 }
 
-void MyMemoryTranslatorApi::sendLanguagesNetworkRequest()
+void MyMemoryTranslateApi::sendLanguagesNetworkRequest()
 {
     // MyMemory provides ~400 languages and most of them are not working yet.
     // So, return here the local list directly in the appropriate case:
@@ -63,13 +63,13 @@ void MyMemoryTranslatorApi::sendLanguagesNetworkRequest()
     }
 }
 
-void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
+void MyMemoryTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
 {
     // Read result
     QByteArray result = reply->readAll();
-    qDebug() << "(MyMemoryTranslatorApi) Network reply: " << result;
-    //(MyMemoryTranslatorApi) Network reply:  "{\"responseData\":{\"translatedText\":\"Hola\",\"match\":1},\"quotaFinished\":false,\"mtLangSupported\":null,\"responseDetails\":\"\",\"responseStatus\":200,\"responderId\":\"45\",\"exception_code\":null,\"matches\":[{\"id\":\"659225237\",\"segment\":\"Hello\",\"translation\":\"Hola\",\"source\":\"en-GB\",\"target\":\"es-ES\",\"quality\":\"74\",\"reference\":null,\"usage-count\":81,\"subject\":\"All\",\"created-by\":\"MateCat\",\"last-updated-by\":\"MateCat\",\"create-date\":\"2020-11-08 18:45:51\",\"last-update-date\":\"2020-11-08 18:45:51\",\"match\":1},{\"id\":\"644686192\",\"segment\":\"Hello\",\"translation\":\"Hello\",\"source\":\"en-US\",\"target\":\"es-ES\",\"quality\":\"74\",\"reference\":null,\"usage-count\":5,\"subject\":\"All\",\"created-by\":\"MateCat\",\"last-updated-by\":\"MateCat\",\"create-date\":\"2020-04-19 14:22:35\",\"last-update-date\":\"2020-04-19 14:22:35\",\"match\":0.99},{\"id\":\"654051149\",\"segment\":\"Hello\",\"translation\":\"Buenas tardes\",\"source\":\"en-US\",\"target\":\"es-419\",\"quality\":\"74\",\"reference\":null,\"usage-count\":1,\"subject\":\"All\",\"created-by\":\"MateCat\",\"last-updated-by\":\"MateCat\",\"create-date\":\"2020-09-29 16:16:06\",\"last-update-date\":\"2020-09-29 16:16:06\",\"match\":0.98}]}"
-    //(MyMemoryTranslatorApi) Network reply:  "{\"Achinese\":{\"2\":\"ace\",\"3\":\"ace\",\"c\":\"ID\",\"3066\":\"ace-ID\"},\"Adyghe\":{\"2\":\"ady\",\"3\":\"ady\",\"c\":\"RU\",\"3066\":\"ady-RU\"},\"Afrikaans\":{\"2\":\"af\",\"3\":\"afr\",\"c\":\"ZA\",\"3066\":\"af-ZA\"},\"Ainu\":{\"2\":\"ain\",\"3\":\"ain\",\"c\":\"JA\",\"3066\":\"ain-JA\"},\"Akan\":{\"2\":\"aka\",\"3\":\"aka\",\"c\":\"RU\",\"3066\":\"aka-GH\"}, .....
+    qDebug() << "(MyMemoryTranslateApi) Network reply: " << result;
+    //(MyMemoryTranslateApi) Network reply:  "{\"responseData\":{\"translatedText\":\"Hola\",\"match\":1},\"quotaFinished\":false,\"mtLangSupported\":null,\"responseDetails\":\"\",\"responseStatus\":200,\"responderId\":\"45\",\"exception_code\":null,\"matches\":[{\"id\":\"659225237\",\"segment\":\"Hello\",\"translation\":\"Hola\",\"source\":\"en-GB\",\"target\":\"es-ES\",\"quality\":\"74\",\"reference\":null,\"usage-count\":81,\"subject\":\"All\",\"created-by\":\"MateCat\",\"last-updated-by\":\"MateCat\",\"create-date\":\"2020-11-08 18:45:51\",\"last-update-date\":\"2020-11-08 18:45:51\",\"match\":1},{\"id\":\"644686192\",\"segment\":\"Hello\",\"translation\":\"Hello\",\"source\":\"en-US\",\"target\":\"es-ES\",\"quality\":\"74\",\"reference\":null,\"usage-count\":5,\"subject\":\"All\",\"created-by\":\"MateCat\",\"last-updated-by\":\"MateCat\",\"create-date\":\"2020-04-19 14:22:35\",\"last-update-date\":\"2020-04-19 14:22:35\",\"match\":0.99},{\"id\":\"654051149\",\"segment\":\"Hello\",\"translation\":\"Buenas tardes\",\"source\":\"en-US\",\"target\":\"es-419\",\"quality\":\"74\",\"reference\":null,\"usage-count\":1,\"subject\":\"All\",\"created-by\":\"MateCat\",\"last-updated-by\":\"MateCat\",\"create-date\":\"2020-09-29 16:16:06\",\"last-update-date\":\"2020-09-29 16:16:06\",\"match\":0.98}]}"
+    //(MyMemoryTranslateApi) Network reply:  "{\"Achinese\":{\"2\":\"ace\",\"3\":\"ace\",\"c\":\"ID\",\"3066\":\"ace-ID\"},\"Adyghe\":{\"2\":\"ady\",\"3\":\"ady\",\"c\":\"RU\",\"3066\":\"ady-RU\"},\"Afrikaans\":{\"2\":\"af\",\"3\":\"afr\",\"c\":\"ZA\",\"3066\":\"af-ZA\"},\"Ainu\":{\"2\":\"ain\",\"3\":\"ain\",\"c\":\"JA\",\"3066\":\"ain-JA\"},\"Akan\":{\"2\":\"aka\",\"3\":\"aka\",\"c\":\"RU\",\"3066\":\"aka-GH\"}, .....
 
     // Parse to JSON and get translations
     QJsonDocument document = QJsonDocument::fromJson(result);
@@ -80,7 +80,7 @@ void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
     {
         // Publish the translation result using the standard signal
         QString translated_text = data["translatedText"].toString();
-        qDebug() << "(MyMemoryTranslatorApi) Translation result:" << translated_text;
+        qDebug() << "(MyMemoryTranslateApi) Translation result:" << translated_text;
         QString escaped_text = parseHtmlUnicodes(translated_text);
         emit onTranslationResult(escaped_text);
 
@@ -119,7 +119,7 @@ void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
             {
                 QJsonObject obj = value.toObject();
                 tmp_lang_codes.append(QString(obj["2"].toString()));
-                qDebug() << "(MyMemoryTranslatorApi) Lang Code: " << obj["2"].toString();
+                qDebug() << "(MyMemoryTranslateApi) Lang Code: " << obj["2"].toString();
             }
 
             emit onLanguagesResult(tmp_lang_codes);
@@ -131,7 +131,7 @@ void MyMemoryTranslatorApi::onTranslationNetworkAnswer(QNetworkReply *reply)
     }
 }
 
-void MyMemoryTranslatorApi::initLocalLanguageCodes()
+void MyMemoryTranslateApi::initLocalLanguageCodes()
 {
     _local_languages_codes   << "af" << "sq" << "am" << "ar" << "hy" << "az" << "bjs"
                              << "rm" << "eu" << "bem" << "bn" << "be" << "bi" << "bs"
@@ -155,7 +155,7 @@ void MyMemoryTranslatorApi::initLocalLanguageCodes()
                              << "wo" << "xh" << "yi" << "zu";
 }
 
-QString MyMemoryTranslatorApi::parseHtmlUnicodes(QString input)
+QString MyMemoryTranslateApi::parseHtmlUnicodes(QString input)
 {
     QString escaped_text = input.replace("&#10;","\n");   // New line from HTML to unicode \n
     escaped_text.replace("&#39;","'");                              // Apostrophe from HTML to unicode \n
