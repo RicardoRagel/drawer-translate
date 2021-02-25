@@ -20,6 +20,8 @@ Rectangle
     property color fontColor: "black"
     property color sectionsColor: "white"
     property color sectionsBordersColor: "gray"
+    property int buttonsWidth: 50
+    property int buttonsHeight: 50
     property int margins: 10
 
     // Signals to be processed by parent
@@ -75,9 +77,10 @@ Rectangle
                 color: sectionsColor
                 radius: 10
                 clip: true
-                border.width: inputTextSv.hovered || inputText.hovered? 2 : 0
+                border.width: inputTextSv.hovered || inputText.hovered || hearInputTextButton.hovered ? 2 : 0
                 border.color: sectionsBordersColor
 
+                // Translation on a Scrollview
                 ScrollView
                 {
                     id: inputTextSv
@@ -141,6 +144,37 @@ Rectangle
                         visible: !(inputText.text || inputText.activeFocus)
                     }
                 }//scrollview
+
+                // Buttons
+                Row
+                {
+                    id: inputTextButtons
+                    visible: inputText.hovered || hearInputTextButton.hovered
+                    spacing: 10
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.rightMargin: margins
+                    anchors.bottomMargin: margins
+
+                    CustomButton2
+                    {
+                        id: hearInputTextButton
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: buttonsWidth
+                        height: buttonsHeight
+                        imgSizeFactor: 0.6
+                        imgOpacity: hovered? 1.0 : 0.5
+                        image_url: "qrc:/resources/speaker.svg"
+                        onClickedChanged:
+                        {
+                            if(clicked)
+                            {
+                                clicked = false
+                                DataManager.hearInputText()
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -222,6 +256,37 @@ Rectangle
                     }
                 }//scrollview
 
+                // Buttons
+                Row
+                {
+                    id: outputTextButtons
+                    visible: outputText.hovered || hearOutputTextButton.hovered
+                    spacing: 10
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    anchors.rightMargin: margins
+                    anchors.bottomMargin: margins
+
+                    CustomButton2
+                    {
+                        id: hearOutputTextButton
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: buttonsWidth
+                        height: buttonsHeight
+                        imgSizeFactor: 0.6
+                        imgOpacity: hovered? 1.0 : 0.5
+                        image_url: "qrc:/resources/speaker.svg"
+                        onClickedChanged:
+                        {
+                            if(clicked)
+                            {
+                                clicked = false
+                                DataManager.hearOutputText()
+                            }
+                        }
+                    }
+                }
+
                 // Extra Info
                 ExtraInfoPannel
                 {
@@ -254,7 +319,7 @@ Rectangle
                 id: outputTextRectBorders
                 visible: !extraInfoRect.shown
                 anchors.fill: outputTextRect
-                border.width: outputTextSv.hovered || outputText.hovered || extraInfoRect.hovered ? 2 : 0
+                border.width: outputTextSv.hovered || outputText.hovered || extraInfoRect.hovered || hearOutputTextButton.hovered ? 2 : 0
                 border.color: sectionsBordersColor
                 color: "transparent"
                 radius: outputTextRect.radius

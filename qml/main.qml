@@ -298,6 +298,8 @@ ApplicationWindow
             sectionsBordersColor: appSectionBorderColor
             fontColor: root.fontColor
             fontPixelSize: root.fontPixelSize
+            buttonsWidth: buttonSize2
+            buttonsHeight: buttonSize2
             margins: root.margins
 
             onInputTextChanged:
