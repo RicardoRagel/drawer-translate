@@ -65,6 +65,8 @@ void DataManager::init()
     connect(_translator_api_libre, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
     connect(_translator_api_libre, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
 
+    ///TODO: init _tts_api_soundoftext and connect the SINALS to a SLOT (tobe created) where receive the file_path of the sound file or the errors
+
     // Update available languages
     updateAvailableLanguageCode(_settings->translatorEngine());
 }
@@ -162,6 +164,16 @@ void DataManager::interchangeSourceAndTargetLanguages()
     QString tmp_target_lang = _settings->targetLang();
     _settings->setSourceLang(tmp_target_lang);
     _settings->setTargetLang(tmp_source_lang);
+}
+
+void DataManager::hearInputText()
+{
+    setTTSRequest(_input_text, _settings->sourceLang());
+}
+
+void DataManager::hearOutputText()
+{
+    setTTSRequest(_output_text, _settings->targetLang());
 }
 
 /** *********************************
@@ -317,4 +329,12 @@ void DataManager::setTranslatorEngines(QStringList translator_engines)
 {
     _translator_engines.setStringList(translator_engines);
     emit translatorEnginesChanged();
+}
+
+void DataManager::setTTSRequest(QString text, QString lang)
+{
+    qDebug() << "(DataManager) Setting TTS request for: " << text << " [" << lang << "]";
+
+    ///TODO: call to _tts_api_soundoftext with text, lang and lang prefix (this should be implemented
+    ///      also at QML as a selection and some functions to get the list for the languange)
 }

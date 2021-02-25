@@ -11,11 +11,12 @@
 
 #include "Constants.h"
 #include "Settings.h"
-#include "TranslationExtraInfo.h"
 #include "LanguageISOCodes.h"
 #include "TranslatorAPIs/GoogleTranslateApi.h"
 #include "TranslatorAPIs/MyMemoryTranslateApi.h"
 #include "TranslatorAPIs/LibreTranslateApi.h"
+#include "TranslatorAPIs/TranslationExtraInfo.h"
+#include "TextToSpeechAPIs/SoundOfTextApi.h"
 
 #include <sstream>
 
@@ -69,6 +70,8 @@ public:
   Q_INVOKABLE void setSourceLanguage(QString source_lang);
   Q_INVOKABLE void setTargetLanguage(QString target_lang);
   Q_INVOKABLE void interchangeSourceAndTargetLanguages();
+  Q_INVOKABLE void hearInputText();
+  Q_INVOKABLE void hearOutputText();
 
 signals:
 
@@ -115,17 +118,22 @@ private:
   QStringListModel _language_codes;                 // List of available language codes
   QStringListModel _language_names_and_codes;       // List of available language names and codes as "<NAME> [<CODE>]"
   QStringListModel _translator_engines;             // List of available translator engines
+
   GoogleTranslateApi *_translator_api_google;       // Google Translator API Handler
   MyMemoryTranslateApi *_translator_api_mymemory;   // MyMemory Translator API Handler
-  LibreTranslateApi *_translator_api_libre;         // MyMemory Translator API Handler
+  LibreTranslateApi *_translator_api_libre;         // Libre Translator API Handler
+
   TranslationExtraInfo _translation_extra_info;     // Extra info about the translation result
   bool _translation_extra_info_visible;             // Set true to show the Extra info pannel
+
+  SoundOfTextApi *_tts_api_soundoftext;             // Sound of text TTS API Handler
 
   // Functions
   void setLanguageCodes(QStringList language_codes);            // Set the available language codes
   void setLanguageNamesAndCodes(QStringList language_codes);    // Set the available language codes and names
   QString extractLanguageCode(QString language_name_and_code);  // Extract the language code from a human-readable string "Name [code]"
   void setTranslatorEngines(QStringList translator_engines);    // Set the available translator engines list
+  void setTTSRequest(QString text, QString lang);               // Set new request to the Text-to-speech engine
 };
 
 #endif // DATAMANAGER_H
