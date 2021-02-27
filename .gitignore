@@ -1,2 +1,5 @@
+# Github
 *.pro.user
-git-redate.sh
+
+# AppImage
+*.AppImage

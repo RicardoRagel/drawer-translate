@@ -9,6 +9,7 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 INCLUDEPATH += include/Core \
                include/DataLayer \
                include/Utils
+
 HEADERS += \
     include/Core/TranslatorApp.h \
     include/DataLayer/DataManager.h \
@@ -49,3 +50,15 @@ OTHER_FILES += \
 RESOURCES += \
     translator_app_media.qrc \
     translator_app_qml.qrc
+
+# THIRD PARTY Libs
+# Add custom openssl 1.1.1 libraries to the build to avoid QNetworkManager issues
+# in case system has an older 1.0.X version
+INCLUDEPATH += 3rdparty/openssl1.1.1
+LIBS += -L"3rdparty/openssl1.1.1" -lcrypto -lssl
+copydata.commands = $(COPY_DIR) $$PWD/3rdparty/ $$OUT_PWD
+first.depends = $(first) copydata
+export(first.depends)
+export(copydata.commands)
+message("DEBUG: Folder" $$PWD/3rdparty/openssl1.1.1 "will be copied to" $$OUT_PWD)
+QMAKE_EXTRA_TARGETS += first copydata
