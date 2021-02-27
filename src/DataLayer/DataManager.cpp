@@ -34,7 +34,6 @@ void DataManager::init()
     // Init settings and connect to this app
     connect(_settings, SIGNAL(translatorEngineChanged()), this, SLOT(onTranslatorEngineChanged()));
     _settings->init();
-    setFramelessWinOnStartup(_settings->framelessWin());
 
     // Connect clipboard to this app
     connect(_clipboard, SIGNAL(dataChanged()), this, SLOT(onClipboardDataChanged()));
@@ -77,12 +76,6 @@ void DataManager::init()
 void DataManager::setSettings(Settings *settings)
 {
     _settings = settings;
-}
-
-void DataManager::setFramelessWinOnStartup(bool frameless_win_on_startup)
-{
-    _frameless_win_on_startup = frameless_win_on_startup;
-    emit framelessWinOnStartupChanged();
 }
 
 void DataManager::setInputText(QString input_text)

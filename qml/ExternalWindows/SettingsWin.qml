@@ -561,58 +561,6 @@ Window
                     }
                 }
 
-                // FrameLess
-                Row
-                {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 2
-
-                    Rectangle
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: widthColum1
-                        height: heightColumns
-                        color: "transparent"
-
-                        Text
-                        {
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            font.pixelSize: fontPixelSize
-                            font.bold: false
-                            color: fontColor
-                            text: "    Borderless (restart required): "
-                        }
-                    }
-                    Rectangle
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: widthColum2
-                        height: heightColumns
-                        color: "transparent"
-
-                        CustomCheckBox
-                        {
-                            id: borderLess
-                            anchors.centerIn: parent
-                            box_width: buttonSize/2
-                            border_color: hovered? "black" : "transparent"
-                            border_width: 1
-                            tool_tip:  "Disable the OS window frame"
-                        }
-                        Connections
-                        {
-                            target: DataManager.settings
-
-                            onFramelessWinChanged:
-                            {
-                                borderLess.checked = DataManager.settings.framelessWin
-                                console.log("Updating FrameLess Win: " + DataManager.settings.framelessWin)
-                            }
-                        }
-                    }
-                }
-
                 // AutoHide
                 Row
                 {
@@ -708,7 +656,6 @@ Window
                                 DataManager.settings.setEmail(email.text)
                                 DataManager.settings.setTranslateOnSelection(onSelection.checked)
                                 DataManager.settings.setTranslateOnCopy(onCopy.checked)
-                                DataManager.settings.setFramelessWin(borderLess.checked)
                                 DataManager.settings.setAutoHideWin(autoHide.checked)
                                 root.visible = false
                             }

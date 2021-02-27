@@ -48,22 +48,10 @@ ApplicationWindow
     minimumHeight: forceMinimumHeight
     minimumWidth: 400
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
-
-    Connections
-    {
-        target: DataManager
-
-        onFramelessWinOnStartupChanged:
-        {
-            if(DataManager.framelessWinOnStartup)
-            {
-                root.flags = Qt.Window
-                             | Qt.FramelessWindowHint        // Frameless window
-                             | Qt.WindowStaysOnTopHint       // Always on top
-                             //| Qt.X11BypassWindowManagerHint // Avoid flickering in Linux, but it disables keyboard inputs
-            }
-        }
-    }
+    flags: Qt.Window
+           | Qt.FramelessWindowHint        // Frameless window
+           | Qt.WindowStaysOnTopHint       // Always on top
+           //| Qt.X11BypassWindowManagerHint // Avoid flickering in Linux, but it disables keyboard inputs
 
     // Manage the app starup, fixing some issues found for multiple monitors:
     // the problem is Screen.desktopAvailableWidth doesn't take in account the
@@ -120,12 +108,12 @@ ApplicationWindow
         }
 
         // We set the shape of the cursor so that it is clear that this resizing
-        cursorShape: DataManager.framelessWinOnStartup? Qt.SizeVerCursor : Qt.ArrowCursor
+        cursorShape: Qt.SizeVerCursor
 
         // When changing a position, we recalculate the position of the window, and its height
         onMouseYChanged:
         {
-            if(DataManager.framelessWinOnStartup && pressed)
+            if(pressed)
                 targetHeight = Qt.platform.os === "windows"? Screen.desktopAvailableHeight - MouseProvider.cursorPos().y : Screen.height - MouseProvider.cursorPos().y
         }
 

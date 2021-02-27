@@ -19,18 +19,6 @@ void Settings::init()
     _settingsHandler = new QSettings(QSettings::IniFormat, QSettings::UserScope, "TranslatorMinimalApp", "TranslatorApp");
     qDebug() << "(Settings) Initialization of settings to/from " << _settingsHandler->fileName();
 
-    // Initialize QSettings to the current values or to defaults if they don't exist yet
-    if(!_settingsHandler->contains("Window/frameLess"))
-    {
-        qDebug() << "(Settings) Initializing FrameLess Window to" << DEFAULT_FRAMELESS_WIN;
-        setFramelessWin(DEFAULT_FRAMELESS_WIN);
-    }
-    else
-    {
-        setFramelessWin(_settingsHandler->value("Window/frameLess").toBool());
-        qDebug() << "(Settings) FrameLess Window:" << framelessWin();
-    }
-
     if(!_settingsHandler->contains("Window/autoHide"))
     {
         qDebug() << "(Settings) Initializing AutoHide Window to" << DEFAULT_AUTOHIDE_WIN;
@@ -123,13 +111,6 @@ void Settings::init()
 /** *********************************
  *  QML Invokable properties setters
  ** ********************************/
-void Settings::setFramelessWin(bool frameless_win)
-{
-    _settingsHandler->setValue("Window/frameLess", frameless_win);
-    _frameless_win = frameless_win;
-    emit framelessWinChanged();
-}
-
 void Settings::setAutoHideWin(bool autohide_win)
 {
     _settingsHandler->setValue("Window/autoHide", autohide_win);
