@@ -65,6 +65,7 @@ void DataManager::init()
     connect(_translator_api_libre, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
 
     ///TODO: init _tts_api_soundoftext and connect the SINALS to a SLOT (tobe created) where receive the file_path of the sound file or the errors
+    _tts_api_soundoftext = new SoundOfTextApi();
 
     // Update available languages
     updateAvailableLanguageCode(_settings->translatorEngine());
@@ -330,4 +331,7 @@ void DataManager::setTTSRequest(QString text, QString lang)
 
     ///TODO: call to _tts_api_soundoftext with text, lang and lang prefix (this should be implemented
     ///      also at QML as a selection and some functions to get the list for the languange)
+    QString tts_lang_code = _tts_api_soundoftext->getFirstValidLangCode(lang);
+    if(tts_lang_code != "")
+        _tts_api_soundoftext->sendTextToSpeechNetworkRequest(text, tts_lang_code);
 }

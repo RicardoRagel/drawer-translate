@@ -221,6 +221,7 @@ Rectangle
                         selectByMouse: true
                         wrapMode: TextEdit.Wrap
                         clip: true
+                        readOnly: true
 
                         text: DataManager.outputText
 

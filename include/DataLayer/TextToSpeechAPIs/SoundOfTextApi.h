@@ -10,6 +10,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <map>
+#include <string>
 
 /* Sound of Text API steps:
  *
@@ -47,8 +49,11 @@ public:
   // Destuctor
   ~SoundOfTextApi();
 
+  // Auxiliar public functions to get the correct language codes (Empty string if none)
+  QString getFirstValidLangCode(QString code);
+
   // Send network request to get the speech of the provided text (1.)
-  void sendTextToSpeechNetworkRequest(QString input_text, QString source_lang, QString source_lang_sufix);
+  void sendTextToSpeechNetworkRequest(QString input_text, QString source_lang);
 
 signals:
   void onTextToSpeechResult(QString sound_file_path); // (5.RESULT)
@@ -64,12 +69,17 @@ private:
   // Variables
   QNetworkAccessManager *_network_manager;      // System network handler to post request to the online translator
   QString _sound_of_text_url { "https://api.soundoftext.com/sounds" };
+  QString _last_sound_id {"0000"};
 
   // Send network request to get the sound file URL (3.)
   void sendGetSoundNetworkRequest(QString sound_id);
 
   // Download the sound file from the URL and return the file_path (5.)
   QString downloadSoundFile(QString sound_url);
+
+  // Available languages codes list from SoundOfText
+  map<string,string> _lang_map;
+  void initAvailableLanguages();
 };
 
 #endif // SOUNDOFTEXTAPI_H
