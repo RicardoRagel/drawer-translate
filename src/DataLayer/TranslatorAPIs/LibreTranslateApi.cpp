@@ -57,8 +57,8 @@ void LibreTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
     QJsonDocument document = QJsonDocument::fromJson(result);
     QJsonObject object = document.object();
     QJsonArray array = document.array();
-    qDebug() << "(LibreTranslateApi) Object: " << object.isEmpty();
-    qDebug() << "(LibreTranslateApi) Array: " << array.isEmpty();
+    //qDebug() << "(LibreTranslateApi) Object: " << object.isEmpty();
+    //qDebug() << "(LibreTranslateApi) Array: " << array.isEmpty();
 
     // Check if it is a translation result or a languages list request
     if(object.find("translatedText") != object.end())

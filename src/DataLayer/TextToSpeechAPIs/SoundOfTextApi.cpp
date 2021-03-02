@@ -10,6 +10,11 @@ SoundOfTextApi::SoundOfTextApi()
     // Init network manager to Libre Translate API
     _network_manager = new QNetworkAccessManager(this);
     connect(_network_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onSoundOfTextNetworkAnswer(QNetworkReply*)));
+
+    // Init Files downloader
+    _download_manager = new DownloadManager(QDir::tempPath());
+    connect(_download_manager, SIGNAL(downloadFinished(QString)), this, SLOT(onDownloadManagerResult(QString)));
+
 }
 
 SoundOfTextApi::~SoundOfTextApi()
@@ -41,7 +46,6 @@ void SoundOfTextApi::sendTextToSpeechNetworkRequest(QString input_text, QString 
     sub_obj["voice"] = source_lang;
     obj["data"] = sub_obj;
     QJsonDocument doc(obj);
-    qDebug() << doc;
 
     QByteArray postData  = doc.toJson();
 
@@ -76,7 +80,7 @@ void SoundOfTextApi::onSoundOfTextNetworkAnswer(QNetworkReply *reply)
         }
         else
         {
-            onErrorResult("Sound of Text API replied with error");
+            emit errorResult("Sound of Text API replied with error");
             return;
         }
     }
@@ -95,8 +99,12 @@ void SoundOfTextApi::onSoundOfTextNetworkAnswer(QNetworkReply *reply)
             }
         }
     }
+}
 
-    qDebug() << "END";
+void SoundOfTextApi::onDownloadManagerResult(QString file_path)
+{
+    qDebug() << "(SoundOfTextApi) Received download file path: " + file_path;
+    emit textToSpeechResult(file_path);
 }
 
 void SoundOfTextApi::sendGetSoundNetworkRequest(QString sound_id)
@@ -111,14 +119,13 @@ void SoundOfTextApi::sendGetSoundNetworkRequest(QString sound_id)
     _network_manager->get(networkRequest);
 }
 
-QString SoundOfTextApi::downloadSoundFile(QString sound_url)
+void SoundOfTextApi::downloadSoundFile(QString sound_url)
 {
     qDebug() << "(SoundOfTextApi) Downloading sound from " + sound_url;
-    //TODO: https://www.bogotobogo.com/Qt/Qt5_Network_Http_Files_Download_Example.php
 
-    QString file_path;
-
-    return file_path;
+    QStringList urls;
+    urls.append(sound_url);
+    _download_manager->execute(urls);
 }
 
 void SoundOfTextApi::initAvailableLanguages()

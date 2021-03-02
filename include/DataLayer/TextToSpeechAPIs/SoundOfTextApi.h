@@ -1,19 +1,8 @@
 #ifndef SOUNDOFTEXTAPI_H
 #define SOUNDOFTEXTAPI_H
 
-#include <QObject>
-#include <QDebug>
-#include <QString>
-#include <QUrlQuery>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <map>
-#include <string>
-
-/* Sound of Text API steps:
+/**
+ * Sound of Text API steps:
  *
  * 1. Send POST request to start the synthesis:
  *    curl -X POST "https://api.soundoftext.com/sounds" -H  "accept: application/json" -H  "Content-Type: application/json" -d @request.json
@@ -33,7 +22,21 @@
  *    {"status":"Done","location":"https://soundoftext.nyc3.digitaloceanspaces.com/ce916bf0-c882-11e7-9df0-2f554923557b.mp3"}
  * 5. Download the file from that URL:
  *    wget https://soundoftext.nyc3.digitaloceanspaces.com/ce916bf0-c882-11e7-9df0-2f554923557b.mp3
-*/
+**/
+
+#include <QObject>
+#include <QDebug>
+#include <QString>
+#include <QUrlQuery>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QDir>
+#include <map>
+#include <string>
+#include <DownloadManager.h>
 
 using namespace std;
 
@@ -56,13 +59,16 @@ public:
   void sendTextToSpeechNetworkRequest(QString input_text, QString source_lang);
 
 signals:
-  void onTextToSpeechResult(QString sound_file_path); // (5.RESULT)
-  void onErrorResult(QString error);
+  void textToSpeechResult(QString sound_file_path); // (5.RESULT)
+  void errorResult(QString error);
 
 private slots:
 
   // Receive QNetworkAccessManager replies (2. & 4.)
   void onSoundOfTextNetworkAnswer(QNetworkReply* reply);
+
+  // Receive DownloadManager results
+  void onDownloadManagerResult(QString file_path);
 
 private:
 
@@ -70,12 +76,13 @@ private:
   QNetworkAccessManager *_network_manager;      // System network handler to post request to the online translator
   QString _sound_of_text_url { "https://api.soundoftext.com/sounds" };
   QString _last_sound_id {"0000"};
+  DownloadManager *_download_manager;
 
   // Send network request to get the sound file URL (3.)
   void sendGetSoundNetworkRequest(QString sound_id);
 
-  // Download the sound file from the URL and return the file_path (5.)
-  QString downloadSoundFile(QString sound_url);
+  // Download the sound file from the URL (5.)
+  void downloadSoundFile(QString sound_url);
 
   // Available languages codes list from SoundOfText
   map<string,string> _lang_map;

@@ -14,6 +14,9 @@ DataManager::DataManager()
     // Init clipboard handler
     _clipboard = QApplication::clipboard();
 
+    // Init sound player
+    _sound_player = new QMediaPlayer();
+
     // Init avalilable translation engines
     QStringList translator_engines_list;
     translator_engines_list.append(GOOGLE_TRANSLATE_API_NAME);
@@ -66,6 +69,7 @@ void DataManager::init()
 
     ///TODO: init _tts_api_soundoftext and connect the SINALS to a SLOT (tobe created) where receive the file_path of the sound file or the errors
     _tts_api_soundoftext = new SoundOfTextApi();
+    connect(_tts_api_soundoftext, SIGNAL(textToSpeechResult(QString)), this, SLOT(onTextToSpeechResult(QString)));
 
     // Update available languages
     updateAvailableLanguageCode(_settings->translatorEngine());
@@ -271,6 +275,16 @@ void DataManager::onMyMemoryTranslationResultInfo(MyMemoryResultInfo info)
     _translation_extra_info.setMatchesConfidences(matches_confidences);
 
     emit translationExtraInfoChanged();
+}
+
+void DataManager::onTextToSpeechResult(QString file_path)
+{
+    qDebug() << "(DataManager) Playing " << file_path;
+
+    ///TODO: Change by a Qt Audio Player
+    //Test on Ubuntu: system(("ffplay " + file_path.toStdString()).c_str());
+    _sound_player->setMedia(QUrl::fromLocalFile(file_path));
+    _sound_player->play();
 }
 
 /** *********************************

@@ -1,4 +1,4 @@
-QT += widgets qml quick network # Others usual: 3dinput positioning svg multimedia gamepad
+QT += widgets qml quick network multimedia # Others usual: 3dinput positioning svg multimedia gamepad
 CONFIG += c++17         # C++ Version
 CONFIG += qml_debug     # Enable QML console debug
 #CONFIG += resources_big # Set this flag if your resources are big and cause a compilation error
@@ -20,8 +20,9 @@ HEADERS += \
     include/DataLayer/TranslatorAPIs/LibreTranslateApi.h \
     include/DataLayer/TranslatorAPIs/MyMemoryTranslateApi.h \
     include/DataLayer/TextToSpeechAPIs/SoundOfTextApi.h \
-    include/Utils/CursorPosProvider.h \
-    include/Utils/LanguageISOCodes.h
+    include/Utils/DownloadManager.h \
+    include/Utils/LanguageISOCodes.h \
+    include/Utils/CursorPosProvider.h
 
 SOURCES += \
     src/Core/TranslatorApp.cpp \
@@ -32,6 +33,7 @@ SOURCES += \
     src/DataLayer/TranslatorAPIs/LibreTranslateApi.cpp \
     src/DataLayer/TranslatorAPIs/MyMemoryTranslateApi.cpp \
     src/DataLayer/TextToSpeechAPIs/SoundOfTextApi.cpp \
+    src/Utils/DownloadManager.cpp \
     src/Utils/LanguageISOCodes.cpp \
     src/main.cpp
 

@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QClipboard>
 #include <QApplication>
+#include <QMediaPlayer>
 
 #include "Constants.h"
 #include "Settings.h"
@@ -102,6 +103,9 @@ private slots:
   // Special slot for MyMemory results info
   void onMyMemoryTranslationResultInfo(MyMemoryResultInfo info);
 
+  // Receive TTS results
+  void onTextToSpeechResult(QString file_path);
+
 private:
 
   // Variables
@@ -122,6 +126,7 @@ private:
   bool _translation_extra_info_visible;             // Set true to show the Extra info pannel
 
   SoundOfTextApi *_tts_api_soundoftext;             // Sound of text TTS API Handler
+  QMediaPlayer *_sound_player;                      // Sound player
 
   // Functions
   void setLanguageCodes(QStringList language_codes);            // Set the available language codes
