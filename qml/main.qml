@@ -320,6 +320,17 @@ ApplicationWindow
                 fixMultipleMonitorIssueTimer.running = false
             }
         }//content
+
+        // Do not round app at the bottom
+        Rectangle
+        {
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
+            height: parent.radius
+            z: parent.z - 1
+            color: parent.color
+        }
     }//appBackground
 
     /*
