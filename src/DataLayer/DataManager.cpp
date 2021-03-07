@@ -34,10 +34,6 @@ void DataManager::init()
 {
     qDebug() << "(DataManager) Initialization ...";
 
-    // Init settings and connect to this app
-    connect(_settings, SIGNAL(translatorEngineChanged()), this, SLOT(onTranslatorEngineChanged()));
-    _settings->init();
-
     // Connect clipboard to this app
     connect(_clipboard, SIGNAL(dataChanged()), this, SLOT(onClipboardDataChanged()));
     connect(_clipboard, SIGNAL(selectionChanged()), this, SLOT(onClipboardSelectionChanged()));
@@ -67,9 +63,15 @@ void DataManager::init()
     connect(_translator_api_libre, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
     connect(_translator_api_libre, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
 
-    ///TODO: init _tts_api_soundoftext and connect the SINALS to a SLOT (tobe created) where receive the file_path of the sound file or the errors
+    // Init TTS SoundOfText API and connect the audio file result to play it
     _tts_api_soundoftext = new SoundOfTextApi();
     connect(_tts_api_soundoftext, SIGNAL(textToSpeechResult(QString)), this, SLOT(onTextToSpeechResult(QString)));
+
+    // Init settings and connect to this app
+    connect(_settings, SIGNAL(translatorEngineChanged()), this, SLOT(onTranslatorEngineChanged()));
+    connect(_settings, SIGNAL(sourceLangChanged()), this, SLOT(onSourceLangChanged()));
+    connect(_settings, SIGNAL(targetLangChanged()), this, SLOT(onTargetLangChanged()));
+    _settings->init();
 
     // Update available languages
     updateAvailableLanguageCode(_settings->translatorEngine());
@@ -102,6 +104,18 @@ void DataManager::setOutputText(QString output_text)
 
     _output_text = output_text;
     emit outputTextChanged();
+}
+
+void DataManager::setTtsAvailableForSourceLang(bool enable)
+{
+    _tts_available_for_source_lang = enable;
+    emit ttsAvailableForSourceLangChanged();
+}
+
+void DataManager::setTtsAvailableForTargetLang(bool enable)
+{
+    _tts_available_for_target_lang = enable;
+    emit ttsAvailableForTargetLangChanged();
 }
 
 /** *********************************
@@ -143,8 +157,10 @@ void DataManager::setSourceLanguage(QString source_lang)
     qDebug() << "(DataManager) Setting source Language: " << source_lang;
 
    QString code = extractLanguageCode(source_lang);
-   if(code != "")
+   if(code != "" && _settings->sourceLang() != code)
+   {
        _settings->setSourceLang(code);
+   }
 }
 
 void DataManager::setTargetLanguage(QString target_lang)
@@ -152,8 +168,10 @@ void DataManager::setTargetLanguage(QString target_lang)
     qDebug() << "(DataManager) Setting target Language: " << target_lang;
 
     QString code = extractLanguageCode(target_lang);
-    if(code != "")
+    if(code != "" && _settings->targetLang() != code)
+    {
         _settings->setTargetLang(code);
+    }
 }
 
 void DataManager::interchangeSourceAndTargetLanguages()
@@ -192,6 +210,38 @@ void DataManager::onTranslatorEngineChanged()
     }
 
     translationExtraInfoVisibleChanged();
+}
+
+void DataManager::onSourceLangChanged()
+{
+    // Update TTS Available Flag
+    if(_tts_api_soundoftext->checkValidLang(_settings->sourceLang()))
+    {
+        setTtsAvailableForSourceLang(true);
+    }
+    else
+    {
+        setTtsAvailableForSourceLang(false);
+    }
+
+    // Clean translation
+    setInputText("");
+}
+
+void DataManager::onTargetLangChanged()
+{
+    // Update TTS Available Flag
+    if(_tts_api_soundoftext->checkValidLang(_settings->targetLang()))
+    {
+        setTtsAvailableForTargetLang(true);
+    }
+    else
+    {
+        setTtsAvailableForTargetLang(false);
+    }
+
+    // Update translation
+    setInputText(_input_text);
 }
 
 void DataManager::onClipboardDataChanged()
@@ -281,7 +331,7 @@ void DataManager::onTextToSpeechResult(QString file_path)
 {
     qDebug() << "(DataManager) Playing " << file_path;
 
-    ///TODO: Change by a Qt Audio Player
+    // Play audio file
     //Test on Ubuntu: system(("ffplay " + file_path.toStdString()).c_str());
     _sound_player->setMedia(QUrl::fromLocalFile(file_path));
     _sound_player->play();

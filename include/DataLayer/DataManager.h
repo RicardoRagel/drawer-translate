@@ -47,6 +47,8 @@ public:
   Q_PROPERTY(QStringListModel* translatorEngines READ translatorEngines NOTIFY translatorEnginesChanged)
   Q_PROPERTY(TranslationExtraInfo* translationExtraInfo READ translationExtraInfo NOTIFY translationExtraInfoChanged)
   Q_PROPERTY(bool translationExtraInfoVisible READ translationExtraInfoVisible NOTIFY translationExtraInfoVisibleChanged)
+  Q_PROPERTY(bool ttsAvailableForSourceLang READ ttsAvailableForSourceLang WRITE setTtsAvailableForSourceLang NOTIFY ttsAvailableForSourceLangChanged)
+  Q_PROPERTY(bool ttsAvailableForTargetLang READ ttsAvailableForTargetLang WRITE setTtsAvailableForTargetLang NOTIFY ttsAvailableForTargetLangChanged)
 
   // QML Invokable properties getters
   Settings* settings() {return _settings;}
@@ -57,11 +59,15 @@ public:
   QStringListModel* translatorEngines() {return &_translator_engines;}
   TranslationExtraInfo* translationExtraInfo() {return &_translation_extra_info;}
   bool translationExtraInfoVisible() {return _translation_extra_info_visible;}
+  bool ttsAvailableForSourceLang() {return _tts_available_for_source_lang;}
+  bool ttsAvailableForTargetLang() {return _tts_available_for_target_lang;}
 
   // QML Invokable properties setters
   Q_INVOKABLE void setSettings(Settings* settings);
   Q_INVOKABLE void setInputText(QString input_text);
   Q_INVOKABLE void setOutputText(QString output_text);
+  Q_INVOKABLE void setTtsAvailableForSourceLang(bool enable);
+  Q_INVOKABLE void setTtsAvailableForTargetLang(bool enable);
 
   // QML Invokable functions
   Q_INVOKABLE void updateAvailableLanguageCode(QString translator_engine);
@@ -82,11 +88,15 @@ signals:
   void translatorEnginesChanged();
   void translationExtraInfoChanged();
   void translationExtraInfoVisibleChanged();
+  void ttsAvailableForSourceLangChanged();
+  void ttsAvailableForTargetLangChanged();
 
 private slots:
 
   // Receive settings changes
   void onTranslatorEngineChanged();
+  void onSourceLangChanged();
+  void onTargetLangChanged();
 
   // Receive system clipboard changes
   void onClipboardDataChanged();
@@ -127,6 +137,8 @@ private:
 
   SoundOfTextApi *_tts_api_soundoftext;             // Sound of text TTS API Handler
   QMediaPlayer *_sound_player;                      // Sound player
+  bool _tts_available_for_source_lang;              // Source lang code is within the TTS available langs
+  bool _tts_available_for_target_lang;              // Target lang code is within the TTS available langs
 
   // Functions
   void setLanguageCodes(QStringList language_codes);            // Set the available language codes

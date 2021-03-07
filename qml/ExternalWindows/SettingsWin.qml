@@ -680,6 +680,14 @@ Window
                             {
                                 clicked = false
                                 console.log("Canceling settings change")
+                                translatorEngine.currentIndex = translatorEngine.find(DataManager.settings.translatorEngine)
+                                sourceLang.currentIndex = sourceLang.find("[" + DataManager.settings.sourceLang + "]", Qt.MatchContains)
+                                targetLang.currentIndex = targetLang.find("[" + DataManager.settings.targetLang + "]", Qt.MatchContains)
+                                googleApiKey.text = DataManager.settings.googleApiKey
+                                email.text = DataManager.settings.email
+                                onSelection.checked = DataManager.settings.translateOnSelection
+                                onCopy.checked = DataManager.settings.translateOnCopy
+                                autoHide.checked = DataManager.settings.autoHideWin
                                 root.visible = false
                             }
                         }

@@ -52,8 +52,11 @@ public:
   // Destuctor
   ~SoundOfTextApi();
 
-  // Auxiliar public functions to get the correct language codes (Empty string if none)
+  // Get the first correct language code for a complete or incomplete input code (Empty string if none)
   QString getFirstValidLangCode(QString code);
+
+  // Check if a lang code is in the list (or some variation)
+  bool checkValidLang(QString code);
 
   // Send network request to get the speech of the provided text (1.)
   void sendTextToSpeechNetworkRequest(QString input_text, QString source_lang);

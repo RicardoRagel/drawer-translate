@@ -33,6 +33,19 @@ QString SoundOfTextApi::getFirstValidLangCode(QString code)
     return valid_lang;
 }
 
+bool SoundOfTextApi::checkValidLang(QString code)
+{
+    for(const auto valid_code : _lang_map)
+    {
+        if (valid_code.first.find(code.toStdString()) != std::string::npos)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void SoundOfTextApi::sendTextToSpeechNetworkRequest(QString input_text, QString source_lang)
 {
     qDebug() << "(SoundOfTextApi) Requesting Speech of " << input_text << ", [" << source_lang << "]";

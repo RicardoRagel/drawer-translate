@@ -159,6 +159,7 @@ Rectangle
                     CustomButton2
                     {
                         id: hearInputTextButton
+                        visible: DataManager.ttsAvailableForSourceLang
                         anchors.verticalCenter: parent.verticalCenter
                         width: buttonsWidth
                         height: buttonsHeight
@@ -271,6 +272,7 @@ Rectangle
                     CustomButton2
                     {
                         id: hearOutputTextButton
+                        visible: DataManager.ttsAvailableForTargetLang
                         anchors.verticalCenter: parent.verticalCenter
                         width: buttonsWidth
                         height: buttonsHeight
