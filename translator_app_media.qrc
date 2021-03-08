@@ -32,5 +32,6 @@
         <file>resources/arrow_up.svg</file>
         <file>resources/interchange.svg</file>
         <file>resources/speaker.svg</file>
+        <file>resources/dots.svg</file>
     </qresource>
 </RCC>

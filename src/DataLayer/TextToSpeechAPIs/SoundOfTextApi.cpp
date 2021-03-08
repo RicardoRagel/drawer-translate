@@ -22,17 +22,6 @@ SoundOfTextApi::~SoundOfTextApi()
 
 }
 
-QString SoundOfTextApi::getFirstValidLangCode(QString code)
-{
-    QString valid_lang = "";
-
-    map<string,string>::iterator it = _lang_map.lower_bound(code.toStdString());
-    if(it != _lang_map.end())
-        valid_lang = QString(it->first.c_str());
-
-    return valid_lang;
-}
-
 bool SoundOfTextApi::checkValidLang(QString code)
 {
     for(const auto valid_code : _lang_map)
@@ -44,6 +33,32 @@ bool SoundOfTextApi::checkValidLang(QString code)
     }
 
     return false;
+}
+
+QString SoundOfTextApi::getFirstValidLangCode(QString code)
+{
+    QString valid_lang = "";
+
+    map<string,string>::iterator it = _lang_map.lower_bound(code.toStdString());
+    if(it != _lang_map.end())
+        valid_lang = QString(it->first.c_str());
+
+    return valid_lang;
+}
+
+QStringList SoundOfTextApi::getAllValidLandCodes(QString code)
+{
+    QStringList result;
+
+    for(const auto valid_code : _lang_map)
+    {
+        if (valid_code.first.find(code.toStdString()) != std::string::npos)
+        {
+            result.append(QString(valid_code.first.c_str()));
+        }
+    }
+
+    return result;
 }
 
 void SoundOfTextApi::sendTextToSpeechNetworkRequest(QString input_text, QString source_lang)

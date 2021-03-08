@@ -49,6 +49,8 @@ public:
   Q_PROPERTY(bool translationExtraInfoVisible READ translationExtraInfoVisible NOTIFY translationExtraInfoVisibleChanged)
   Q_PROPERTY(bool ttsAvailableForSourceLang READ ttsAvailableForSourceLang WRITE setTtsAvailableForSourceLang NOTIFY ttsAvailableForSourceLangChanged)
   Q_PROPERTY(bool ttsAvailableForTargetLang READ ttsAvailableForTargetLang WRITE setTtsAvailableForTargetLang NOTIFY ttsAvailableForTargetLangChanged)
+  Q_PROPERTY(QStringListModel* ttsSourceLanguageCodes READ ttsSourceLanguageCodes NOTIFY ttsSourceLanguageCodesChanged)
+  Q_PROPERTY(QStringListModel* ttsTargetLanguageCodes READ ttsTargetLanguageCodes NOTIFY ttsTargetLanguageCodesChanged)
 
   // QML Invokable properties getters
   Settings* settings() {return _settings;}
@@ -61,6 +63,8 @@ public:
   bool translationExtraInfoVisible() {return _translation_extra_info_visible;}
   bool ttsAvailableForSourceLang() {return _tts_available_for_source_lang;}
   bool ttsAvailableForTargetLang() {return _tts_available_for_target_lang;}
+  QStringListModel* ttsSourceLanguageCodes() {return &_tts_source_language_codes;}
+  QStringListModel* ttsTargetLanguageCodes() {return &_tts_target_language_codes;}
 
   // QML Invokable properties setters
   Q_INVOKABLE void setSettings(Settings* settings);
@@ -74,8 +78,8 @@ public:
   Q_INVOKABLE void setSourceLanguage(QString source_lang);
   Q_INVOKABLE void setTargetLanguage(QString target_lang);
   Q_INVOKABLE void interchangeSourceAndTargetLanguages();
-  Q_INVOKABLE void hearInputText();
-  Q_INVOKABLE void hearOutputText();
+  Q_INVOKABLE void hearInputText(QString tts_code);
+  Q_INVOKABLE void hearOutputText(QString tts_code);
 
 signals:
 
@@ -90,6 +94,8 @@ signals:
   void translationExtraInfoVisibleChanged();
   void ttsAvailableForSourceLangChanged();
   void ttsAvailableForTargetLangChanged();
+  void ttsSourceLanguageCodesChanged();
+  void ttsTargetLanguageCodesChanged();
 
 private slots:
 
@@ -139,6 +145,8 @@ private:
   QMediaPlayer *_sound_player;                      // Sound player
   bool _tts_available_for_source_lang;              // Source lang code is within the TTS available langs
   bool _tts_available_for_target_lang;              // Target lang code is within the TTS available langs
+  QStringListModel _tts_source_language_codes;
+  QStringListModel _tts_target_language_codes;
 
   // Functions
   void setLanguageCodes(QStringList language_codes);            // Set the available language codes

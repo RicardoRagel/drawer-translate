@@ -182,14 +182,16 @@ void DataManager::interchangeSourceAndTargetLanguages()
     _settings->setTargetLang(tmp_source_lang);
 }
 
-void DataManager::hearInputText()
+void DataManager::hearInputText(QString tts_code)
 {
-    setTTSRequest(_input_text, _settings->sourceLang());
+    //setTTSRequest(_input_text, _settings->sourceLang());
+    setTTSRequest(_input_text, tts_code);
 }
 
-void DataManager::hearOutputText()
+void DataManager::hearOutputText(QString tts_code)
 {
-    setTTSRequest(_output_text, _settings->targetLang());
+    //setTTSRequest(_output_text, _settings->targetLang());
+    setTTSRequest(_output_text, tts_code);
 }
 
 /** *********************************
@@ -218,10 +220,15 @@ void DataManager::onSourceLangChanged()
     if(_tts_api_soundoftext->checkValidLang(_settings->sourceLang()))
     {
         setTtsAvailableForSourceLang(true);
+        _tts_source_language_codes.setStringList(_tts_api_soundoftext->getAllValidLandCodes(_settings->sourceLang()));
+        emit ttsSourceLanguageCodesChanged();
+        qDebug() << "(DataManager) Current TTS valid source language codes: " << _tts_source_language_codes.stringList();
     }
     else
     {
         setTtsAvailableForSourceLang(false);
+        _tts_source_language_codes.setStringList(QStringList{});
+        emit ttsSourceLanguageCodesChanged();
     }
 
     // Clean translation
@@ -234,10 +241,15 @@ void DataManager::onTargetLangChanged()
     if(_tts_api_soundoftext->checkValidLang(_settings->targetLang()))
     {
         setTtsAvailableForTargetLang(true);
+        _tts_target_language_codes.setStringList(_tts_api_soundoftext->getAllValidLandCodes(_settings->targetLang()));
+        emit ttsTargetLanguageCodesChanged();
+        qDebug() << "(DataManager) Current TTS valid target language codes: " << _tts_target_language_codes.stringList();
     }
     else
     {
         setTtsAvailableForTargetLang(false);
+        _tts_target_language_codes.setStringList(QStringList{});
+        emit ttsTargetLanguageCodesChanged();
     }
 
     // Update translation
@@ -393,9 +405,9 @@ void DataManager::setTTSRequest(QString text, QString lang)
 {
     qDebug() << "(DataManager) Setting TTS request for: " << text << " [" << lang << "]";
 
-    ///TODO: call to _tts_api_soundoftext with text, lang and lang prefix (this should be implemented
-    ///      also at QML as a selection and some functions to get the list for the languange)
-    QString tts_lang_code = _tts_api_soundoftext->getFirstValidLangCode(lang);
-    if(tts_lang_code != "")
-        _tts_api_soundoftext->sendTextToSpeechNetworkRequest(text, tts_lang_code);
+    //QString tts_lang_code = _tts_api_soundoftext->getFirstValidLangCode(lang);
+    //if(tts_lang_code != "")
+    //    _tts_api_soundoftext->sendTextToSpeechNetworkRequest(text, tts_lang_code);
+
+    _tts_api_soundoftext->sendTextToSpeechNetworkRequest(text, lang);
 }

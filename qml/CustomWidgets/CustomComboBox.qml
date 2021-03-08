@@ -14,6 +14,8 @@ T.ComboBox {
     property int fontSize: 12
     property int dropDownMaxHeight: 1000000
     property color dropDownArrowColor: "gray"
+    property double dropDownArrowSizeFactor: 0.75
+    property int handleWidth: 10
 
     id: control
 
@@ -41,6 +43,8 @@ T.ComboBox {
         x: control.mirrored ? control.padding : control.width - width - control.padding
         y: control.topPadding + (control.availableHeight - height) / 2
         color: dropDownArrowColor
+        fillMode: Image.PreserveAspectFit
+        height: control.height * dropDownArrowSizeFactor
         defaultColor: "#353637"
         source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/images/double-arrow.png"
         opacity: enabled ? 1 : 0.3
@@ -119,7 +123,7 @@ T.ComboBox {
                 contentItem: Rectangle
                 {
                     id: handle
-                    implicitWidth: 10
+                    implicitWidth: control.handleWidth
                     implicitHeight: 100
                     radius: width / 2
                     color: control2.pressed ? "gray" : "darkGray"

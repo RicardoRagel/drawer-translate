@@ -77,7 +77,7 @@ Rectangle
                 color: sectionsColor
                 radius: 10
                 clip: true
-                border.width: inputTextSv.hovered || inputText.hovered || hearInputTextButton.hovered ? 2 : 0
+                border.width: inputTextSv.hovered || inputTextButtons.visible ? 2 : 0
                 border.color: sectionsBordersColor
 
                 // Translation on a Scrollview
@@ -145,16 +145,17 @@ Rectangle
                     }
                 }//scrollview
 
-                // Buttons
+                // TTS Buttons
                 Row
                 {
                     id: inputTextButtons
-                    visible: inputText.hovered || hearInputTextButton.hovered
-                    spacing: 10
+                    visible: inputText.hovered || hearInputTextButton.hovered || hearInputShowCbBox.hovered || heartInputTextCbBox.enabled
+                    spacing: 1
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
                     anchors.rightMargin: margins
                     anchors.bottomMargin: margins
+                    z: parent.z + 10
 
                     CustomButton2
                     {
@@ -163,7 +164,7 @@ Rectangle
                         anchors.verticalCenter: parent.verticalCenter
                         width: buttonsWidth
                         height: buttonsHeight
-                        imgSizeFactor: 0.6
+                        imgSizeFactor: 0.5
                         imgOpacity: hovered? 1.0 : 0.5
                         image_url: "qrc:/resources/speaker.svg"
                         onClickedChanged:
@@ -171,10 +172,70 @@ Rectangle
                             if(clicked)
                             {
                                 clicked = false
-                                DataManager.hearInputText()
+                                DataManager.hearInputText(heartInputTextCbBox.currentText)
                             }
                         }
                     }
+
+                    CustomButton2
+                    {
+                        id: hearInputShowCbBox
+                        visible: DataManager.ttsAvailableForSourceLang
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: buttonsHeight/2
+                        height: buttonsHeight
+                        imgSizeFactor: 0.5
+                        imgOpacity: hovered? 1.0 : 0.5
+                        image_url: "qrc:/resources/dots.svg"
+                        onClickedChanged:
+                        {
+                            if(clicked)
+                            {
+                                clicked = false
+                                heartInputTextCbBox.enabled = !heartInputTextCbBox.enabled
+                            }
+                        }
+                    }
+
+                    CustomComboBox
+                    {
+                        id: heartInputTextCbBox
+                        enabled: false
+                        visible: enabled && DataManager.ttsAvailableForSourceLang
+                        height: buttonsHeight
+                        width: buttonsWidth * 3
+                        anchors.verticalCenter: parent.verticalCenter
+                        backgroundColor: sectionsColor
+                        textColor: fontColor
+                        fontSize: fontPixelSize
+                        dropDownMaxHeight: inputTextRect.height
+                        dropDownArrowColor: fontColor
+                        opacity: hovered? 1.0 : 0.5
+                        handleWidth: 5
+                        currentIndex: 0
+                        textRole: "display"
+                        model: DataManager.ttsSourceLanguageCodes
+                        onHoveredChanged:
+                        {
+                            if(hovered)
+                                backgroundColor = hearInputShowCbBox.buttonHoveredColor
+                            else
+                                backgroundColor = sectionsColor
+                        }
+                        Connections
+                        {
+                            target: DataManager
+                            onTtsSourceLanguageCodesChanged: { heartInputTextCbBox.currentIndex = 0 }
+                        }
+                    }
+                }
+                Rectangle
+                {
+                    id: inputTextButtonsRowBkg
+                    anchors.fill: inputTextButtons
+                    z: inputTextButtons.z - 1
+                    color: sectionsColor
+                    visible: hearInputTextButton.hovered || hearInputShowCbBox.hovered || heartInputTextCbBox.enabled
                 }
             }
         }
@@ -258,16 +319,17 @@ Rectangle
                     }
                 }//scrollview
 
-                // Buttons
+                // TTS Buttons
                 Row
                 {
                     id: outputTextButtons
-                    visible: outputText.hovered || hearOutputTextButton.hovered
-                    spacing: 10
+                    visible: outputText.hovered || hearOutputTextButton.hovered || hearOutputShowCbBox.hovered || heartOutputTextCbBox.enabled
+                    spacing: 1
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
                     anchors.rightMargin: margins
                     anchors.bottomMargin: margins
+                    z: parent.z + 10
 
                     CustomButton2
                     {
@@ -276,7 +338,7 @@ Rectangle
                         anchors.verticalCenter: parent.verticalCenter
                         width: buttonsWidth
                         height: buttonsHeight
-                        imgSizeFactor: 0.6
+                        imgSizeFactor: 0.5
                         imgOpacity: hovered? 1.0 : 0.5
                         image_url: "qrc:/resources/speaker.svg"
                         onClickedChanged:
@@ -284,10 +346,69 @@ Rectangle
                             if(clicked)
                             {
                                 clicked = false
-                                DataManager.hearOutputText()
+                                DataManager.hearOutputText(heartOutputTextCbBox.currentText)
                             }
                         }
                     }
+                    CustomButton2
+                    {
+                        id: hearOutputShowCbBox
+                        visible: DataManager.ttsAvailableForTargetLang
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: buttonsHeight/2
+                        height: buttonsHeight
+                        imgSizeFactor: 0.5
+                        imgOpacity: hovered? 1.0 : 0.5
+                        image_url: "qrc:/resources/dots.svg"
+                        onClickedChanged:
+                        {
+                            if(clicked)
+                            {
+                                clicked = false
+                                heartOutputTextCbBox.enabled = !heartOutputTextCbBox.enabled
+                            }
+                        }
+                    }
+
+                    CustomComboBox
+                    {
+                        id: heartOutputTextCbBox
+                        enabled: false
+                        visible: enabled && DataManager.ttsAvailableForTargetLang
+                        height: buttonsHeight
+                        width: buttonsWidth * 3
+                        anchors.verticalCenter: parent.verticalCenter
+                        backgroundColor: sectionsColor
+                        textColor: fontColor
+                        fontSize: fontPixelSize
+                        dropDownMaxHeight: outputTextRect.height
+                        dropDownArrowColor: fontColor
+                        opacity: hovered? 1.0 : 0.5
+                        handleWidth: 5
+                        currentIndex: 0
+                        textRole: "display"
+                        model: DataManager.ttsTargetLanguageCodes
+                        onHoveredChanged:
+                        {
+                            if(hovered)
+                                backgroundColor = hearOutputShowCbBox.buttonHoveredColor
+                            else
+                                backgroundColor = sectionsColor
+                        }
+                        Connections
+                        {
+                            target: DataManager
+                            onTtsTargetLanguageCodesChanged: { heartOutputTextCbBox.currentIndex = 0 }
+                        }
+                    }
+                }
+                Rectangle
+                {
+                    id: outputTextButtonsRowBkg
+                    anchors.fill: outputTextButtons
+                    z: outputTextButtons.z - 1
+                    color: sectionsColor
+                    visible: hearOutputTextButton.hovered || hearOutputShowCbBox.hovered || heartOutputTextCbBox.enabled
                 }
 
                 // Extra Info
