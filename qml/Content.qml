@@ -93,7 +93,7 @@ Rectangle
                         id: inputText
                         height: inputTextRect.height
                         width: inputTextRect.width
-                        padding: fontPixelSize
+                        padding: 16
                         background: Rectangle { color: "transparent" }
                         color: fontColor
                         font.pixelSize: fontPixelSize
@@ -274,7 +274,7 @@ Rectangle
                         id: outputText
                         height: outputTextRect.height
                         width: outputTextRect.width
-                        padding: fontPixelSize
+                        padding: 16
                         background: Rectangle { color: "transparent" }
                         color: fontColor
                         font.pixelSize: fontPixelSize

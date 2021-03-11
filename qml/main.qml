@@ -23,7 +23,7 @@ ApplicationWindow
     id: root
 
     // Design
-    property int fontPixelSize: 14
+    property int fontPixelSize: DataManager.settings.fontSize
     property int buttonSize:    20
     property int buttonSize2:   30
     property color fontColor:               Qt.rgba(242/255, 242/255, 242/255, 1)

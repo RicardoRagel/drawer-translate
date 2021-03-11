@@ -19,6 +19,17 @@ void Settings::init()
     _settingsHandler = new QSettings(QSettings::IniFormat, QSettings::UserScope, "TranslatorMinimalApp", "TranslatorApp");
     qDebug() << "(Settings) Initialization of settings to/from " << _settingsHandler->fileName();
 
+    if(!_settingsHandler->contains("Window/fontSize"))
+    {
+        qDebug() << "(Settings) Initializing FontSize to" << DEFAULT_FONT_SIZE;
+        setFontSize(DEFAULT_FONT_SIZE);
+    }
+    else
+    {
+        setFontSize(_settingsHandler->value("Window/fontSize").toInt());
+        qDebug() << "(Settings) FontSize:" << fontSize();
+    }
+
     if(!_settingsHandler->contains("Window/autoHide"))
     {
         qDebug() << "(Settings) Initializing AutoHide Window to" << DEFAULT_AUTOHIDE_WIN;
@@ -108,9 +119,17 @@ void Settings::init()
     }
 }
 
+
 /** *********************************
  *  QML Invokable properties setters
  ** ********************************/
+void Settings::setFontSize(int font_size)
+{
+    _settingsHandler->setValue("Window/fontSize", font_size);
+    _font_size = font_size;
+    emit fontSizeChanged();
+}
+
 void Settings::setAutoHideWin(bool autohide_win)
 {
     _settingsHandler->setValue("Window/autoHide", autohide_win);

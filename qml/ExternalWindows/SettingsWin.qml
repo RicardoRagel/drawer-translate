@@ -561,6 +561,58 @@ Window
                     }
                 }
 
+                // FontSize
+                Row
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    Font size: "
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: "transparent"
+
+                        CustomFontSizeSwitch
+                        {
+                            id: fontSizeSelector
+                            anchors.centerIn: parent
+                            spacing: 4
+                            fontColor: root.fontColor
+                            buttonSize: root.buttonSize
+                            text: "Aa"
+                        }
+                        Connections
+                        {
+                            target: DataManager.settings
+
+                            onFontSizeChanged:
+                            {
+                                fontSizeSelector.selectBySize(DataManager.settings.fontSize)
+                                console.log("Updating fontSize: " + DataManager.settings.fontSize)
+                            }
+                        }
+                    }
+                }
+
                 // AutoHide
                 Row
                 {
@@ -657,6 +709,7 @@ Window
                                 DataManager.settings.setTranslateOnSelection(onSelection.checked)
                                 DataManager.settings.setTranslateOnCopy(onCopy.checked)
                                 DataManager.settings.setAutoHideWin(autoHide.checked)
+                                DataManager.settings.setFontSize(fontSizeSelector.sizeSelected)
                                 root.visible = false
                             }
                         }
@@ -688,6 +741,7 @@ Window
                                 onSelection.checked = DataManager.settings.translateOnSelection
                                 onCopy.checked = DataManager.settings.translateOnCopy
                                 autoHide.checked = DataManager.settings.autoHideWin
+                                fontSizeSelector.selectBySize(DataManager.settings.fontSize)
                                 root.visible = false
                             }
                         }

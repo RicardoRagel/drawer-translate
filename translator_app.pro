@@ -43,6 +43,7 @@ OTHER_FILES += \
     qml/CustomWidgets/CustomCheckBox.qml \
     qml/CustomWidgets/CustomComboBox.qml \
     qml/CustomWidgets/CustomScrollView.qml \
+    qml/CustomWidgets/CustomFontSizeSwitch.qml \
     qml/ExternalWindows/SettingsWin.qml \
     qml/ExtraInfoPannel.qml \
     qml/Content.qml \

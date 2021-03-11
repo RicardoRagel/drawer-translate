@@ -58,7 +58,7 @@ Rectangle
             text: root.text
             color: textColor
             font.pixelSize: textSize
-            font.capitalization: textAllUppercase? Font.AllUppercase: Font.Normal
+            font.capitalization: textAllUppercase? Font.AllUppercase: Font.MixedCase
             font.bold: textBold
         }
 

@@ -10,5 +10,6 @@
         <file>qml/Content.qml</file>
         <file>qml/Header.qml</file>
         <file>qml/ExtraInfoPannel.qml</file>
+        <file>qml/CustomWidgets/CustomFontSizeSwitch.qml</file>
     </qresource>
 </RCC>
