@@ -184,6 +184,7 @@ ApplicationWindow
     property int hideAnimationDuration: 1000
     function showHide()
     {
+        console.log("showHide() called")
         if(appHidden)
         {
             hideAnimationDuration = Math.abs(5 * (root.height - unhideLastHeight))
@@ -293,13 +294,10 @@ ApplicationWindow
             onInputTextChanged:
             {
                 // Control autoHide
+                if(appHidden)
+                    showHide()
                 if(DataManager.settings.autoHideWin)
-                {
-                    if(appHidden)
-                        showHide()
-
                     autoHideTimer.restart()
-                }
             }
 
             onSectionHoveredChanged:
