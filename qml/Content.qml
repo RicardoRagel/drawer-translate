@@ -100,6 +100,7 @@ Rectangle
                         horizontalAlignment: lineCount > 1 ? TextInput.AlignLeft : TextInput.AlignHCenter
                         verticalAlignment: TextInput.AlignVCenter
                         selectByMouse: true
+                        persistentSelection: true
                         wrapMode: TextEdit.Wrap
                         clip: true
 
@@ -115,12 +116,20 @@ Rectangle
 
                         onHoveredChanged:
                         {
-                            sectionHoveredChanged(hovered)
+                            sectionHoveredChanged(true)
                         }
 
                         onPressed:
                         {
                             sectionPressed()
+                        }
+
+                        CustomContextMenu
+                        {
+                            anchors.fill: parent
+                            onCut:      { inputText.cut() }
+                            onCopy:     { inputText.copy() }
+                            onPaste:    { inputText.paste() }
                         }
 
                         // It seems placeholderText doesn't work properly on Win10, adding placeHolderInputText
@@ -281,6 +290,7 @@ Rectangle
                         horizontalAlignment: lineCount > 1 ? TextInput.AlignLeft : TextInput.AlignHCenter
                         verticalAlignment: TextInput.AlignVCenter
                         selectByMouse: true
+                        persistentSelection: true
                         wrapMode: TextEdit.Wrap
                         clip: true
                         readOnly: true
@@ -289,12 +299,22 @@ Rectangle
 
                         onHoveredChanged:
                         {
-                            sectionHoveredChanged(hovered)
+                            sectionHoveredChanged(true)
                         }
 
                         onPressed:
                         {
                             sectionPressed()
+                        }
+
+                        CustomContextMenu
+                        {
+                            anchors.fill: parent
+                            cutEnabled: false
+                            pasteEnabled: false
+                            onCut:      { outputText.cut() }
+                            onCopy:     { outputText.copy() }
+                            onPaste:    { outputText.paste() }
                         }
 
                         // It seems placeholderText doesn't work properly on Win10, adding placeHolderOutputText

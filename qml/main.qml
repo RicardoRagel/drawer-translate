@@ -295,9 +295,11 @@ ApplicationWindow
             {
                 // Control autoHide
                 if(appHidden)
+                {
                     showHide()
-                if(DataManager.settings.autoHideWin)
-                    autoHideTimer.restart()
+                    if(DataManager.settings.autoHideWin)
+                        autoHideTimer.restart()
+                }
             }
 
             onSectionHoveredChanged:

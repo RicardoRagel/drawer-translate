@@ -262,7 +262,7 @@ void DataManager::onClipboardDataChanged()
 
     // Set selection to input text only if translate on copy is enabled
     if(_settings->translateOnCopy())
-        setInputText(_clipboard->text());
+        setInputText(_clipboard->text().trimmed());
 }
 
 void DataManager::onClipboardSelectionChanged()
@@ -271,7 +271,7 @@ void DataManager::onClipboardSelectionChanged()
 
     // Set selection to input text only if text doesn't belong to this app and translate on selection is enabled
     if(_settings->translateOnSelection() && !_clipboard->ownsSelection())
-        setInputText(_clipboard->text(QClipboard::Selection));
+        setInputText(_clipboard->text(QClipboard::Selection).trimmed());
 }
 
 void DataManager::translateTimerCallback()

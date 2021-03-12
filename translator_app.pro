@@ -44,6 +44,7 @@ OTHER_FILES += \
     qml/CustomWidgets/CustomComboBox.qml \
     qml/CustomWidgets/CustomScrollView.qml \
     qml/CustomWidgets/CustomFontSizeSwitch.qml \
+    qml/CustomWidgets/CustomContextMenu.qml \
     qml/ExternalWindows/SettingsWin.qml \
     qml/ExtraInfoPannel.qml \
     qml/Content.qml \
