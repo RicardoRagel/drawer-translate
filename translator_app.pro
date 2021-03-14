@@ -15,10 +15,11 @@ HEADERS += \
     include/DataLayer/DataManager.h \
     include/DataLayer/Constants.h \
     include/DataLayer/Settings.h \
-    include/DataLayer/TranslatorAPIs/TranslationExtraInfo.h \
+    include/DataLayer/TranslatorAPIs/AbstractTranslateApi.h \
     include/DataLayer/TranslatorAPIs/GoogleTranslateApi.h \
     include/DataLayer/TranslatorAPIs/LibreTranslateApi.h \
     include/DataLayer/TranslatorAPIs/MyMemoryTranslateApi.h \
+    include/DataLayer/TranslatorAPIs/TranslationExtraInfo.h \
     include/DataLayer/TextToSpeechAPIs/SoundOfTextApi.h \
     include/Utils/DownloadManager.h \
     include/Utils/LanguageISOCodes.h \
@@ -28,10 +29,11 @@ SOURCES += \
     src/Core/TranslatorApp.cpp \
     src/DataLayer/DataManager.cpp \
     src/DataLayer/Settings.cpp \
-    src/DataLayer/TranslatorAPIs/TranslationExtraInfo.cpp \
+    src/DataLayer/TranslatorAPIs/AbstractTranslateApi.cpp \
     src/DataLayer/TranslatorAPIs/GoogleTranslateApi.cpp \
     src/DataLayer/TranslatorAPIs/LibreTranslateApi.cpp \
     src/DataLayer/TranslatorAPIs/MyMemoryTranslateApi.cpp \
+    src/DataLayer/TranslatorAPIs/TranslationExtraInfo.cpp \
     src/DataLayer/TextToSpeechAPIs/SoundOfTextApi.cpp \
     src/Utils/DownloadManager.cpp \
     src/Utils/LanguageISOCodes.cpp \

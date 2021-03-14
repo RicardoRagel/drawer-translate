@@ -4,14 +4,11 @@ MyMemoryTranslateApi::MyMemoryTranslateApi(bool use_local_lang_codes)
 {
   qDebug() << "(MyMemoryTranslateApi) Initialization ...";
 
-  // Init network manager to MyMemory Translate API
-  _network_manager = new QNetworkAccessManager(this);
-  connect(_network_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onTranslationNetworkAnswer(QNetworkReply*)));
-
   // Init local language code list
   _use_local_language_codes = use_local_lang_codes;
+
   if(_use_local_language_codes)
-    initLocalLanguageCodes();
+      initLocalLanguageCodes();
 }
 
 MyMemoryTranslateApi::~MyMemoryTranslateApi()
@@ -19,47 +16,36 @@ MyMemoryTranslateApi::~MyMemoryTranslateApi()
 
 }
 
+// Reference https://mymemory.translated.net/doc/spec.php -> GET
+// * Free, anonymous usage is limited to 1000 words/day.
 void MyMemoryTranslateApi::sendTranslationNetworkRequest(QString input_text, QString source_lang, QString target_lang, QString email, QString model)
 {
-    // Reference https://mymemory.translated.net/doc/spec.php -> GET
-    // * Free, anonymous usage is limited to 1000 words/day.
-    QUrl serviceUrl = QUrl(_translation_url);
-
+    // Generate POST data
+    QByteArray post_data;
     QUrlQuery query;
     query.addQueryItem("q", input_text.toStdString().c_str());          // the text to be translated
     query.addQueryItem("langpair", source_lang + "|" + target_lang);    // the language of the source text
     query.addQueryItem("mt", model);    // (1) Enables Machine Translation in results. (0) You can turn it off if you want just human segments
-
     // (Optional) Provide an email to enjoy 10000 words/day.
     if(email.trimmed() != "")
         query.addQueryItem("de", email.trimmed());
+    post_data = query.toString(QUrl::FullyEncoded).toUtf8();
 
-    QByteArray postData;
-    postData = query.toString(QUrl::FullyEncoded).toUtf8();
-
-    QNetworkRequest networkRequest(serviceUrl);
-    networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-
-    _network_manager->post(networkRequest,postData);
+    translationPostNetworkRequest(_translation_url,post_data);
 }
 
+// Reference: https://www.matecat.com/api/docs#Languages
 void MyMemoryTranslateApi::sendLanguagesNetworkRequest()
 {
     // MyMemory provides ~400 languages and most of them are not working yet.
     // So, return here the local list directly in the appropriate case:
     if(_use_local_language_codes)
     {
-        emit onLanguagesResult(_local_languages_codes);
+        emit newLanguagesResult(_local_languages_codes);
     }
     else
     {
-        // Reference: https://www.matecat.com/api/docs#Languages
-        QUrl serviceUrl = QUrl(_languages_url);
-
-        QNetworkRequest networkRequest(serviceUrl);
-        networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-
-        _network_manager->get(networkRequest);
+        languagesGetNetworkRequest(_languages_url);
     }
 }
 
@@ -82,7 +68,7 @@ void MyMemoryTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
         QString translated_text = data["translatedText"].toString();
         qDebug() << "(MyMemoryTranslateApi) Translation result:" << translated_text;
         QString escaped_text = parseHtmlUnicodes(translated_text);
-        emit onTranslationResult(escaped_text);
+        emit newTranslationResult(escaped_text);
 
         // Fill and publish the MyMemory extra info using the special signal
         MyMemoryResultInfo info;
@@ -108,7 +94,7 @@ void MyMemoryTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
                 info.matches.push_back(new_match);
         }
 
-        emit onTranslationResultInfo(info);
+        emit newTranslationResultInfo(info);
     }
     else
     {
@@ -122,11 +108,11 @@ void MyMemoryTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
                 qDebug() << "(MyMemoryTranslateApi) Lang Code: " << obj["2"].toString();
             }
 
-            emit onLanguagesResult(tmp_lang_codes);
+            emit newLanguagesResult(tmp_lang_codes);
         }
         else
         {
-            emit onErrorResult("MyMemory Translation API answers with an unexpected reply");
+            emit newError("MyMemory Translation API answers with an unexpected reply");
         }
     }
 }

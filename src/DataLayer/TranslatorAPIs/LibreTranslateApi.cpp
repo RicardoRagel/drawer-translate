@@ -3,10 +3,6 @@
 LibreTranslateApi::LibreTranslateApi()
 {
   qDebug() << "(LibreTranslateApi) Initialization ...";
-
-  // Init network manager to Libre Translate API
-  _network_manager = new QNetworkAccessManager(this);
-  connect(_network_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onTranslationNetworkAnswer(QNetworkReply*)));
 }
 
 LibreTranslateApi::~LibreTranslateApi()
@@ -14,44 +10,36 @@ LibreTranslateApi::~LibreTranslateApi()
 
 }
 
+// Reference: https://libretranslate.com/docs/#/translate/post_translate
+// Test: curl -X POST "https://libretranslate.com/translate" -H  "accept: application/json" -H  "Content-Type: application/x-www-form-urlencoded" -d "q=You are not my enemy&source=en&target=es"
+// {"translatedText":"No eres mi enemigo."}
 void LibreTranslateApi::sendTranslationNetworkRequest(QString input_text, QString source_lang, QString target_lang)
 {
-    // Reference: https://libretranslate.com/docs/#/translate/post_translate
-    // Test: curl -X POST "https://libretranslate.com/translate" -H  "accept: application/json" -H  "Content-Type: application/x-www-form-urlencoded" -d "q=You are not my enemy&source=en&target=es"
-    // {"translatedText":"No eres mi enemigo."}
-    QUrl serviceUrl = QUrl(_translation_url);
-
+    // Generate POST data
+    QByteArray post_data;
     QUrlQuery query;
     query.addQueryItem("q", input_text);        // the text to be translated
     query.addQueryItem("source", source_lang);  // the language of the source text
     query.addQueryItem("target", target_lang);  // the language we want to translate the input text
+    post_data = query.toString(QUrl::FullyEncoded).toUtf8();
 
-    QByteArray postData;
-    postData = query.toString(QUrl::FullyEncoded).toUtf8();
-
-    QNetworkRequest networkRequest(serviceUrl);
-    networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-
-    _network_manager->post(networkRequest,postData);
+    // Send POST
+    translationPostNetworkRequest(_translation_url, post_data);
 }
 
+// Reference: https://libretranslate.com/docs/#/translate/get_languages
 void LibreTranslateApi::sendLanguagesNetworkRequest()
 {
-    // Reference: https://libretranslate.com/docs/#/translate/get_languages
-    QUrl serviceUrl = QUrl(_languages_url);
-
-    QNetworkRequest networkRequest(serviceUrl);
-    networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-
-    _network_manager->get(networkRequest);
+    // Send GET
+    languagesGetNetworkRequest(_languages_url);
 }
 
 void LibreTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
 {
     // Read result
     QByteArray result = reply->readAll();
-    qDebug() << "(LibreTranslateApi) Network reply: " << result;
-    //  (LibreTranslateApi) Network reply:  "[{\"code\":\"en\",\"name\":\"English\"},{\"code\":\"ar\",\"name\":\"Arabic\"},{\"code\":\"zh\",\"name\":\"Chinese\"},{\"code\":\"fr\",\"name\":\"French\"},{\"code\":\"de\",\"name\":\"German\"},{\"code\":\"it\",\"name\":\"Italian\"},{\"code\":\"pt\",\"name\":\"Portuguese\"},{\"code\":\"ru\",\"name\":\"Russian\"},{\"code\":\"es\",\"name\":\"Spanish\"}]\n"
+    //qDebug() << "(LibreTranslateApi) Network reply: " << result;
+    // (LibreTranslateApi) Network reply:  "[{\"code\":\"en\",\"name\":\"English\"},{\"code\":\"ar\",\"name\":\"Arabic\"}, ...]\n"
 
     // Parse to JSON and get translations
     QJsonDocument document = QJsonDocument::fromJson(result);
@@ -65,7 +53,7 @@ void LibreTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
     {
         qDebug() << "(LibreTranslateApi) Translation result:" << object["translatedText"].toString();
 
-        emit onTranslationResult(object["translatedText"].toString());
+        emit newTranslationResult(object["translatedText"].toString());
     }
     else
     {
@@ -79,11 +67,11 @@ void LibreTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
                 qDebug() << "(LibreTranslateApi) Lang Code: " << obj["code"].toString();
             }
 
-            emit onLanguagesResult(tmp_lang_codes);
+            emit newLanguagesResult(tmp_lang_codes);
         }
         else
         {
-            emit onErrorResult("LibreTranslate API answers with an unexpected reply");
+            emit newError("LibreTranslate API answers with an unexpected reply");
         }
     }
 }

@@ -1,18 +1,11 @@
 #ifndef MYMEMORYTRANSLATEAPI_H
 #define MYMEMORYTRANSLATEAPI_H
 
-#include <QObject>
-#include <QDebug>
-#include <QString>
-#include <QRegularExpression>
-#include <QUrlQuery>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
+#include <TranslatorAPIs/AbstractTranslateApi.h>
+
 #include <string.h>
 #include <vector>
+#include <QRegularExpression>
 
 using namespace std;
 
@@ -36,7 +29,7 @@ struct MyMemoryResultInfo
     std::vector<MyMemoryResultMatch> matches; // Database matches for the result
 };
 
-class MyMemoryTranslateApi : public QObject
+class MyMemoryTranslateApi : public AbstractTranslateApi
 {
   Q_OBJECT
 
@@ -48,27 +41,23 @@ public:
   // Destuctor
   ~MyMemoryTranslateApi();
 
-  // Send available language list request
+  // Send translation request
   void sendTranslationNetworkRequest(QString input_text, QString source_lang, QString target_lang, QString email = "", QString model = "1");
 
   // Send available language list request
   void sendLanguagesNetworkRequest();
 
 signals:
-  void onTranslationResult(QString result);
-  void onTranslationResultInfo(MyMemoryResultInfo info);
-  void onLanguagesResult(QStringList result);
-  void onErrorResult(QString error);
+  void newTranslationResultInfo(MyMemoryResultInfo info);
 
 private slots:
 
-  // Receive QNetworkAccessManager replies
+  // Receive replies
   void onTranslationNetworkAnswer(QNetworkReply* reply);
 
 private:
 
-  // Variables
-  QNetworkAccessManager *_network_manager;      // System network handler to post request to the online translator
+  // URLs
   QString _translation_url  { "https://api.mymemory.translated.net/get" };
   QString _languages_url    { "https://api.mymemory.translated.net/languages" };
 

@@ -46,22 +46,22 @@ void DataManager::init()
 
     // Init Google API and connect results to this app
     _translator_api_google = new GoogleTranslateApi();
-    connect(_translator_api_google, SIGNAL(onTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
-    connect(_translator_api_google, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
-    connect(_translator_api_google, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
+    connect(_translator_api_google, SIGNAL(newTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
+    connect(_translator_api_google, SIGNAL(newLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
+    connect(_translator_api_google, SIGNAL(newError(QString)), this, SLOT(onTranslationApiError(QString)));
 
     // Init MyMemory API and connect results to this app
     _translator_api_mymemory = new MyMemoryTranslateApi(true); // arg: enable use the local language list
-    connect(_translator_api_mymemory, SIGNAL(onTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
-    connect(_translator_api_mymemory, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
-    connect(_translator_api_mymemory, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
-    connect(_translator_api_mymemory, SIGNAL(onTranslationResultInfo(MyMemoryResultInfo)), this, SLOT(onMyMemoryTranslationResultInfo(MyMemoryResultInfo)));
+    connect(_translator_api_mymemory, SIGNAL(newTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
+    connect(_translator_api_mymemory, SIGNAL(newLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
+    connect(_translator_api_mymemory, SIGNAL(newError(QString)), this, SLOT(onTranslationApiError(QString)));
+    connect(_translator_api_mymemory, SIGNAL(newTranslationResultInfo(MyMemoryResultInfo)), this, SLOT(onMyMemoryTranslationResultInfo(MyMemoryResultInfo)));
 
     // Init LibreTranslate API and connect results to this app
     _translator_api_libre = new LibreTranslateApi();
-    connect(_translator_api_libre, SIGNAL(onTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
-    connect(_translator_api_libre, SIGNAL(onLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
-    connect(_translator_api_libre, SIGNAL(onErrorResult(QString)), this, SLOT(onTranslationApiError(QString)));
+    connect(_translator_api_libre, SIGNAL(newTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
+    connect(_translator_api_libre, SIGNAL(newLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
+    connect(_translator_api_libre, SIGNAL(newError(QString)), this, SLOT(onTranslationApiError(QString)));
 
     // Init TTS SoundOfText API and connect the audio file result to play it
     _tts_api_soundoftext = new SoundOfTextApi();

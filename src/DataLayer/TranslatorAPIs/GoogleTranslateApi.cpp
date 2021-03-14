@@ -3,10 +3,6 @@
 GoogleTranslateApi::GoogleTranslateApi()
 {
   qDebug() << "(GoogleTranslateApi) Initialization ...";
-
-  // Init network manager to Google Translate API
-  _network_manager = new QNetworkAccessManager(this);
-  connect(_network_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onTranslationNetworkAnswer(QNetworkReply*)));
 }
 
 GoogleTranslateApi::~GoogleTranslateApi()
@@ -14,11 +10,11 @@ GoogleTranslateApi::~GoogleTranslateApi()
 
 }
 
+// Reference: https://cloud.google.com/translate/docs/reference/rest/v2/translate
 void GoogleTranslateApi::sendTranslationNetworkRequest(QString input_text, QString key, QString source_lang, QString target_lang, QString model)
 {
-    // Reference: https://cloud.google.com/translate/docs/reference/rest/v2/translate
-    QUrl serviceUrl = QUrl(_translation_url);
-
+    // Generate POST data
+    QByteArray post_data;
     QUrlQuery query;
     query.addQueryItem("q", input_text);        // the text to be translated
     query.addQueryItem("source", source_lang);  // the language of the source text
@@ -26,33 +22,23 @@ void GoogleTranslateApi::sendTranslationNetworkRequest(QString input_text, QStri
     query.addQueryItem("format","text");        // the format of the source text (html or text)
     query.addQueryItem("model", model);         // the translation model (base or nmt)
     query.addQueryItem("key", key);             // a valid API key to handle requests for this API
+    post_data = query.toString(QUrl::FullyEncoded).toUtf8();
 
-    QByteArray postData;
-    postData = query.toString(QUrl::FullyEncoded).toUtf8();
-
-    QNetworkRequest networkRequest(serviceUrl);
-    networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-
-    _network_manager->post(networkRequest,postData);
+    // Send POST
+    translationPostNetworkRequest(_translation_url, post_data);
 }
 
+// Reference: https://cloud.google.com/translate/docs/reference/rest/v2/languages
 void GoogleTranslateApi::sendLanguagesNetworkRequest(QString key, QString target_lang, QString model)
 {
-    // Reference: https://cloud.google.com/translate/docs/reference/rest/v2/languages
-    QUrl serviceUrl = QUrl(_languages_url);
-
+    QByteArray post_data;
     QUrlQuery query;
     query.addQueryItem("target", target_lang);  // the language we want to translate the input text
     query.addQueryItem("model",model);          // the translation model (base or nmt)
     query.addQueryItem("key", key);             // a valid API key to handle requests for this API
+    post_data = query.toString(QUrl::FullyEncoded).toUtf8();
 
-    QByteArray postData;
-    postData = query.toString(QUrl::FullyEncoded).toUtf8();
-
-    QNetworkRequest networkRequest(serviceUrl);
-    networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-
-    _network_manager->post(networkRequest,postData);
+    languagesPostNetworkRequest(_languages_url, post_data);
 }
 
 void GoogleTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
@@ -77,7 +63,7 @@ void GoogleTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
             QJsonObject obj = value.toObject();
             qDebug() << "(GoogleTranslateApi) Translation result:" << obj["translatedText"].toString();
 
-            emit onTranslationResult(obj["translatedText"].toString());
+            emit newTranslationResult(obj["translatedText"].toString());
         }
     }
     else if(data.find("languages") != data.end())
@@ -91,10 +77,10 @@ void GoogleTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
             //qDebug() << "(GoogleTranslateApi) Lang Code: " << obj["language"].toString();
         }
 
-        emit onLanguagesResult(tmp_lang_codes);
+        emit newLanguagesResult(tmp_lang_codes);
     }
     else
     {
-        emit onErrorResult("Google Translation API answers with an unexpected reply");
+        emit newError("Google Translation API answers with an unexpected reply");
     }
 }
