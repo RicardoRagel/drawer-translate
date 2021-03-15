@@ -24,7 +24,7 @@ void MyMemoryTranslateApi::sendTranslationNetworkRequest(QString input_text, QSt
     QByteArray post_data;
     QUrlQuery query;
     query.addQueryItem("q", input_text.toStdString().c_str());          // the text to be translated
-    query.addQueryItem("langpair", source_lang + "|" + target_lang);    // the language of the source text
+    query.addQueryItem("langpair", source_lang + "|" + target_lang);    // the language of the source | target text
     query.addQueryItem("mt", model);    // (1) Enables Machine Translation in results. (0) You can turn it off if you want just human segments
     // (Optional) Provide an email to enjoy 10000 words/day.
     if(email.trimmed() != "")

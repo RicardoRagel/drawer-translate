@@ -13,8 +13,9 @@
 #define TRIGGER_TRANSLATION_DELAY 1000 // Delay in ms to trigger the translation [integer]
 #define TRANSLATION_ERROR_MSG "Error"
 #define GOOGLE_TRANSLATE_API_NAME "Google Translate"
-#define MY_MEMORY_TRANSLATE_API_NAME "MyMemory Translate"
+#define MY_MEMORY_TRANSLATE_API_NAME "MyMemory"
 #define LIBRE_TRANSLATE_API_NAME "Libre Translate"
+#define APERTIUM_TRANSLATE_API_NAME "Apertium"
 
 /*
  *
@@ -32,14 +33,6 @@ class Constants : public QObject
 
 public:
 
-    double deg2rad = DEG2RAD;
-    Q_PROPERTY(double degToRad READ degToRad NOTIFY degToRadChanged)
-    double degToRad(){return deg2rad;}
-
-    double rad2deg = DEG2RAD;
-    Q_PROPERTY(double radToDeg READ radToDeg NOTIFY radToDegChanged)
-    double radToDeg(){return rad2deg;}
-
     QString app_title = APP_TITLE;
     Q_PROPERTY(QString appTitle READ appTitle NOTIFY appTitleChanged)
     QString appTitle(){return app_title;}
@@ -56,13 +49,17 @@ public:
     Q_PROPERTY(QString libreTranslateApiName READ libreTranslateApiName NOTIFY libreTranslateApiNameChanged)
     QString libreTranslateApiName(){return libre_translate_api_name;}
 
+    QString apertium_translate_api_name = APERTIUM_TRANSLATE_API_NAME;
+    Q_PROPERTY(QString apertiumTranslateApiName READ apertiumTranslateApiName NOTIFY apertiumTranslateApiNameChanged)
+    QString apertiumTranslateApiName(){return apertium_translate_api_name;}
+
 signals:
-  void degToRadChanged();
-  void radToDegChanged();
+
   void appTitleChanged();
   void googleTranslateApiNameChanged();
   void myMemoryTranslateApiNameChanged();
   void libreTranslateApiNameChanged();
+  void apertiumTranslateApiNameChanged();
 };
 
 #endif

@@ -16,6 +16,7 @@
 #include "TranslatorAPIs/GoogleTranslateApi.h"
 #include "TranslatorAPIs/MyMemoryTranslateApi.h"
 #include "TranslatorAPIs/LibreTranslateApi.h"
+#include "TranslatorAPIs/ApertiumTranslateApi.h"
 #include "TranslatorAPIs/TranslationExtraInfo.h"
 #include "TextToSpeechAPIs/SoundOfTextApi.h"
 
@@ -137,6 +138,7 @@ private:
   GoogleTranslateApi *_translator_api_google;       // Google Translator API Handler
   MyMemoryTranslateApi *_translator_api_mymemory;   // MyMemory Translator API Handler
   LibreTranslateApi *_translator_api_libre;         // Libre Translator API Handler
+  ApertiumTranslateApi *_translator_api_apertium;         // Apertium Translator API Handler
 
   TranslationExtraInfo _translation_extra_info;     // Extra info about the translation result
   bool _translation_extra_info_visible;             // Set true to show the Extra info pannel

@@ -10,7 +10,10 @@ map<string, string> LanguageISOCodes::getLanguageList()
 // Return the name for the input language code
 string LanguageISOCodes::getLanguageName(string code)
 {
-    return _lang_map[code];
+    if(_lang_map.find(code) != _lang_map.end())
+        return _lang_map[code];
+    else
+        return "Unknown";
 };
 
 // Return the code for the input language name or "None" if it's not been found

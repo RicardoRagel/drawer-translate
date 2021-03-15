@@ -16,6 +16,7 @@ HEADERS += \
     include/DataLayer/Constants.h \
     include/DataLayer/Settings.h \
     include/DataLayer/TranslatorAPIs/AbstractTranslateApi.h \
+    include/DataLayer/TranslatorAPIs/ApertiumTranslateApi.h \
     include/DataLayer/TranslatorAPIs/GoogleTranslateApi.h \
     include/DataLayer/TranslatorAPIs/LibreTranslateApi.h \
     include/DataLayer/TranslatorAPIs/MyMemoryTranslateApi.h \
@@ -30,6 +31,7 @@ SOURCES += \
     src/DataLayer/DataManager.cpp \
     src/DataLayer/Settings.cpp \
     src/DataLayer/TranslatorAPIs/AbstractTranslateApi.cpp \
+    src/DataLayer/TranslatorAPIs/ApertiumTranslateApi.cpp \
     src/DataLayer/TranslatorAPIs/GoogleTranslateApi.cpp \
     src/DataLayer/TranslatorAPIs/LibreTranslateApi.cpp \
     src/DataLayer/TranslatorAPIs/MyMemoryTranslateApi.cpp \

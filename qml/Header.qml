@@ -31,14 +31,14 @@ Rectangle
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         anchors.leftMargin: margins
-        spacing: margins/2
+        spacing: 0
 
         // Source Language Indicator and button
         CustomButton2
         {
             id: sourceLangTagButton
             anchors.verticalCenter: parent.verticalCenter
-            width: buttonsWidth
+            width: buttonsWidth * 1.5
             height: buttonsHeight
             text: DataManager.settings.sourceLang
             textColor: fontColor
@@ -82,7 +82,7 @@ Rectangle
         {
             id: targetLangTagButton
             anchors.verticalCenter: parent.verticalCenter
-            width: buttonsWidth
+            width: buttonsWidth * 1.5
             height: buttonsHeight
             text: DataManager.settings.targetLang
             textColor: fontColor

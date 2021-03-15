@@ -20,8 +20,9 @@ DataManager::DataManager()
     // Init avalilable translation engines
     QStringList translator_engines_list;
     translator_engines_list.append(GOOGLE_TRANSLATE_API_NAME);
-    translator_engines_list.append(MY_MEMORY_TRANSLATE_API_NAME);
     translator_engines_list.append(LIBRE_TRANSLATE_API_NAME);
+    translator_engines_list.append(MY_MEMORY_TRANSLATE_API_NAME);
+    translator_engines_list.append(APERTIUM_TRANSLATE_API_NAME);
     setTranslatorEngines(translator_engines_list);
 }
 
@@ -62,6 +63,12 @@ void DataManager::init()
     connect(_translator_api_libre, SIGNAL(newTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
     connect(_translator_api_libre, SIGNAL(newLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
     connect(_translator_api_libre, SIGNAL(newError(QString)), this, SLOT(onTranslationApiError(QString)));
+
+    // Init ApertiumTranslate API and connect results to this app
+    _translator_api_apertium = new ApertiumTranslateApi();
+    connect(_translator_api_apertium, SIGNAL(newTranslationResult(QString)), this, SLOT(onTranslationApiResult(QString)));
+    connect(_translator_api_apertium, SIGNAL(newLanguagesResult(QStringList)), this, SLOT(onTranslationApiLanguagesResult(QStringList)));
+    connect(_translator_api_apertium, SIGNAL(newError(QString)), this, SLOT(onTranslationApiError(QString)));
 
     // Init TTS SoundOfText API and connect the audio file result to play it
     _tts_api_soundoftext = new SoundOfTextApi();
@@ -142,6 +149,11 @@ void DataManager::updateAvailableLanguageCode(QString translator_engine)
     {
         qDebug() << "(DataManager) Available languages using LibreTranslate API...";
         _translator_api_libre->sendLanguagesNetworkRequest();
+    }
+    else if(translator_engine == APERTIUM_TRANSLATE_API_NAME)
+    {
+        qDebug() << "(DataManager) Available languages using ApertiumTranslate API...";
+        _translator_api_apertium->sendLanguagesNetworkRequest();
     }
     else
     {
@@ -292,6 +304,11 @@ void DataManager::translateTimerCallback()
      {
          qDebug() << "(DataManager) Translation using Libre API...";
          _translator_api_libre->sendTranslationNetworkRequest(_input_text, _settings->sourceLang(), _settings->targetLang());
+     }
+     else if(_settings->translatorEngine() == APERTIUM_TRANSLATE_API_NAME)
+     {
+         qDebug() << "(DataManager) Translation using Apertium API...";
+         _translator_api_apertium->sendTranslationNetworkRequest(_input_text, _settings->sourceLang(), _settings->targetLang());
      }
 }
 
