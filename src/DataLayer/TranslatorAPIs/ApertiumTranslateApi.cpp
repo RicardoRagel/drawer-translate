@@ -42,7 +42,7 @@ void ApertiumTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
 {
     // Read result
     QByteArray result = reply->readAll();
-    qDebug() << "(ApertiumTranslateApi) Network reply: " << result;
+    //qDebug() << "(ApertiumTranslateApi) Network reply: " << result;
     // (ApertiumTranslateApi) Network reply:  "{\"responseData\": [{\"sourceLanguage\": \"afr\", \"targetLanguage\": \"deu\"}, {\"sourceLanguage\": \"afr\", \"targetLanguage\": \"nld\"}, ...]}
     // (ApertiumTranslateApi) Network reply:  "{\"responseData\": {\"translatedText\": \"Hola\"}, \"responseDetails\": null, \"responseStatus\": 200}"
     // (ApertiumTranslateApi) Network reply:  "{\"status\": \"error\", \"code\": 400, \"message\": \"Bad Request\", \"explanation\": \"That pair is not installed\"}"
@@ -58,7 +58,7 @@ void ApertiumTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
         QJsonObject data = object["responseData"].toObject();
         if(data.find("translatedText") != data.end())
         {
-            qDebug() << "(ApertiumTranslateApi) Getting translation result... ";
+            //qDebug() << "(ApertiumTranslateApi) Getting translation result... ";
             QString translated_text = data["translatedText"].toString();
             QString escaped_text = removeUnexpectedTags(translated_text);
             emit newTranslationResult(escaped_text);
@@ -69,14 +69,14 @@ void ApertiumTranslateApi::onTranslationNetworkAnswer(QNetworkReply *reply)
         QJsonArray array = object["responseData"].toArray();
         if(!array.isEmpty())
         {
-            qDebug() << "(ApertiumTranslateApi) Getting language codes result... ";
+            //qDebug() << "(ApertiumTranslateApi) Getting language codes result... ";
             for(const auto language_pair : array)
             {
                 QString source_lang = language_pair.toObject()["sourceLanguage"].toString();
 
                 if(!lang_codes.contains(source_lang))
                 {
-                    qDebug() << "(ApertiumTranslateApi) Language code: " + source_lang;
+                    //qDebug() << "(ApertiumTranslateApi) Language code: " + source_lang;
                     lang_codes.append(source_lang);
                 }
             }

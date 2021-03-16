@@ -13,6 +13,9 @@ Window
 {
     id: root
 
+    // Remove window frame and make it always on top
+    flags: Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
+
     // Disable the parent window edition
     modality: Qt.WindowModal
 
@@ -146,6 +149,38 @@ Window
                             onHoveredChanged:
                             {
                                 parent.opacity = hovered? 1.0 : unhoveredOpacity
+                            }
+                        }
+
+                        // Info button
+                        CustomButton2
+                        {
+                            id: infoButton
+                            visible: translatorEngine.currentIndex >= 0? true : false
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.right
+                            anchors.leftMargin: 10
+                            width: parent.height
+                            height: parent.height
+                            radius: width
+                            imgSizeFactor: 0.5
+                            imgOpacity: hovered? 1.0 : 0.5
+                            image_url: "qrc:/resources/info.svg"
+                            onClickedChanged:
+                            {
+                                if(clicked)
+                                {
+                                    clicked = false
+
+                                    if(translatorEngine.currentText == Constants.googleTranslateApiName)
+                                        Qt.openUrlExternally("https://cloud.google.com/translate");
+                                    else if(translatorEngine.currentText == Constants.libreTranslateApiName)
+                                        Qt.openUrlExternally("https://github.com/uav4geo/LibreTranslate/blob/main/README.md");
+                                    else if(translatorEngine.currentText == Constants.myMemoryTranslateApiName)
+                                        Qt.openUrlExternally("https://mymemory.translated.net/");
+                                    else if(translatorEngine.currentText == Constants.apertiumTranslateApiName)
+                                        Qt.openUrlExternally("https://wiki.apertium.org/wiki/Main_Page");
+                                }
                             }
                         }
                     }
@@ -561,58 +596,6 @@ Window
                     }
                 }
 
-                // FontSize
-                Row
-                {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    spacing: 2
-
-                    Rectangle
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: widthColum1
-                        height: heightColumns
-                        color: "transparent"
-
-                        Text
-                        {
-                            anchors.left: parent.left
-                            anchors.verticalCenter: parent.verticalCenter
-                            font.pixelSize: fontPixelSize
-                            font.bold: false
-                            color: fontColor
-                            text: "    Font size: "
-                        }
-                    }
-                    Rectangle
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        width: widthColum2
-                        height: heightColumns
-                        color: "transparent"
-
-                        CustomFontSizeSwitch
-                        {
-                            id: fontSizeSelector
-                            anchors.centerIn: parent
-                            spacing: 4
-                            fontColor: root.fontColor
-                            buttonSize: root.buttonSize
-                            text: "Aa"
-                        }
-                        Connections
-                        {
-                            target: DataManager.settings
-
-                            onFontSizeChanged:
-                            {
-                                fontSizeSelector.selectBySize(DataManager.settings.fontSize)
-                                console.log("Updating fontSize: " + DataManager.settings.fontSize)
-                            }
-                        }
-                    }
-                }
-
                 // AutoHide
                 Row
                 {
@@ -665,91 +648,179 @@ Window
                     }
                 }
 
+                // FontSize
+                Row
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    Font size: "
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: "transparent"
+
+                        CustomFontSizeSwitch
+                        {
+                            id: fontSizeSelector
+                            anchors.centerIn: parent
+                            spacing: 4
+                            fontColor: root.fontColor
+                            buttonSize: root.buttonSize
+                            text: "Aa"
+                        }
+                        Connections
+                        {
+                            target: DataManager.settings
+
+                            onFontSizeChanged:
+                            {
+                                fontSizeSelector.selectBySize(DataManager.settings.fontSize)
+                                console.log("Updating fontSize: " + DataManager.settings.fontSize)
+                            }
+                        }
+                    }
+                }
+
+
                 // Some Space
                 Rectangle
                 {
                     id: whiteSpace
-                    height: 10
+                    height: 20
                     width: 1
                     color: "transparent"
                 }
 
-                // Accept/Decline buttons
-                Row
+                Rectangle
                 {
-                    anchors.right: parent.right
-                    anchors.rightMargin: 0
+                    id: buttonsRect
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: widthColum1 + widthColum2
+                    height: heightColumns
+                    color: "transparent"
 
-                    spacing: 5
-
-                    CustomButton
+                    CustomButton2
                     {
-                        id: acceptButton
+                        id: aboutButton
                         anchors.verticalCenter: parent.verticalCenter
-                        width: buttonSize
-                        height: buttonSize
-                        imgSizeFactor: 0.7
-
-                        pressedColor: buttonPressedColor
-                        unpressedColor: buttonUnpressedColor
-                        hoveredColor: comboBoxColor
-                        image_url: "qrc:/resources/accept.svg"
+                        anchors.left: parent.left
+                        anchors.leftMargin: 0
+                        width: 75
+                        height: 20
+                        text: "About ..."
+                        textItalic: true
+                        textColor: fontColor
+                        textSize: fontPixelSize
+                        imgOpacity: hovered? 1.0 : 0.5
+                        color: "transparent"
 
                         onClickedChanged:
                         {
                             if(clicked)
                             {
                                 clicked = false
-                                console.log("Setting new configuration")
-                                DataManager.settings.setTranslatorEngine(translatorEngine.currentText)
-                                DataManager.setSourceLanguage(sourceLang.currentText)
-                                DataManager.setTargetLanguage(targetLang.currentText)
-                                DataManager.settings.setGoogleApiKey(googleApiKey.text)
-                                DataManager.settings.setEmail(email.text)
-                                DataManager.settings.setTranslateOnSelection(onSelection.checked)
-                                DataManager.settings.setTranslateOnCopy(onCopy.checked)
-                                DataManager.settings.setAutoHideWin(autoHide.checked)
-                                DataManager.settings.setFontSize(fontSizeSelector.sizeSelected)
-                                root.visible = false
+                                aboutWin.open()
                             }
                         }
                     }
-                    CustomButton
+
+                    // Accept/Decline buttons
+                    Row
                     {
-                        id: cancelButton
                         anchors.verticalCenter: parent.verticalCenter
-                        width: buttonSize
-                        height: buttonSize
-                        imgSizeFactor: 0.5
+                        anchors.right: parent.right
+                        anchors.rightMargin: 0
 
-                        pressedColor: buttonPressedColor
-                        unpressedColor: buttonUnpressedColor
-                        hoveredColor: comboBoxColor
-                        image_url: "qrc:/resources/cancel.svg"
+                        spacing: 5
 
-                        onClickedChanged:
+                        CustomButton
                         {
-                            if(clicked)
+                            id: acceptButton
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: buttonSize
+                            height: buttonSize
+                            imgSizeFactor: 0.7
+
+                            pressedColor: buttonPressedColor
+                            unpressedColor: buttonUnpressedColor
+                            hoveredColor: comboBoxColor
+                            image_url: "qrc:/resources/accept.svg"
+
+                            onClickedChanged:
                             {
-                                clicked = false
-                                console.log("Canceling settings change")
-                                translatorEngine.currentIndex = translatorEngine.find(DataManager.settings.translatorEngine)
-                                sourceLang.currentIndex = sourceLang.find("[" + DataManager.settings.sourceLang + "]", Qt.MatchContains)
-                                targetLang.currentIndex = targetLang.find("[" + DataManager.settings.targetLang + "]", Qt.MatchContains)
-                                googleApiKey.text = DataManager.settings.googleApiKey
-                                email.text = DataManager.settings.email
-                                onSelection.checked = DataManager.settings.translateOnSelection
-                                onCopy.checked = DataManager.settings.translateOnCopy
-                                autoHide.checked = DataManager.settings.autoHideWin
-                                fontSizeSelector.selectBySize(DataManager.settings.fontSize)
-                                root.visible = false
+                                if(clicked)
+                                {
+                                    clicked = false
+                                    console.log("Setting new configuration")
+                                    DataManager.settings.setTranslatorEngine(translatorEngine.currentText)
+                                    DataManager.setSourceLanguage(sourceLang.currentText)
+                                    DataManager.setTargetLanguage(targetLang.currentText)
+                                    DataManager.settings.setGoogleApiKey(googleApiKey.text)
+                                    DataManager.settings.setEmail(email.text)
+                                    DataManager.settings.setTranslateOnSelection(onSelection.checked)
+                                    DataManager.settings.setTranslateOnCopy(onCopy.checked)
+                                    DataManager.settings.setAutoHideWin(autoHide.checked)
+                                    DataManager.settings.setFontSize(fontSizeSelector.sizeSelected)
+                                    root.visible = false
+                                }
                             }
                         }
-                    }
-                }//row
+                        CustomButton
+                        {
+                            id: cancelButton
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: buttonSize
+                            height: buttonSize
+                            imgSizeFactor: 0.5
+
+                            pressedColor: buttonPressedColor
+                            unpressedColor: buttonUnpressedColor
+                            hoveredColor: comboBoxColor
+                            image_url: "qrc:/resources/cancel.svg"
+
+                            onClickedChanged:
+                            {
+                                if(clicked)
+                                {
+                                    clicked = false
+                                    console.log("Canceling settings change")
+                                    translatorEngine.currentIndex = translatorEngine.find(DataManager.settings.translatorEngine)
+                                    sourceLang.currentIndex = sourceLang.find("[" + DataManager.settings.sourceLang + "]", Qt.MatchContains)
+                                    targetLang.currentIndex = targetLang.find("[" + DataManager.settings.targetLang + "]", Qt.MatchContains)
+                                    googleApiKey.text = DataManager.settings.googleApiKey
+                                    email.text = DataManager.settings.email
+                                    onSelection.checked = DataManager.settings.translateOnSelection
+                                    onCopy.checked = DataManager.settings.translateOnCopy
+                                    autoHide.checked = DataManager.settings.autoHideWin
+                                    fontSizeSelector.selectBySize(DataManager.settings.fontSize)
+                                    root.visible = false
+                                }
+                            }
+                        }
+                    }//row
+                }//buttonsRect
+
             }//column
         }//contentItem
-
     }//background
 
     // Keyboard Control
@@ -770,5 +841,16 @@ Window
                 event.accepted = true;
             }
         }
+    }
+
+    // About window
+    AboutWin
+    {
+        id: aboutWin
+        visible: false
+        anchors.centerIn: parent
+        finalWidth: parent.width - 4*root.margins
+        finalHeight: parent.height - 4*root.margins
+        backgroundColor: editableSpaceColor
     }
 }//win

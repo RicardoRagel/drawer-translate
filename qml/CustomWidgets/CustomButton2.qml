@@ -13,6 +13,7 @@ Rectangle
     property int textSize: 12
     property bool textAllUppercase: false
     property bool textBold: false
+    property bool textItalic: false
 
     property color buttonColor: "transparent"
     property color buttonHoveredColor: Qt.rgba(255/255, 255/255, 255/255, 0.1)
@@ -60,6 +61,8 @@ Rectangle
             font.pixelSize: textSize
             font.capitalization: textAllUppercase? Font.AllUppercase: Font.MixedCase
             font.bold: textBold
+            font.italic: textItalic
+            opacity: imgOpacity
         }
 
         onClicked:

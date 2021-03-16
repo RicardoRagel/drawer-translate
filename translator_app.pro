@@ -50,6 +50,7 @@ OTHER_FILES += \
     qml/CustomWidgets/CustomFontSizeSwitch.qml \
     qml/CustomWidgets/CustomContextMenu.qml \
     qml/ExternalWindows/SettingsWin.qml \
+    qml/ExternalWindows/AboutWin.qml \
     qml/ExtraInfoPannel.qml \
     qml/Content.qml \
     qml/Header.qml \

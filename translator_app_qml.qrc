@@ -12,5 +12,6 @@
         <file>qml/ExtraInfoPannel.qml</file>
         <file>qml/CustomWidgets/CustomFontSizeSwitch.qml</file>
         <file>qml/CustomWidgets/CustomContextMenu.qml</file>
+        <file>qml/ExternalWindows/AboutWin.qml</file>
     </qresource>
 </RCC>

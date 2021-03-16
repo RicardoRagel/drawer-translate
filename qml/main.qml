@@ -340,7 +340,6 @@ ApplicationWindow
     {
         id: settingsWindow
         visible: false
-        flags: Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint
         title: root.title + " - Settings"
         buttonSize: root.buttonSize2
         fontPixelSize: root.fontPixelSize
