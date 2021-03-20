@@ -36,5 +36,12 @@
         <file>resources/copy.svg</file>
         <file>resources/paste.svg</file>
         <file>resources/cut.svg</file>
+        <file>resources/logos/apertium.png</file>
+        <file>resources/logos/google.png</file>
+        <file>resources/logos/mymemory.svg</file>
+        <file>resources/logos/libretranslate.svg</file>
+        <file>resources/logos/hearling.png</file>
+        <file>resources/logos/GitHub-Mark-120px-plus.png</file>
+        <file>resources/logos/GitHub-Mark-Light-120px-plus.png</file>
     </qresource>
 </RCC>

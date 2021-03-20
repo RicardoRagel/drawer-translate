@@ -714,7 +714,7 @@ Window
                 {
                     id: buttonsRect
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: widthColum1 + widthColum2
+                    width: widthColum1 + widthColum2 + 75
                     height: heightColumns
                     color: "transparent"
 
@@ -851,6 +851,10 @@ Window
         anchors.centerIn: parent
         finalWidth: parent.width - 4*root.margins
         finalHeight: parent.height - 4*root.margins
-        backgroundColor: editableSpaceColor
+        backgroundColor: buttonPressedColor
+        fontColor: root.fontColor
+        fontPixelSize: root.fontPixelSize
+        buttonUnpressedColor: root.buttonUnpressedColor
+        buttonPressedColor: root.buttonPressedColor
     }
 }//win
