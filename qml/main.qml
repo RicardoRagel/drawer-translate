@@ -201,10 +201,19 @@ ApplicationWindow
     }
 
     // Hide App Animations
-    ParallelAnimation
+    SequentialAnimation
     {
         id: hideAnimation
         running: false
+
+        NumberAnimation
+        {
+            target: root;
+            property: "contentsOpacity";
+            to: 0.0;
+            duration: 500
+        }
+
         NumberAnimation
         {
             target: root;
@@ -213,7 +222,7 @@ ApplicationWindow
             duration: hideAnimationDuration
         }
     }
-    ParallelAnimation
+    SequentialAnimation
     {
         id: unhideAnimation
         running: false
@@ -224,16 +233,24 @@ ApplicationWindow
             to: root.unhideLastHeight;
             duration: hideAnimationDuration
         }
+
+        NumberAnimation
+        {
+            target: root;
+            property: "contentsOpacity";
+            to: 1.0;
+            duration: 500
+        }
     }
 
     // Contents opacity controller
     property double contentsOpacity: 1.0
-    property double maxHop: 2.25 * root.minimumHeight
-    property double minHop: 1.5 * root.minimumHeight
-    onHeightChanged:
-    {
-        contentsOpacity = root.height > maxHop? 1.0 : (root.height - minHop)/ (maxHop - minHop)
-    }
+//    property double maxHop: 2.25 * root.minimumHeight
+//    property double minHop: 1.5 * root.minimumHeight
+//    onHeightChanged:
+//    {
+//        contentsOpacity = root.height > maxHop? 1.0 : (root.height - minHop)/ (maxHop - minHop)
+//    }
 
     /*
         CONTENTS
@@ -360,6 +377,18 @@ ApplicationWindow
             maximumHeight = height
             minimumWidth = width
             maximumWidth = width
+        }
+
+        onVisibleChanged:
+        {
+            // Control autoHide
+            if(DataManager.settings.autoHideWin)
+            {
+                if(visible)
+                    autoHideTimer.running = false
+                else
+                    autoHideTimer.running = true
+            }
         }
     }
 }
