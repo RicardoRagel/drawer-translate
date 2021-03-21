@@ -6,7 +6,7 @@ USAGE="./release_appimage.sh <PATH_TO_YOUR_APP_BUILD_FOLDER> <PATH_TO_QMAKE>"
 LINUXDEPLOYQT=linuxdeployqt-7-x86_64.AppImage
 DESKTOP_FILE_NAME=translator_minimal_app.desktop
 DESKTOP_FILE_ICON=icon_app.png
-QML_FOLDER=../qml
+QML_FOLDER=../../qml
 #QT_EXTRA_PLUGINS=iconengines,imageformats,renderplugins,sceneparsers,geometryloaders
 
 # Get and parse arguments

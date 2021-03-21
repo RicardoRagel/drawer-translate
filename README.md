@@ -27,4 +27,4 @@ Although the app has a setting window where you can change and save the most of 
     ```bash
     qt.network.ssl: QSslSocket::connectToHostEncrypted: TLS initialization failed
     ```
-    Fix: Install OpenSSL. [Reference](https://stackoverflow.com/questions/53805704/tls-initialization-failed-on-get-request)
+    Fix: Install OpenSSL on the system (C:\Windows\System32). [Reference](https://stackoverflow.com/questions/53805704/tls-initialization-failed-on-get-request)
