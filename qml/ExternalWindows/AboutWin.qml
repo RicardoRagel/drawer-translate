@@ -50,21 +50,21 @@ Popup
             target: root
             property: "width"
             to: finalWidth
-            duration: Qt.platform.os === "windows"? 2000 : 500
+            duration: Qt.platform.os === "windows"? 1000 : 500
         }
         NumberAnimation
         {
             target: root
             property: "height"
             to: finalHeight
-            duration: Qt.platform.os === "windows"? 500 : 500
+            duration: Qt.platform.os === "windows"? 1000 : 500
         }
         NumberAnimation
         {
             target: content
             property: "opacity"
             to: 1.0
-            duration: Qt.platform.os === "windows"? 500 : 500
+            duration: Qt.platform.os === "windows"? 1000 : 500
         }
     }
 
