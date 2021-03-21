@@ -12,7 +12,7 @@ Rectangle
 
     property int buttonsWidth: 50
     property int buttonsHeight: 50
-    property int margins: 10
+    property int top_margin: 10
     property color fontColor: "black"
     property int fontPixelSize: 14
     property double contentsOpacity: 1.0
@@ -30,7 +30,7 @@ Rectangle
         id: languagesButtonsRow
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: margins
+        anchors.leftMargin: 10
         spacing: 0
 
         // Source Language Indicator and button
@@ -107,7 +107,7 @@ Rectangle
         id: buttonsRect
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
-        anchors.rightMargin: margins
+        anchors.rightMargin: 10
         color: "transparent"
         width:  DataManager.settings.autoHideWin? buttonsWidth * 3 : buttonsWidth * 4
         height: parent.height

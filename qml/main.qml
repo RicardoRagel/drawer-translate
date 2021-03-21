@@ -36,7 +36,7 @@ ApplicationWindow
     property color appButtonPressedColor:   Qt.rgba(80/255, 80/255, 80/255, 1)
     property real heightFactor: 0.15
     property int margins: 10
-    property int forceMinimumHeight: buttonSize + margins * 2
+    property int forceMinimumHeight: buttonSize
 
     // Windows Configuration
     title: qsTr(Constants.appTitle)
@@ -214,24 +214,47 @@ ApplicationWindow
             duration: 500
         }
 
-        NumberAnimation
+        ParallelAnimation
         {
-            target: root;
-            property: "targetHeight";
-            to: root.minimumHeight;
-            duration: hideAnimationDuration
+            NumberAnimation
+            {
+                target: headerRect;
+                property: "top_margin";
+                to: 0.0;
+                duration: hideAnimationDuration
+            }
+
+            NumberAnimation
+            {
+                target: root;
+                property: "targetHeight";
+                to: root.minimumHeight;
+                duration: hideAnimationDuration
+            }
         }
     }
     SequentialAnimation
     {
         id: unhideAnimation
         running: false
-        NumberAnimation
+
+        ParallelAnimation
         {
-            target: root;
-            property: "targetHeight";
-            to: root.unhideLastHeight;
-            duration: hideAnimationDuration
+            NumberAnimation
+            {
+                target: root;
+                property: "targetHeight";
+                to: root.unhideLastHeight;
+                duration: hideAnimationDuration
+            }
+
+            NumberAnimation
+            {
+                target: headerRect;
+                property: "top_margin";
+                to: root.margins;
+                duration: hideAnimationDuration
+            }
         }
 
         NumberAnimation
@@ -268,14 +291,14 @@ ApplicationWindow
         {
             id: headerRect
             anchors.top: parent.top
-            anchors.topMargin: root.margins
             anchors.horizontalCenter: parent.horizontalCenter
             color: "transparent"
-            width: parent.width - 2*root.margins
+            width: parent.width
             height: buttonSize
             buttonsWidth: buttonSize2
             buttonsHeight: buttonSize
-            margins: root.margins
+            top_margin: root.margins
+            anchors.topMargin: top_margin
             fontColor: root.fontColor
             fontPixelSize: root.fontPixelSize
             contentsOpacity: root.contentsOpacity
