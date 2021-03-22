@@ -73,3 +73,6 @@ unix {
     message("DEBUG: Folder" $$PWD/3rdparty/openssl1.1.1 "will be copied to" $$OUT_PWD)
     QMAKE_EXTRA_TARGETS += first copydata
 }
+
+# Win Icon
+win32:RC_ICONS += resources/icon_app.ico

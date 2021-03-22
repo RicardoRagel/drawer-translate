@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>Translator App</DisplayName>
+    <Description>An open-source translator widget at the bottom of your screen</Description>
+    <Version>1.0.0</Version>
+    <ReleaseDate>2021-03-22</ReleaseDate>
+    <Default>true</Default>
+    <Script>installscript.qs</Script>
+</Package>

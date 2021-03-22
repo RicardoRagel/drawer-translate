@@ -1,4 +1,5 @@
-:: BAT script to release the application for Windows. This script must be executed from its own folder.
+:: BAT script to release the application for Windows.
+:: WARNING: This script must be executed from its own folder.
 @echo OFF
 
 :: Example usage: .\release_windows.bat C:\Users\Ricardo\Qt\5.14.2\mingw73_64\bin C:\Users\Ricardo\Libraries\build-translator_app-Desktop_Qt_5_14_2_MinGW_64_bit-Release\release
