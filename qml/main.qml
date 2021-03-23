@@ -108,12 +108,12 @@ ApplicationWindow
         }
 
         // We set the shape of the cursor so that it is clear that this resizing
-        cursorShape: Qt.SizeVerCursor
+        cursorShape: !appHidden? Qt.SizeVerCursor : Qt.ArrowCursor
 
         // When changing a position, we recalculate the position of the window, and its height
         onMouseYChanged:
         {
-            if(pressed)
+            if(pressed && !appHidden)
                 targetHeight = Qt.platform.os === "windows"? Screen.desktopAvailableHeight - MouseProvider.cursorPos().y : Screen.height - MouseProvider.cursorPos().y
         }
 
