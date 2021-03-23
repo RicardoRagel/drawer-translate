@@ -52,6 +52,7 @@ public:
   Q_PROPERTY(bool ttsAvailableForTargetLang READ ttsAvailableForTargetLang WRITE setTtsAvailableForTargetLang NOTIFY ttsAvailableForTargetLangChanged)
   Q_PROPERTY(QStringListModel* ttsSourceLanguageCodes READ ttsSourceLanguageCodes NOTIFY ttsSourceLanguageCodesChanged)
   Q_PROPERTY(QStringListModel* ttsTargetLanguageCodes READ ttsTargetLanguageCodes NOTIFY ttsTargetLanguageCodesChanged)
+  Q_PROPERTY(bool clipboardSelectionSupported READ clipboardSelectionSupported NOTIFY clipboardSelectionSupportedChanged)
 
   // QML Invokable properties getters
   Settings* settings() {return _settings;}
@@ -66,6 +67,7 @@ public:
   bool ttsAvailableForTargetLang() {return _tts_available_for_target_lang;}
   QStringListModel* ttsSourceLanguageCodes() {return &_tts_source_language_codes;}
   QStringListModel* ttsTargetLanguageCodes() {return &_tts_target_language_codes;}
+  bool clipboardSelectionSupported() {return _clipboard_selection_supported;}
 
   // QML Invokable properties setters
   Q_INVOKABLE void setSettings(Settings* settings);
@@ -97,6 +99,7 @@ signals:
   void ttsAvailableForTargetLangChanged();
   void ttsSourceLanguageCodesChanged();
   void ttsTargetLanguageCodesChanged();
+  void clipboardSelectionSupportedChanged();
 
 private slots:
 
@@ -130,6 +133,7 @@ private:
   QString _input_text;                              // User input text to be translated
   QString _output_text;                             // Translated text to be shown
   QClipboard *_clipboard;                           // System clipboard handler
+  bool _clipboard_selection_supported;              // True if the host system allow selections buffered on the clipboard
   QTimer *_translate_timer;                         // Timer to post the translation
   QStringListModel _language_codes;                 // List of available language codes
   QStringListModel _language_names_and_codes;       // List of available language names and codes as "<NAME> [<CODE>]"

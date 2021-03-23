@@ -13,6 +13,7 @@ DataManager::DataManager()
 
     // Init clipboard handler
     _clipboard = QApplication::clipboard();
+    _clipboard_selection_supported = _clipboard->supportsSelection();
 
     // Init sound player
     _sound_player = new QMediaPlayer();
@@ -36,6 +37,7 @@ void DataManager::init()
     qDebug() << "(DataManager) Initialization ...";
 
     // Connect clipboard to this app
+    connect(_clipboard, SIGNAL(changed()), this, SLOT(onClipboardDataChanged()));
     connect(_clipboard, SIGNAL(dataChanged()), this, SLOT(onClipboardDataChanged()));
     connect(_clipboard, SIGNAL(selectionChanged()), this, SLOT(onClipboardSelectionChanged()));
 
@@ -79,6 +81,10 @@ void DataManager::init()
     connect(_settings, SIGNAL(sourceLangChanged()), this, SLOT(onSourceLangChanged()));
     connect(_settings, SIGNAL(targetLangChanged()), this, SLOT(onTargetLangChanged()));
     _settings->init();
+
+    // Update settings depeding on the system
+    if(!_clipboard_selection_supported)
+        _settings->setTranslateOnSelection(false);
 
     // Update available languages
     updateAvailableLanguageCode(_settings->translatorEngine());

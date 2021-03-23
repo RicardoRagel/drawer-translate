@@ -505,6 +505,8 @@ Window
                         CustomCheckBox
                         {
                             id: onSelection
+                            enabled: DataManager.clipboardSelectionSupported
+                            box_color: enabled? "white" : "gray"
                             anchors.centerIn: parent
                             box_width: buttonSize/2
                             border_color: hovered? "black" : "transparent"

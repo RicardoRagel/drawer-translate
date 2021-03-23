@@ -37,6 +37,7 @@ ApplicationWindow
     property real heightFactor: 0.15
     property int margins: 10
     property int forceMinimumHeight: buttonSize
+    property int resizingMinimumHeight: buttonSize + 2 * margins
 
     // Windows Configuration
     title: qsTr(Constants.appTitle)
@@ -114,7 +115,11 @@ ApplicationWindow
         onMouseYChanged:
         {
             if(pressed && !appHidden)
-                targetHeight = Qt.platform.os === "windows"? Screen.desktopAvailableHeight - MouseProvider.cursorPos().y : Screen.height - MouseProvider.cursorPos().y
+            {
+                var tmptargetHeight = Qt.platform.os === "windows"? Screen.desktopAvailableHeight - MouseProvider.cursorPos().y : Screen.height - MouseProvider.cursorPos().y
+                if(tmptargetHeight > resizingMinimumHeight)
+                    targetHeight = tmptargetHeight
+            }
         }
 
         onHoveredChanged:
