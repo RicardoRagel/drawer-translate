@@ -43,5 +43,6 @@
         <file>resources/logos/hearling.png</file>
         <file>resources/logos/GitHub-Mark-120px-plus.png</file>
         <file>resources/logos/GitHub-Mark-Light-120px-plus.png</file>
+        <file>resources/refresh.svg</file>
     </qresource>
 </RCC>

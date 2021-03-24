@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QtQml>
 #include <QSettings>
+#include <QColor>
 #include <Constants.h>
 
 #define DEFAULT_FONT_SIZE 14                                // App Font Size
@@ -32,6 +33,7 @@ public:
     void init();
 
     // QML properties declarations
+    Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor NOTIFY backgroundColorChanged)
     Q_PROPERTY(int fontSize READ fontSize WRITE setFontSize NOTIFY fontSizeChanged)
     Q_PROPERTY(bool autoHideWin READ autoHideWin WRITE setAutoHideWin NOTIFY autoHideWinChanged)
     Q_PROPERTY(bool translateOnSelection READ translateOnSelection WRITE setTranslateOnSelection NOTIFY translateOnSelectionChanged)
@@ -44,6 +46,7 @@ public:
 
     // QML properties getters
     int fontSize()              {return _font_size;}
+    QColor backgroundColor()    {return _background_color;}
     bool autoHideWin()          {return _autohide_win;}
     bool translateOnSelection() {return _translate_on_selection;}
     bool translateOnCopy()      {return _translate_on_copy;}
@@ -55,6 +58,7 @@ public:
 
     // QML Invokable properties setters
     Q_INVOKABLE void setFontSize(int font_size);
+    Q_INVOKABLE void setBackgroundColor(QColor background_color);
     Q_INVOKABLE void setAutoHideWin(bool autohide_win);
     Q_INVOKABLE void setTranslateOnSelection(bool translate_on_selection);
     Q_INVOKABLE void setTranslateOnCopy(bool translate_on_copy);
@@ -71,6 +75,7 @@ signals:
 
     // QML properties signals
     void fontSizeChanged();
+    void backgroundColorChanged();
     void autoHideWinChanged();
     void translateOnSelectionChanged();
     void translateOnCopyChanged();
@@ -87,6 +92,7 @@ private:
 
     // Settings variables
     int _font_size;
+    QColor _background_color;
     bool _autohide_win;
     bool _translate_on_selection;
     bool _translate_on_copy;

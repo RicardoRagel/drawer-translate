@@ -49,6 +49,12 @@ OTHER_FILES += \
     qml/CustomWidgets/CustomScrollView.qml \
     qml/CustomWidgets/CustomFontSizeSwitch.qml \
     qml/CustomWidgets/CustomContextMenu.qml \
+    qml/CustomWidgets/CustomColorDialog.qml \
+    qml/CustomWidgets/CustomColorDialogContent/Checkboard.qml \
+    qml/CustomWidgets/CustomColorDialogContent/ColorSlider.qml \
+    qml/CustomWidgets/CustomColorDialogContent/NumberBox.qml \
+    qml/CustomWidgets/CustomColorDialogContent/PanelBorder.qml \
+    qml/CustomWidgets/CustomColorDialogContent/SBPicker.qml \
     qml/ExternalWindows/SettingsWin.qml \
     qml/ExternalWindows/AboutWin.qml \
     qml/ExtraInfoPannel.qml \

@@ -30,6 +30,18 @@ void Settings::init()
         qDebug() << "(Settings) FontSize:" << fontSize();
     }
 
+    if(!_settingsHandler->contains("Window/backgroundColor"))
+    {
+        QColor color(DEFAULT_BACKGROUND_COLOR_R, DEFAULT_BACKGROUND_COLOR_G, DEFAULT_BACKGROUND_COLOR_B, DEFAULT_BACKGROUND_COLOR_A);
+        qDebug() << "(Settings) Initializing Background Color to" << color;
+        setBackgroundColor(color);
+    }
+    else
+    {
+        setBackgroundColor(_settingsHandler->value("Window/backgroundColor").value<QColor>());
+        qDebug() << "(Settings) Background color:" << backgroundColor();
+    }
+
     if(!_settingsHandler->contains("Window/autoHide"))
     {
         qDebug() << "(Settings) Initializing AutoHide Window to" << DEFAULT_AUTOHIDE_WIN;
@@ -128,6 +140,13 @@ void Settings::setFontSize(int font_size)
     _settingsHandler->setValue("Window/fontSize", font_size);
     _font_size = font_size;
     emit fontSizeChanged();
+}
+
+void Settings::setBackgroundColor(QColor background_color)
+{
+    _settingsHandler->setValue("Window/backgroundColor", background_color);
+    _background_color = background_color;
+    emit backgroundColorChanged();
 }
 
 void Settings::setAutoHideWin(bool autohide_win)

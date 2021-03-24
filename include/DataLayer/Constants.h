@@ -14,6 +14,10 @@
 #define MY_MEMORY_TRANSLATE_API_NAME "MyMemory"
 #define LIBRE_TRANSLATE_API_NAME "Libre Translate"
 #define APERTIUM_TRANSLATE_API_NAME "Apertium"
+#define DEFAULT_BACKGROUND_COLOR_R 30
+#define DEFAULT_BACKGROUND_COLOR_G 30
+#define DEFAULT_BACKGROUND_COLOR_B 30
+#define DEFAULT_BACKGROUND_COLOR_A 255
 
 /*
  *
@@ -24,6 +28,7 @@
 
 #include <QObject>
 #include <QtQml>
+#include <QColor>
 
 class Constants : public QObject
 {
@@ -51,6 +56,10 @@ public:
     Q_PROPERTY(QString apertiumTranslateApiName READ apertiumTranslateApiName NOTIFY apertiumTranslateApiNameChanged)
     QString apertiumTranslateApiName(){return apertium_translate_api_name;}
 
+    QColor default_background_color = QColor(DEFAULT_BACKGROUND_COLOR_R, DEFAULT_BACKGROUND_COLOR_G, DEFAULT_BACKGROUND_COLOR_B, DEFAULT_BACKGROUND_COLOR_A);
+    Q_PROPERTY(QColor defaultBackgroundColor READ defaultBackgroundColor NOTIFY defaultBackgroundColorChanged)
+    QColor defaultBackgroundColor(){return default_background_color;}
+
 signals:
 
   void appTitleChanged();
@@ -58,6 +67,7 @@ signals:
   void myMemoryTranslateApiNameChanged();
   void libreTranslateApiNameChanged();
   void apertiumTranslateApiNameChanged();
+  void defaultBackgroundColorChanged();
 };
 
 #endif

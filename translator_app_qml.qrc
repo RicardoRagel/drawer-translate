@@ -13,5 +13,11 @@
         <file>qml/CustomWidgets/CustomFontSizeSwitch.qml</file>
         <file>qml/CustomWidgets/CustomContextMenu.qml</file>
         <file>qml/ExternalWindows/AboutWin.qml</file>
+        <file>qml/CustomWidgets/CustomColorDialogContent/Checkerboard.qml</file>
+        <file>qml/CustomWidgets/CustomColorDialogContent/ColorSlider.qml</file>
+        <file>qml/CustomWidgets/CustomColorDialogContent/NumberBox.qml</file>
+        <file>qml/CustomWidgets/CustomColorDialogContent/PanelBorder.qml</file>
+        <file>qml/CustomWidgets/CustomColorDialogContent/SBPicker.qml</file>
+        <file>qml/CustomWidgets/CustomColorDialog.qml</file>
     </qresource>
 </RCC>

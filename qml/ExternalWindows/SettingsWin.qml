@@ -4,6 +4,7 @@ import QtQuick.Controls 2.14
 
 // Import other project QML scripts
 import "../CustomWidgets"
+import "../CustomWidgets/CustomColorDialogContent"
 
 // Import C++ data handlers
 import DataManager 1.0
@@ -37,6 +38,9 @@ Window
 
     property string lastSourceLanguage: ""
     property string lastTargetLanguage: ""
+
+    // This color will be backwards the user selected background color
+    color: Qt.rgba(30/255, 30/255, 30/255, 0.9)
 
     // Content
     Rectangle
@@ -702,6 +706,108 @@ Window
                     }
                 }
 
+                // Background Selector
+                Row
+                {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    spacing: 2
+
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum1
+                        height: heightColumns
+                        color: "transparent"
+
+                        Text
+                        {
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            font.pixelSize: fontPixelSize
+                            font.bold: false
+                            color: fontColor
+                            text: "    Background Color: "
+                        }
+                    }
+                    Rectangle
+                    {
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: widthColum2
+                        height: heightColumns
+                        color: "transparent"
+
+                        Rectangle
+                        {
+                            anchors.centerIn: parent
+                            width: buttonSize * 2
+                            height: buttonSize / 2
+                            border.color: "white"
+                            border.width: 1
+
+                            Checkerboard { cellSide: 4 }
+
+                            CustomButton2
+                            {
+                                id: colorSelector
+                                anchors.centerIn: parent
+                                width: buttonSize * 2
+                                height: buttonSize / 2
+                                buttonColor: "white" //Replace by DataManager.settings.backgroundColor and it to the set and cancel buttons
+                                buttonHoveredColor: root.buttonUnpressedColor
+                                buttonPresedColor: root.buttonPressedColor
+                                onClickedChanged:
+                                {
+                                    if(clicked)
+                                    {
+                                        clicked = false
+                                        colorDialog.visible = !colorDialog.visible
+                                    }
+                                }
+                            }
+                            Rectangle
+                            {
+                                anchors.fill: parent
+                                color: "transparent"
+                                border.color: "white"
+                                border.width: 1
+                            }
+                            Connections
+                            {
+                                target: DataManager.settings
+
+                                onBackgroundColorChanged:
+                                {
+                                    colorSelector.buttonColor = DataManager.settings.backgroundColor
+                                    console.log("Updating background color: " + DataManager.settings.backgroundColor)
+                                }
+                            }
+
+                            // Info button
+                            CustomButton2
+                            {
+                                id: resetColorButton
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.left: parent.right
+                                anchors.leftMargin: 10
+                                width: parent.height
+                                height: parent.height
+                                radius: 0
+                                imgSizeFactor: 1.0
+                                imgOpacity: hovered? 1.0 : 0.5
+                                image_url: "qrc:/resources/refresh.svg"
+                                onClickedChanged:
+                                {
+                                    if(clicked)
+                                    {
+                                        clicked = false
+                                        colorSelector.buttonColor = Constants.defaultBackgroundColor
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
 
                 // Some Space
                 Rectangle
@@ -782,6 +888,7 @@ Window
                                     DataManager.settings.setTranslateOnCopy(onCopy.checked)
                                     DataManager.settings.setAutoHideWin(autoHide.checked)
                                     DataManager.settings.setFontSize(fontSizeSelector.sizeSelected)
+                                    DataManager.settings.setBackgroundColor(colorSelector.buttonColor)
                                     root.visible = false
                                 }
                             }
@@ -814,6 +921,7 @@ Window
                                     onCopy.checked = DataManager.settings.translateOnCopy
                                     autoHide.checked = DataManager.settings.autoHideWin
                                     fontSizeSelector.selectBySize(DataManager.settings.fontSize)
+                                    colorSelector.buttonColor = DataManager.settings.backgroundColor
                                     root.visible = false
                                 }
                             }
@@ -823,6 +931,32 @@ Window
 
             }//column
         }//contentItem
+
+
+        // Color selector popup
+        CustomColorDialog
+        {
+            id: colorDialog
+            visible: false
+            enableDetails: false
+
+            anchors.centerIn: parent
+
+            width: 350
+            height: 250
+
+            fontPixelSize: 12
+            fontColor: "white"
+            backgroundColor: Qt.rgba(50/255, 50/255, 50/255, 1)
+            buttonUnpressedColor: root.buttonPressedColor
+            buttonPressedColor: root.buttonUnpressedColor
+
+            onColorChanged:
+            {
+                if(visible)
+                    colorSelector.buttonColor = changedColor
+            }
+        }
     }//background
 
     // Keyboard Control
