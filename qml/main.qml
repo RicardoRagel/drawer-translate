@@ -375,6 +375,7 @@ ApplicationWindow
             height: parent.radius
             z: parent.z - 1
             color: parent.color
+            visible: parent.color.a >=1
         }
     }//appBackground
 
