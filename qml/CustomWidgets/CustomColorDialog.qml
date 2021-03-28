@@ -251,12 +251,12 @@ Popup
     function _getSBPickerSize() {
         var h = colorPicker.height - 2 * colorHandleRadius
         var w = colorPicker.width - 2 * colorHandleRadius - huePicker.width
-        //if(enableAlphaChannel) {
+        if(enableAlphaChannel) {
             w = w - alphaPicker.implicitWidth
-        //}
-        //if(enableDetails) {
+        }
+        if(enableDetails) {
             w = w - detailColumn.implicitWidth
-        //}
+        }
 
         if(h > w) {
             return w
