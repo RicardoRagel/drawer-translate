@@ -35,6 +35,7 @@ public:
     // QML properties declarations
     Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor NOTIFY backgroundColorChanged)
     Q_PROPERTY(QColor foregroundColor READ foregroundColor WRITE setForegroundColor NOTIFY foregroundColorChanged)
+    Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor NOTIFY textColorChanged)
     Q_PROPERTY(int fontSize READ fontSize WRITE setFontSize NOTIFY fontSizeChanged)
     Q_PROPERTY(bool autoHideWin READ autoHideWin WRITE setAutoHideWin NOTIFY autoHideWinChanged)
     Q_PROPERTY(bool translateOnSelection READ translateOnSelection WRITE setTranslateOnSelection NOTIFY translateOnSelectionChanged)
@@ -49,6 +50,7 @@ public:
     int fontSize()              {return _font_size;}
     QColor backgroundColor()    {return _background_color;}
     QColor foregroundColor()    {return _foreground_color;}
+    QColor textColor()          {return _text_color;}
     bool autoHideWin()          {return _autohide_win;}
     bool translateOnSelection() {return _translate_on_selection;}
     bool translateOnCopy()      {return _translate_on_copy;}
@@ -62,6 +64,7 @@ public:
     Q_INVOKABLE void setFontSize(int font_size);
     Q_INVOKABLE void setBackgroundColor(QColor background_color);
     Q_INVOKABLE void setForegroundColor(QColor foreground_color);
+    Q_INVOKABLE void setTextColor(QColor text_color);
     Q_INVOKABLE void setAutoHideWin(bool autohide_win);
     Q_INVOKABLE void setTranslateOnSelection(bool translate_on_selection);
     Q_INVOKABLE void setTranslateOnCopy(bool translate_on_copy);
@@ -80,6 +83,7 @@ signals:
     void fontSizeChanged();
     void backgroundColorChanged();
     void foregroundColorChanged();
+    void textColorChanged();
     void autoHideWinChanged();
     void translateOnSelectionChanged();
     void translateOnCopyChanged();
@@ -98,6 +102,7 @@ private:
     int _font_size;
     QColor _background_color;
     QColor _foreground_color;
+    QColor _text_color;
     bool _autohide_win;
     bool _translate_on_selection;
     bool _translate_on_copy;

@@ -26,7 +26,7 @@ ApplicationWindow
     property int fontPixelSize: DataManager.settings.fontSize
     property int buttonSize:    20
     property int buttonSize2:   30
-    property color fontColor:               Qt.rgba(242/255, 242/255, 242/255, 1)
+    property color fontColor:               DataManager.settings.textColor
     property color appWindowColor:          DataManager.settings.backgroundColor
     property color appSectionColor:         DataManager.settings.foregroundColor
     property color appSectionBorderColor:   Qt.rgba(150/255, 150/255, 150/255, 1)

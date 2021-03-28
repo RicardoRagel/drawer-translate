@@ -19,6 +19,7 @@ void Settings::init()
     _settingsHandler = new QSettings(QSettings::IniFormat, QSettings::UserScope, "TranslatorMinimalApp", "TranslatorApp");
     qDebug() << "(Settings) Initialization of settings to/from " << _settingsHandler->fileName();
 
+    // Font Size
     if(!_settingsHandler->contains("Window/fontSize"))
     {
         qDebug() << "(Settings) Initializing FontSize to" << DEFAULT_FONT_SIZE;
@@ -30,6 +31,7 @@ void Settings::init()
         qDebug() << "(Settings) FontSize:" << fontSize();
     }
 
+    // Background Color
     if(!_settingsHandler->contains("Window/backgroundColor"))
     {
         QColor bkgcolor(DEFAULT_BACKGROUND_COLOR_R, DEFAULT_BACKGROUND_COLOR_G, DEFAULT_BACKGROUND_COLOR_B, DEFAULT_BACKGROUND_COLOR_A);
@@ -42,6 +44,7 @@ void Settings::init()
         qDebug() << "(Settings) Background color:" << backgroundColor();
     }
 
+    // Foreground Color
     if(!_settingsHandler->contains("Window/foregroundColor"))
     {
         QColor frgcolor(DEFAULT_FOREGROUND_COLOR_R, DEFAULT_FOREGROUND_COLOR_G, DEFAULT_FOREGROUND_COLOR_B, DEFAULT_FOREGROUND_COLOR_A);
@@ -54,6 +57,20 @@ void Settings::init()
         qDebug() << "(Settings) Foreground color:" << foregroundColor();
     }
 
+    // Text Color
+    if(!_settingsHandler->contains("Window/textColor"))
+    {
+        QColor txtcolor(DEFAULT_TEXT_COLOR_R, DEFAULT_TEXT_COLOR_G, DEFAULT_TEXT_COLOR_B, DEFAULT_TEXT_COLOR_A);
+        qDebug() << "(Settings) Initializing Text Color to" << txtcolor;
+        setTextColor(txtcolor);
+    }
+    else
+    {
+        setTextColor(_settingsHandler->value("Window/textColor").value<QColor>());
+        qDebug() << "(Settings) Text color:" << textColor();
+    }
+
+    // Auto-hide window
     if(!_settingsHandler->contains("Window/autoHide"))
     {
         qDebug() << "(Settings) Initializing AutoHide Window to" << DEFAULT_AUTOHIDE_WIN;
@@ -65,6 +82,7 @@ void Settings::init()
         qDebug() << "(Settings) AutoHide Window:" << autoHideWin();
     }
 
+    // Translate on selection
     if(!_settingsHandler->contains("Input/translateOnSelection"))
     {
         qDebug() << "(Settings) Initializing Translate on Selection to" << DEFAULT_TRANSLATE_ON_SELECTION;
@@ -76,6 +94,7 @@ void Settings::init()
         qDebug() << "(Settings) Translate on Selection:" << translateOnSelection();
     }
 
+    // Translate on copy
     if(!_settingsHandler->contains("Input/translateOnCopy"))
     {
         qDebug() << "(Settings) Initializing Translate on Copy to" << DEFAULT_TRANSLATE_ON_COPY;
@@ -87,6 +106,7 @@ void Settings::init()
         qDebug() << "(Settings) Translate on Copy:" << translateOnCopy();
     }
 
+    // Translation Engine
     if(!_settingsHandler->contains("Translator/engine"))
     {
         qDebug() << "(Settings) Initializing Translator Engine to" << DEFAULT_TRANSLATOR_ENGINE;
@@ -98,6 +118,7 @@ void Settings::init()
         qDebug() << "(Settings) Translator Engine:" << translatorEngine();
     }
 
+    // Google Translate API Key
     if(!_settingsHandler->contains("Translator/googleApiKey"))
     {
         qDebug() << "(Settings) Initializing API Key to" << DEFAULT_GOOGLE_API_KEY;
@@ -109,6 +130,7 @@ void Settings::init()
         qDebug() << "(Settings) API Key:" << googleApiKey();
     }
 
+    // Translation Source Language
     if(!_settingsHandler->contains("Translator/sourceLang"))
     {
         qDebug() << "(Settings) Initializing Source Language to" << DEFAULT_SOURCE_LANG;
@@ -120,6 +142,7 @@ void Settings::init()
         qDebug() << "(Settings) Source Lang:" << sourceLang();
     }
 
+    // Translation Target Language
     if(!_settingsHandler->contains("Translator/targetLang"))
     {
         qDebug() << "(Settings) Initializing Target Language to" << DEFAULT_TARGET_LANG;
@@ -131,6 +154,7 @@ void Settings::init()
         qDebug() << "(Settings) Target Lang:" << targetLang();
     }
 
+    // User email
     if(!_settingsHandler->contains("Translator/email"))
     {
         qDebug() << "(Settings) Initializing Email to" << DEFAULT_EMAIL;
@@ -166,6 +190,13 @@ void Settings::setForegroundColor(QColor foreground_color)
     _settingsHandler->setValue("Window/foregroundColor", foreground_color);
     _foreground_color = foreground_color;
     emit foregroundColorChanged();
+}
+
+void Settings::setTextColor(QColor text_color)
+{
+    _settingsHandler->setValue("Window/textColor", text_color);
+    _text_color = text_color;
+    emit textColorChanged();
 }
 
 void Settings::setAutoHideWin(bool autohide_win)
