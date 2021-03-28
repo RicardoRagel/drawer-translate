@@ -32,14 +32,26 @@ void Settings::init()
 
     if(!_settingsHandler->contains("Window/backgroundColor"))
     {
-        QColor color(DEFAULT_BACKGROUND_COLOR_R, DEFAULT_BACKGROUND_COLOR_G, DEFAULT_BACKGROUND_COLOR_B, DEFAULT_BACKGROUND_COLOR_A);
-        qDebug() << "(Settings) Initializing Background Color to" << color;
-        setBackgroundColor(color);
+        QColor bkgcolor(DEFAULT_BACKGROUND_COLOR_R, DEFAULT_BACKGROUND_COLOR_G, DEFAULT_BACKGROUND_COLOR_B, DEFAULT_BACKGROUND_COLOR_A);
+        qDebug() << "(Settings) Initializing Background Color to" << bkgcolor;
+        setBackgroundColor(bkgcolor);
     }
     else
     {
         setBackgroundColor(_settingsHandler->value("Window/backgroundColor").value<QColor>());
         qDebug() << "(Settings) Background color:" << backgroundColor();
+    }
+
+    if(!_settingsHandler->contains("Window/foregroundColor"))
+    {
+        QColor frgcolor(DEFAULT_FOREGROUND_COLOR_R, DEFAULT_FOREGROUND_COLOR_G, DEFAULT_FOREGROUND_COLOR_B, DEFAULT_FOREGROUND_COLOR_A);
+        qDebug() << "(Settings) Initializing Foreground Color to" << frgcolor;
+        setForegroundColor(frgcolor);
+    }
+    else
+    {
+        setForegroundColor(_settingsHandler->value("Window/foregroundColor").value<QColor>());
+        qDebug() << "(Settings) Foreground color:" << foregroundColor();
     }
 
     if(!_settingsHandler->contains("Window/autoHide"))
@@ -147,6 +159,13 @@ void Settings::setBackgroundColor(QColor background_color)
     _settingsHandler->setValue("Window/backgroundColor", background_color);
     _background_color = background_color;
     emit backgroundColorChanged();
+}
+
+void Settings::setForegroundColor(QColor foreground_color)
+{
+    _settingsHandler->setValue("Window/foregroundColor", foreground_color);
+    _foreground_color = foreground_color;
+    emit foregroundColorChanged();
 }
 
 void Settings::setAutoHideWin(bool autohide_win)

@@ -18,6 +18,10 @@
 #define DEFAULT_BACKGROUND_COLOR_G 30
 #define DEFAULT_BACKGROUND_COLOR_B 30
 #define DEFAULT_BACKGROUND_COLOR_A 255
+#define DEFAULT_FOREGROUND_COLOR_R 93
+#define DEFAULT_FOREGROUND_COLOR_G 99
+#define DEFAULT_FOREGROUND_COLOR_B 99
+#define DEFAULT_FOREGROUND_COLOR_A 255
 
 /*
  *
@@ -60,6 +64,10 @@ public:
     Q_PROPERTY(QColor defaultBackgroundColor READ defaultBackgroundColor NOTIFY defaultBackgroundColorChanged)
     QColor defaultBackgroundColor(){return default_background_color;}
 
+    QColor default_foreground_color = QColor(DEFAULT_FOREGROUND_COLOR_R, DEFAULT_FOREGROUND_COLOR_G, DEFAULT_FOREGROUND_COLOR_B, DEFAULT_FOREGROUND_COLOR_A);
+    Q_PROPERTY(QColor defaultForegroundColor READ defaultForegroundColor NOTIFY defaultForegroundColorChanged)
+    QColor defaultForegroundColor(){return default_foreground_color;}
+
 signals:
 
   void appTitleChanged();
@@ -68,6 +76,7 @@ signals:
   void libreTranslateApiNameChanged();
   void apertiumTranslateApiNameChanged();
   void defaultBackgroundColorChanged();
+  void defaultForegroundColorChanged();
 };
 
 #endif

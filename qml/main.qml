@@ -28,9 +28,9 @@ ApplicationWindow
     property int buttonSize2:   30
     property color fontColor:               Qt.rgba(242/255, 242/255, 242/255, 1)
     property color appWindowColor:          DataManager.settings.backgroundColor
-    property color appSectionColor:         Qt.rgba(93/255, 99/255, 99/255, 1)
+    property color appSectionColor:         DataManager.settings.foregroundColor
     property color appSectionBorderColor:   Qt.rgba(150/255, 150/255, 150/255, 1)
-    property color appEditableSpaceColor:   Qt.rgba(93/255, 99/255, 99/255, 1)
+    property color appEditableSpaceColor:   DataManager.settings.foregroundColor
     property color appEditableSpaceColor2:  Qt.rgba(50/255, 50/255, 50/255, 1)
     property color appButtonUnpressedColor: Qt.rgba(110/255, 110/255, 110/255, 1)
     property color appButtonPressedColor:   Qt.rgba(80/255, 80/255, 80/255, 1)

@@ -868,11 +868,11 @@ Window
 
                                     CustomButton2
                                     {
-                                        id: colorSelector
+                                        id: backgroundColorSelector
                                         anchors.centerIn: parent
                                         width: buttonSize * 2
                                         height: buttonSize / 2
-                                        buttonColor: "white" //Replace by DataManager.settings.backgroundColor and it to the set and cancel buttons
+                                        buttonColor: "white"
                                         buttonHoveredColor: root.buttonUnpressedColor
                                         buttonPresedColor: root.buttonPressedColor
                                         onClickedChanged:
@@ -880,7 +880,7 @@ Window
                                             if(clicked)
                                             {
                                                 clicked = false
-                                                colorDialog.visible = !colorDialog.visible
+                                                backgroundColorDialog.visible = !backgroundColorDialog.visible
                                             }
                                         }
                                     }
@@ -897,7 +897,7 @@ Window
 
                                         onBackgroundColorChanged:
                                         {
-                                            colorSelector.buttonColor = DataManager.settings.backgroundColor
+                                            backgroundColorSelector.buttonColor = DataManager.settings.backgroundColor
                                             console.log("Updating background color: " + DataManager.settings.backgroundColor)
                                         }
                                     }
@@ -905,7 +905,7 @@ Window
                                     // Reset color button
                                     CustomButton2
                                     {
-                                        id: resetColorButton
+                                        id: backgroundResetColorButton
                                         anchors.verticalCenter: parent.verticalCenter
                                         anchors.left: parent.right
                                         anchors.leftMargin: 10
@@ -920,19 +920,121 @@ Window
                                             if(clicked)
                                             {
                                                 clicked = false
-                                                colorSelector.buttonColor = Constants.defaultBackgroundColor
+                                                backgroundColorSelector.buttonColor = Constants.defaultBackgroundColor
                                             }
                                         }
                                     }
                                 }
                             }
-                        }
+                        }//row - backgroundColorSelector
+
+                        // Foreground Selector
+                        Row
+                        {
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            spacing: 2
+
+                            Rectangle
+                            {
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: widthColum1
+                                height: heightColumns
+                                color: "transparent"
+
+                                Text
+                                {
+                                    anchors.left: parent.left
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    font.pixelSize: fontPixelSize
+                                    font.bold: false
+                                    color: fontColor
+                                    text: "    Foreground Color: "
+                                }
+                            }
+                            Rectangle
+                            {
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: widthColum2
+                                height: heightColumns
+                                color: "transparent"
+
+                                Rectangle
+                                {
+                                    anchors.centerIn: parent
+                                    width: buttonSize * 2
+                                    height: buttonSize / 2
+                                    border.color: "white"
+                                    border.width: 1
+
+                                    Checkerboard { cellSide: 4 }
+
+                                    CustomButton2
+                                    {
+                                        id: foregroundColorSelector
+                                        anchors.centerIn: parent
+                                        width: buttonSize * 2
+                                        height: buttonSize / 2
+                                        buttonColor: "white"
+                                        buttonHoveredColor: root.buttonUnpressedColor
+                                        buttonPresedColor: root.buttonPressedColor
+                                        onClickedChanged:
+                                        {
+                                            if(clicked)
+                                            {
+                                                clicked = false
+                                                foregroundColorDialog.visible = !foregroundColorDialog.visible
+                                            }
+                                        }
+                                    }
+                                    Rectangle
+                                    {
+                                        anchors.fill: parent
+                                        color: "transparent"
+                                        border.color: "white"
+                                        border.width: 1
+                                    }
+                                    Connections
+                                    {
+                                        target: DataManager.settings
+
+                                        onForegroundColorChanged:
+                                        {
+                                            foregroundColorSelector.buttonColor = DataManager.settings.foregroundColor
+                                            console.log("Updating foreground color: " + DataManager.settings.foregroundColor)
+                                        }
+                                    }
+
+                                    // Reset color button
+                                    CustomButton2
+                                    {
+                                        id: foregroundResetColorButton
+                                        anchors.verticalCenter: parent.verticalCenter
+                                        anchors.left: parent.right
+                                        anchors.leftMargin: 10
+                                        width: parent.height
+                                        height: parent.height
+                                        radius: 0
+                                        imgSizeFactor: 1.0
+                                        imgOpacity: hovered? 1.0 : 0.5
+                                        image_url: "qrc:/resources/refresh.svg"
+                                        onClickedChanged:
+                                        {
+                                            if(clicked)
+                                            {
+                                                clicked = false
+                                                foregroundColorSelector.buttonColor = Constants.defaultForegroundColor
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }//row - foregroundColorSelector
                     }//column
 
-                    // Color selector popup
+                    // BKG Color selector popup
                     CustomColorDialog
                     {
-                        id: colorDialog
+                        id: backgroundColorDialog
                         visible: false
                         enableDetails: false
 
@@ -950,7 +1052,32 @@ Window
                         onColorChanged:
                         {
                             if(visible)
-                                colorSelector.buttonColor = changedColor
+                                backgroundColorSelector.buttonColor = changedColor
+                        }
+                    }
+
+                    // FRG Color selector popup
+                    CustomColorDialog
+                    {
+                        id: foregroundColorDialog
+                        visible: false
+                        enableDetails: false
+
+                        anchors.centerIn: parent
+
+                        width: 175
+                        height: 125
+
+                        fontPixelSize: 12
+                        fontColor: "white"
+                        backgroundColor: Qt.rgba(50/255, 50/255, 50/255, 1)
+                        buttonUnpressedColor: root.buttonPressedColor
+                        buttonPressedColor: root.buttonUnpressedColor
+
+                        onColorChanged:
+                        {
+                            if(visible)
+                                foregroundColorSelector.buttonColor = changedColor
                         }
                     }
                 }//tabBackground
@@ -1028,7 +1155,8 @@ Window
                                 DataManager.settings.setTranslateOnCopy(onCopy.checked)
                                 DataManager.settings.setAutoHideWin(autoHide.checked)
                                 DataManager.settings.setFontSize(fontSizeSelector.sizeSelected)
-                                DataManager.settings.setBackgroundColor(colorSelector.buttonColor)
+                                DataManager.settings.setBackgroundColor(backgroundColorSelector.buttonColor)
+                                DataManager.settings.setForegroundColor(foregroundColorSelector.buttonColor)
                                 root.visible = false
                             }
                         }
@@ -1061,7 +1189,8 @@ Window
                                 onCopy.checked = DataManager.settings.translateOnCopy
                                 autoHide.checked = DataManager.settings.autoHideWin
                                 fontSizeSelector.selectBySize(DataManager.settings.fontSize)
-                                colorSelector.buttonColor = DataManager.settings.backgroundColor
+                                backgroundColorSelector.buttonColor = DataManager.settings.backgroundColor
+                                foregroundColorSelector.buttonColor = DataManager.settings.foregroundColor
                                 root.visible = false
                             }
                         }
