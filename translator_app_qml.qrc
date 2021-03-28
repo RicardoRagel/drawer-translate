@@ -19,5 +19,7 @@
         <file>qml/CustomWidgets/CustomColorDialogContent/PanelBorder.qml</file>
         <file>qml/CustomWidgets/CustomColorDialogContent/SBPicker.qml</file>
         <file>qml/CustomWidgets/CustomColorDialog.qml</file>
+        <file>qml/ExternalWindows/AppearanceTab.qml</file>
+        <file>qml/ExternalWindows/SettingsTab.qml</file>
     </qresource>
 </RCC>

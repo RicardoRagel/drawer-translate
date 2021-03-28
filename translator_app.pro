@@ -56,6 +56,8 @@ OTHER_FILES += \
     qml/CustomWidgets/CustomColorDialogContent/PanelBorder.qml \
     qml/CustomWidgets/CustomColorDialogContent/SBPicker.qml \
     qml/ExternalWindows/SettingsWin.qml \
+    qml/ExternalWindows/SettingsTab.qml \
+    qml/ExternalWindows/AppearanceTab.qml \
     qml/ExternalWindows/AboutWin.qml \
     qml/ExtraInfoPannel.qml \
     qml/Content.qml \
