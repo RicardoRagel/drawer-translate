@@ -83,4 +83,4 @@ unix {
 }
 
 # Win Icon
-win32:RC_ICONS += resources/icon_app.ico
+win32:RC_ICONS += resources/Drawer.ico
