@@ -165,6 +165,8 @@ Window
                     widthColum2: root.widthColum2
                     fontPixelSize: root.fontPixelSize
                     fontColor: root.fontColor
+                    buttonPressedColor: root.buttonPressedColor
+                    buttonUnpressedColor: root.buttonUnpressedColor
 
                 }
             }//content

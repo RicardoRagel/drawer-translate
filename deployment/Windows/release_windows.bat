@@ -2,11 +2,11 @@
 :: WARNING: This script must be executed from its own folder.
 @echo OFF
 
-:: Example usage: .\release_windows.bat C:\Users\Ricardo\Qt\5.14.2\mingw73_64\bin C:\Users\Ricardo\Libraries\build-translator_app-Desktop_Qt_5_14_2_MinGW_64_bit-Release\release
+:: Example usage: .\release_windows.bat C:\Users\Ricardo\Qt\5.14.2\mingw73_64\bin C:\Users\Ricardo\Libraries\build-drawer_translate-Desktop_Qt_5_14_2_MinGW_64_bit-Release\release
 set USAGE_MSG=".\release_windws.bat <PATH_TO_QT_BIN> <PATH_TO_APP_EXE_FILE>"
 
 :: App executable binary file
-set APP_EXE_FILENAME=translator_app.exe
+set APP_EXE_FILENAME=drawer_translate.exe
 :: App executable binary file
 set QML_DIR=../../qml
 

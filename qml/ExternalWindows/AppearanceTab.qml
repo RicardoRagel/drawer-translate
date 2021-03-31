@@ -21,6 +21,8 @@ Rectangle
     property int fontPixelSize: 12
 
     property color fontColor: "white"
+    property color buttonUnpressedColor: "gray"
+    property color buttonPressedColor: "black"
 
     // Restore values from settings backend
     function cancelAll()

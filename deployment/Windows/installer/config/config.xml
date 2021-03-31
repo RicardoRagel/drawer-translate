@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
-    <Name>Translator App</Name>
+    <Name>Drawer Translate</Name>
     <Version>1.0.0</Version>
-    <Title>Translator App</Title>
+    <Title>Drawer Translate</Title>
     <Publisher>Ricardo Ragel de la Torre</Publisher>
     <!-- Directory name is used in component.xml -->
-    <StartMenuDir>Translator App</StartMenuDir>
-    <TargetDir>@HomeDir@/TranslatorApp/1.0.0</TargetDir>
+    <StartMenuDir>Drawer Translate</StartMenuDir>
+    <TargetDir>@HomeDir@/DrawerTranslate/1.0.0</TargetDir>
 </Installer>

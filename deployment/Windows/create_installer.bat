@@ -2,7 +2,7 @@
 :: WARNING: This script must be executed from its own folder.
 @echo OFF
 
-:: Example usage: .\create_installer.bat C:\Users\Ricardo\Libraries\build-translator_app-Desktop_Qt_5_14_2_MinGW_64_bit-Release\release
+:: Example usage: .\create_installer.bat C:\Users\Ricardo\Libraries\build-drawer_translate-Desktop_Qt_5_14_2_MinGW_64_bit-Release\release
 set USAGE_MSG=".\release_windws.bat <PATH_TO_RELEASED_APP>"
 
 ::Check argument 1
@@ -26,7 +26,7 @@ if NOT EXIST QtInstallerFramework-win-x86.exe (
 :: Install QtInstallerFramework
 echo -- Launching QtInstallerFramework installation ...
 if NOT EXIST C:\Qt\QtIFW-4.0.1\bin\binarycreator.exe (
-    cmd /C C:\Users\Ricardo\Libraries\translator-minimal-app\deployment\WinDeplotQt\QtInstallerFramework-win-x86.exe
+    cmd /C QtInstallerFramework-win-x86.exe
     echo [PAUSED] Press any key once you completed the installation
     PAUSE
 ) else (
@@ -40,4 +40,5 @@ xcopy /E %RELEASE_PATH%\* %TARGET_PACKAGE_DATA_PATH%
 
 :: Generate the installer
 echo -- Generating Installer executable ...
-C:\Qt\QtIFW-4.0.1\bin\binarycreator.exe --offline-only -c installer/config/config.xml -p installer/packages TranslatorAppWinInstaller.exe
+C:\Qt\QtIFW-4.0.1\bin\binarycreator.exe --offline-only -c installer/config/config.xml -p installer/packages DrawerTranslateInstaller.exe
+echo Done!

@@ -65,8 +65,8 @@ OTHER_FILES += \
     qml/main.qml
 
 RESOURCES += \
-    translator_app_media.qrc \
-    translator_app_qml.qrc
+    resources_media.qrc \
+    resources_qml.qrc
 
 # Linux THIRD PARTY Libs
 # Add custom openssl 1.1.1 libraries to the build to avoid QNetworkManager issues

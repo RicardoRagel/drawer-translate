@@ -16,7 +16,7 @@ Settings::~Settings()
 
 void Settings::init()
 {
-    _settingsHandler = new QSettings(QSettings::IniFormat, QSettings::UserScope, "TranslatorMinimalApp", "TranslatorApp");
+    _settingsHandler = new QSettings(QSettings::IniFormat, QSettings::UserScope, "DrawerTranslate", "DrawerTranslate");
     qDebug() << "(Settings) Initialization of settings to/from " << _settingsHandler->fileName();
 
     // Font Size
