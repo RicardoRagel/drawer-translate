@@ -1,10 +1,14 @@
-# Drawer Translate
+# Drawer Translate <img src="resources/icon_app.png" height="30" align="right" />
 
 ## Overview
 
-Minimalistic Application to translate text using the different machine translation APIs. It has been developed under the idea of it doesn't interfer with the rest of our work, so the app is a window at the bottom of your screen that can be resized, minimized, hidden or auto-hidden.
+Cross-platform desktop application to translate text using different machine translation APIs. It has been developed under the idea of it doesn't interfer with the rest of our work, so the app is a window at the bottom of your screen that can be resized, minimized, hidden or auto-hidden.
 
-It is a simple Qt Application with a front-end developed using QML.
+<p align="center">
+    <img src="media/drawer_translate_sample.png" width="720">
+</p>
+
+It is a simple Qt Application with a front-end developed using QML. <img src="media/built-with-Qt_Horizontal_Small.png" height="30" align="right" />
 
 ## Dependencies
 
