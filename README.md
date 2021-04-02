@@ -10,6 +10,10 @@ Cross-platform desktop application to translate text using different machine tra
 
 It is a simple Qt Application with a front-end developed using QML. <img src="media/built-with-Qt_Horizontal_Small.png" height="30" align="right" />
 
+## Download it
+
+Visit the [latest release page](https://github.com/RicardoRagel/drawer-translate/releases/latest) to download the latest Windows installer or the Linux AppImage. Don't forget to give permission execution to the AppImage before try to run it.
+
 ## Dependencies
 
 * **OS**: Linux and Windows. Tested on Ubuntu 16.04, 18.04 and Windows 10.
