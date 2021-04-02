@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Drawer Translate
+Comment=An open-source translation application using different translation APIs
+Exec=drawer_translate
+Icon=icon_app
+Categories=Office;
+X-AppImage-Version=1.0.0
+Name[en_US]=drawer_translate
