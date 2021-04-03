@@ -1,4 +1,4 @@
-# Drawer Translate <img src="resources/icon_app.png" height="30" align="right" />
+# Drawer Translate <img src="media/icon_app.png" height="30" align="right" />
 
 ## Github Page
 
