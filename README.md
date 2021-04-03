@@ -2,4 +2,4 @@
 
 ## Github Page
 
-This branch is reserved to host the [Github Page](https://pages.github.com/) of this project: https://ricardoragel.github.io/drawer-translate
+This branch is reserved to host the [Github Page](https://pages.github.com/) of this project: https://ricardoragel.github.io/drawer-translate/
