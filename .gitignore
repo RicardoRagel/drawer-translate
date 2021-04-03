@@ -1,9 +1,0 @@
-# Github
-*.pro.user
-
-# AppImage
-*.AppImage
-
-# QtInstallerFramework
-*.exe
-deployment/Windows/installer/packages/org.qtproject.ifw/data/*
