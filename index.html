@@ -14,23 +14,136 @@
 
     <!-- Website title tag -->
     <title>Drawer Translate Github Page</title>
+    
   </head>
   
   <body>
-    <div class="px-4 py-2 my-5 text-center">     
+    <div class="px-4 py-2 my-5 text-center"> 
+      
+      <!--Title-->
       <a href="index.html">
         <img class="d-block mx-auto mb-4" src="media/icon_app.svg" alt="" width="72" height="57">
       </a>
       <h1 class="display-5 text-primary"> Drawer Translate </h1>
       
-      <div class="col-lg-6 mx-auto">
+      <!--Subtitle-->
+      <div class="col-lg-6 mx-auto mb-5">
         <p class="lead mb-4">Open-source cross-platform desktop application to translate text using different machine translation APIs. It has been developed under the idea of it doesn't interfer with the rest of our work, so the app is a window at the bottom of your screen that can be resized, minimized, hidden or auto-hidden.</p>
+        <!--Buttons-->
         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
           <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3" onclick="openDownloads()">Download</button>
           <button type="button" class="btn btn-outline-secondary btn-lg px-4" onclick="openGithub()">Github</button>
         </div>
       </div>
+
+      <!-- On Linux -->
+      <h2 class="display-6 text-primary mb-3"> On Linux </h1>
+      <div id="carousel" class="carousel slide bg-secondary mx-auto mb-4" style="max-width: 1000px;" data-bs-ride="carousel">
+        <div class="carousel-inner" >
+          <div class="carousel-item active">
+            <img class="d-block w-100" src="media/samples/linux_1.png" alt="Linux Sample 1">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="media/samples/linux_2.png" alt="Linux Sample 2">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="media/samples/linux_3.png" alt="Linux Sample 3">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="media/samples/linux_4.png" alt="Linux Sample 4">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="media/samples/linux_5.png" alt="Linux Sample 5">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="media/samples/linux_6.png" alt="Linux Sample 6">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="media/samples/linux_7.png" alt="Linux Sample 7">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
+          <button type="button" data-bs-target="#carousel" data-bs-slide-to="6" aria-label="Slide 7"></button>
+        </div>
+      </div>
+      <div class="col-lg-8 mx-auto mb-5">
+        <p class="lead fs-6">Just <a href="download.html">download</a> the self-contained <b>AppImage</b> executable for Linux and double-click it to run. 
+          Don't forget to set <a href="https://aws1.discourse-cdn.com/standard10/uploads/appimage/original/1X/a4889c5cb8711d6845b58135080787d2f370af35.gif">execution permission</a> 
+          to the downloaded file before try to execute it. <br> <br>
+          Once it is running, go to Settings 
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+            <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+          </svg>
+          and select you prefered Translate API and the desired source and target translation languages. In addition, some others settings can be configured, like translate text on mouse selection and/or on mouse copy, auto-hide this app or the appearance of it.
+        </p>
+      </div>
+
+      <!-- On Windows -->
+      <h2 class="display-6 text-primary mb-3"> On Windows </h1>
+      <div id="carousel_2" class="carousel slide bg-secondary mx-auto mb-4" style="max-width: 1000px;" data-bs-ride="carousel">
+        <div class="carousel-inner" >
+          <div class="carousel-item active">
+            <img class="d-block w-100" src="media/samples/windows_1.png" alt="Windows Sample 1">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="media/samples/windows_2.png" alt="Windows Sample 2">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="media/samples/windows_3.png" alt="Windows Sample 3">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="media/samples/windows_4.png" alt="Windows Sample 4">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="media/samples/windows_5.png" alt="Windows Sample 5">
+          </div>
+          <div class="carousel-item">
+            <img class="d-block w-100" src="media/samples/windows_6.png" alt="Windows Sample 6">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel_2" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel_2" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carousel_2" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carousel_2" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carousel_2" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#carousel_2" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          <button type="button" data-bs-target="#carousel_2" data-bs-slide-to="4" aria-label="Slide 5"></button>
+          <button type="button" data-bs-target="#carousel_2" data-bs-slide-to="5" aria-label="Slide 6"></button>
+        </div>
+      </div>
+      <div class="col-lg-8 mx-auto mb-5">
+        <p class="lead fs-6">Simply <a href="download.html">download</a> the <b>Installation Wizard</b> executable for Windows and double-click it to run. 
+          Select the location where you want to install Drawer Translate and it automatically will create a shortcut in the Windows Start Menu. <br> <br>
+          Once it is installed, go to the start menu, run Drawer Translate and it is ready to start translating. In the Settings menu
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16">
+            <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+          </svg>
+          you can select a different Translate API if you wish and change the source and target translation languages. In addition, some others settings can be configured, like translate text on mouse selection and/or on mouse copy, auto-hide this app or the appearance of it.
+        </p>
+      </div>
     </div>
+    
 
     <!-- JavaScript functions -->
     <script>
