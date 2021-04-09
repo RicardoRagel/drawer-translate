@@ -1,43 +1,76 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Ricardo Ragel de la Torre">
-
-    <!-- Favicon -->
     <link rel="icon" href="media/favicon.ico"/>
+      <!-- Meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="author" content="Ricardo Ragel de la Torre">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+      <!-- Bootstrap CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 
-    <!-- Website title tag -->
-    <title>Drawer Translate Github Page</title>
-    
+      <!-- Website title tag -->
+      <title>Drawer Translate Github Page</title>
+
+      <!-- Top space for the navbar-->
+      <link href="css/navbar-top-fixed.css" rel="stylesheet">
   </head>
+
+  <body id="top">
+
+    <!--NavBar-->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">Drawer Translate</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link" href="#top">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-selected="false" role="tab" href="#on-linux">On Linux</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#on-windows">On Windows</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="download.html">Download</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="https://github.com/RicardoRagel/drawer-translate">Github</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   
-  <body>
-    <div class="px-4 py-2 my-5 text-center"> 
-      
+    <!--Content-->
+    <div class="px-4 py-2 my-4 text-center"> 
+
       <!--Title-->
       <a href="index.html">
         <img class="d-block mx-auto mb-4" src="media/icon_app.svg" alt="" width="72" height="57">
       </a>
       <h1 class="display-5 text-primary"> Drawer Translate </h1>
-      
       <!--Subtitle-->
-      <div class="col-lg-6 mx-auto mb-5">
-        <p class="lead mb-4">Open-source cross-platform desktop application to translate text using different machine translation APIs. It has been developed under the idea of it doesn't interfer with the rest of our work, so the app is a window at the bottom of your screen that can be resized, minimized, hidden or auto-hidden.</p>
+      <div class="col-lg-7 mx-auto mb-5">
+        <p class="lead mb-5">Open-source cross-platform desktop application to translate text using different machine translation APIs. It has been developed under the idea of it doesn't interfer with the rest of our work, so the app is a window at the bottom of your screen that can be resized, minimized, hidden or auto-hidden.</p>
         <!--Buttons-->
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <div id="on-linux" class="d-grid gap-2 d-sm-flex justify-content-sm-center">
           <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3" onclick="openDownloads()">Download</button>
           <button type="button" class="btn btn-outline-secondary btn-lg px-4" onclick="openGithub()">Github</button>
         </div>
       </div>
-
+      
       <!-- On Linux -->
-      <h2 class="display-6 text-primary mb-3"> On Linux </h1>
+      <h2 class="display-6 text-primary mb-3"> On Linux </h2>
       <div id="carousel" class="carousel slide bg-secondary mx-auto mb-4" style="max-width: 1000px;" data-bs-ride="carousel">
         <div class="carousel-inner" >
           <div class="carousel-item active">
@@ -93,7 +126,7 @@
       </div>
 
       <!-- On Windows -->
-      <h2 class="display-6 text-primary mb-3"> On Windows </h1>
+      <h2 id="on-windows" class="display-6 text-primary mb-3"> On Windows </h2>
       <div id="carousel_2" class="carousel slide bg-secondary mx-auto mb-4" style="max-width: 1000px;" data-bs-ride="carousel">
         <div class="carousel-inner" >
           <div class="carousel-item active">
@@ -142,14 +175,48 @@
           you can select a different Translate API if you wish and change the source and target translation languages. In addition, some others settings can be configured, like translate text on mouse selection and/or on mouse copy, auto-hide this app or the appearance of it.
         </p>
       </div>
+
     </div>
     
+    <!-- Contact -->
+    <div id="contact" class="bg-light p-5 text-center rounded">
+      <h1 class="h3 text-primary">Contact and Support</h1>
+      <p class="lead fs-6 col-lg-4 mx-auto">In case of you find any issues using the application, don't hesitate to contact me through e-mail or to open an issue on the Github repository</p>
+        
+      <p class="lead fs-6  mb-1">
+        <span> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-emoji-smile" viewBox="0 0 16 16">
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+          <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683zM7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5zm4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5z"/>
+        </svg> &nbsp;Ricardo Ragel de la Torre</span>
+      </p>
 
+      <p class="lead fs-6 mb-1">
+        <span> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-mailbox" viewBox="0 0 16 16">
+          <path d="M4 4a3 3 0 0 0-3 3v6h6V7a3 3 0 0 0-3-3zm0-1h8a4 4 0 0 1 4 4v6a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V7a4 4 0 0 1 4-4zm2.646 1A3.99 3.99 0 0 1 8 7v6h7V7a3 3 0 0 0-3-3H6.646z"/>
+          <path d="M11.793 8.5H9v-1h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.354-.146l-.853-.854zM5 7c0 .552-.448 0-1 0s-1 .552-1 0a1 1 0 0 1 2 0z"/>
+        </svg> &nbsp;<a class="link-success" href="mailto:ricardoragel4@gmail.com">Send me an email<a></span>
+      </p>
+
+      <p class="lead fs-6 mb-1">
+        <span> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg> &nbsp; <a class="link-success" href="https://github.com/RicardoRagel">Visit my Github projects<a></span>
+      </p>
+
+      <p class="lead fs-6 mb-1">
+        <span> <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16">
+          <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
+        </svg> &nbsp; <a class="link-success" href="https://es.linkedin.com/in/ricardorageldelatorre">Visit my Linkedin profile<a></span>
+      </p>
+
+    </div>
+    
     <!-- JavaScript functions -->
     <script>
       function openDownloads() 
       {
         //window.open("download");
+        //window.alert("Opennig downloads.html");
         location.href = "download.html";
       }
       function openGithub() 
