@@ -1,22 +1,24 @@
-# Drawer Translate <img src="resources/icon_app.png" height="30" align="right" />
+# <a href="https://ricardoragel.github.io/drawer-translate/">Drawer Translate <img src="resources/icon_app.png" height="30" align="right"/></a>
 
 ## Overview
 
-Cross-platform desktop application to translate text using different machine translation APIs. It has been developed under the idea of it doesn't interfer with the rest of our work, so the app is a window at the bottom of your screen that can be resized, minimized, hidden or auto-hidden.
+Open-source cross-platform desktop application to translate text using different machine [translation APIs](#translation-apis). It has been developed under the idea of it doesn't interfer with the rest of our work, so the app is a window placed at the bottom of the screen that can be resized, minimized, hidden or auto-hidden.
 
 <p align="center">
     <img src="media/drawer_translate_sample.png" width="720">
 </p>
 
-It is a simple Qt Application with a front-end developed using QML. <img src="media/built-with-Qt_Horizontal_Small.png" height="30" align="right" />
+It is a simple Qt Application with a front-end developed using QML. <img src="media/built-with-Qt_Horizontal_Small.png" height="20" align="right" />
 
-## Download it
+For more information, visit the application [website](https://ricardoragel.github.io/drawer-translate/).
 
-Visit the [latest release page](https://github.com/RicardoRagel/drawer-translate/releases/latest) to download the latest Windows installer or the Linux AppImage. Don't forget to give permission execution to the AppImage before try to run it.
+## Download it!
+
+You can get it from the [website downloads page](https://ricardoragel.github.io/drawer-translate/download) or visiting the [latest release page](https://github.com/RicardoRagel/drawer-translate/releases/latest). You will find there the Windows installer and the Linux AppImage of the latest app version. Don't forget to give permission execution to the AppImage before try to run it.
 
 ## Dependencies
 
-* **OS**: Linux and Windows. Tested on Ubuntu 16.04, 18.04 and Windows 10.
+* **OS**: Linux and Windows. Tested on Ubuntu (16.04, 18.04 and 20.04) and Windows 10.
 
 * [**Qt & QtCreator**](https://www.qt.io/download). Created using Qt 5.14.1
 
@@ -61,7 +63,7 @@ All this seetings are saved on your computer and can be edited manually (somethi
 * `C:\Users\<USER>\AppData\Roaming\DrawerTranslate/DrawerTranslate.ini` on Windows.
 * `~/.config/DrawerTranslate/DrawerTranslate.ini` on Linux.
 
-## Known issues
+## Known and fixed issues
 
 1. QNetworkManager library throws the following errors on Windows:
 
