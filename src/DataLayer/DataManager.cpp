@@ -153,18 +153,28 @@ int DataManager::getScreenX()
     return x;
 }
 
-int DataManager::getScreenWidth()
+int DataManager::getScreenY()
 {
     QList<QScreen *> screens = qApp->screens();
 
-// DEBUG
-//    qDebug() << "(DataManager) Getting Screen Width";
-//    qDebug() << "*** Qt screens " << screens.count() << " ***";
-//    for(auto &screen : screens)
-//    {
-//        qDebug() << "Screen Geometry: " << screen->geometry();
-//        qDebug() << "Screen Available Geometry: " << screen->availableGeometry();
-//    }
+    int y = 0;
+    if(screens.count() >= _settings->monitor())
+    {
+        // Set app X pos of the selected monitor if it exists
+        y = screens[_settings->monitor()]->availableGeometry().y();
+    }
+    else if(screens.count() > 0)
+    {
+        // Fallback: set the with of the first monitor
+        y = screens[0]->availableGeometry().y();
+    }
+
+    return y;
+}
+
+int DataManager::getScreenWidth()
+{
+    QList<QScreen *> screens = qApp->screens();
 
     int width = 400;
     if(screens.count() >= _settings->monitor())
@@ -179,6 +189,33 @@ int DataManager::getScreenWidth()
     }
 
     return width;
+}
+
+int DataManager::getScreenHeight()
+{
+    QList<QScreen *> screens = qApp->screens();
+
+    qDebug() << "(DataManager) Getting Screen Width";
+    qDebug() << "*** Qt screens " << screens.count() << " ***";
+    for(auto &screen : screens)
+    {
+        qDebug() << "Screen Geometry: " << screen->geometry();
+        qDebug() << "Screen Available Geometry: " << screen->availableGeometry();
+    }
+
+    int height = 200;
+    if(screens.count() > _settings->monitor())
+    {
+        // Set the width of the selected monitor if it exists
+        height = screens[_settings->monitor()]->availableGeometry().height();
+    }
+    else if(screens.count() > 0)
+    {
+        // Fallback: set the with of the first monitor
+        height = screens[0]->availableGeometry().height();
+    }
+
+    return height;
 }
 
 void DataManager::updateAvailableLanguageCode(QString translator_engine)

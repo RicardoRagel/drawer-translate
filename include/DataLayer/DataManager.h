@@ -79,7 +79,9 @@ public:
 
   // QML Invokable functions
   Q_INVOKABLE int getScreenX();
+  Q_INVOKABLE int getScreenY();
   Q_INVOKABLE int getScreenWidth();
+  Q_INVOKABLE int getScreenHeight();
   Q_INVOKABLE void updateAvailableLanguageCode(QString translator_engine);
   Q_INVOKABLE void setSourceLanguage(QString source_lang);
   Q_INVOKABLE void setTargetLanguage(QString target_lang);

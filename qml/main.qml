@@ -38,14 +38,21 @@ ApplicationWindow
     property int margins: 10
     property int forceMinimumHeight: buttonSize
     property int resizingMinimumHeight: buttonSize + 2 * margins
+    property double contentsOpacity: 1.0
+
+    // y and height are controlled by these properties
+    property int targetHeight           // Animations and mouse actions control this property, and this property control y and height
+    property int screenAvailableHeight  // Available height
+    property int screenYoffset          // Y Offset in case of dock/start-menu is at the top
 
     // Windows Configuration
     title: qsTr(Constants.appTitle)
     visible: false
     color: "transparent"
-    x: Screen.width - Screen.desktopAvailableWidth > 0? Screen.width - Screen.desktopAvailableWidth : 0
+    x: 0
+    y: 0
     width: Screen.desktopAvailableWidth
-    property int targetHeight       // y and height are controlled by this property
+    height: Screen.desktopAvailableHeight
     minimumHeight: forceMinimumHeight
     minimumWidth: 400
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
@@ -53,16 +60,35 @@ ApplicationWindow
            | Qt.FramelessWindowHint        // Frameless window
            | Qt.WindowStaysOnTopHint       // Always on top
 
-    // Manage the app starup, fixing some issues found for multiple monitors:
-    // the problem is Screen.desktopAvailableWidth doesn't take in account the
-    // lateral taskbar width if multiple monitors are present and the app window
-    // is Qt.FramelessWindowHint. This timer will be stopped as soon as user presses
-    // on the input text field
     Component.onCompleted:
     {
-        targetHeight = Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (heightFactor):Screen.height * (heightFactor)
-
         root.visible = true
+    }
+
+    // Connections to C++ backend
+    Connections
+    {
+        target: DataManager.settings
+        onAutoHideWinChanged:
+        {
+            if(DataManager.settings.autoHideWin)
+            {
+                autoHideTimer.running = true
+            }
+            else
+            {
+                autoHideTimer.running = false
+            }
+        }
+
+        onMonitorChanged:
+        {
+            root.x = DataManager.getScreenX();
+            root.width = DataManager.getScreenWidth();
+            screenAvailableHeight = DataManager.getScreenHeight();
+            screenYoffset = DataManager.getScreenY();
+            targetHeight = DataManager.getScreenHeight() * heightFactor;
+        }
     }
 
     // A FramelessWindow has not handlers to resize it. Adding one at the top
@@ -89,7 +115,7 @@ ApplicationWindow
         {
             if(pressed && !appHidden)
             {
-                var tmptargetHeight = Qt.platform.os === "windows"? Screen.desktopAvailableHeight - MouseProvider.cursorPos().y : Screen.height - MouseProvider.cursorPos().y
+                var tmptargetHeight = screenAvailableHeight + screenYoffset - MouseProvider.cursorPos().y
                 if(tmptargetHeight > resizingMinimumHeight)
                     targetHeight = tmptargetHeight
             }
@@ -121,7 +147,7 @@ ApplicationWindow
             if(targetHeight > forceMinimumHeight)
             {
                 root.height = targetHeight
-                root.y = Qt.platform.os === "windows"? Screen.desktopAvailableHeight - targetHeight : Screen.height - targetHeight
+                root.y = screenAvailableHeight - targetHeight + screenYoffset
             }
         }
     }
@@ -138,27 +164,6 @@ ApplicationWindow
             console.log("AutoHide triggered!")
             if(!appHidden)
                 showHide()
-        }
-    }
-    Connections
-    {
-        target: DataManager.settings
-        onAutoHideWinChanged:
-        {
-            if(DataManager.settings.autoHideWin)
-            {
-                autoHideTimer.running = true
-            }
-            else
-            {
-                autoHideTimer.running = false
-            }
-        }
-
-        onMonitorChanged:
-        {
-            root.x = DataManager.getScreenX();
-            root.width = DataManager.getScreenWidth();
         }
     }
 
@@ -249,15 +254,6 @@ ApplicationWindow
             duration: 500
         }
     }
-
-    // Contents opacity controller
-    property double contentsOpacity: 1.0
-//    property double maxHop: 2.25 * root.minimumHeight
-//    property double minHop: 1.5 * root.minimumHeight
-//    onHeightChanged:
-//    {
-//        contentsOpacity = root.height > maxHop? 1.0 : (root.height - minHop)/ (maxHop - minHop)
-//    }
 
     /*
         CONTENTS
