@@ -134,6 +134,53 @@ void DataManager::setTtsAvailableForTargetLang(bool enable)
 /** *********************************
  *  QML Invokable functions
  ** ********************************/
+int DataManager::getScreenX()
+{
+    QList<QScreen *> screens = qApp->screens();
+
+    int x = 0;
+    if(screens.count() >= _settings->monitor())
+    {
+        // Set app X pos of the selected monitor if it exists
+        x = screens[_settings->monitor()]->availableGeometry().x();
+    }
+    else if(screens.count() > 0)
+    {
+        // Fallback: set the with of the first monitor
+        x = screens[0]->availableGeometry().x();
+    }
+
+    return x;
+}
+
+int DataManager::getScreenWidth()
+{
+    QList<QScreen *> screens = qApp->screens();
+
+// DEBUG
+//    qDebug() << "(DataManager) Getting Screen Width";
+//    qDebug() << "*** Qt screens " << screens.count() << " ***";
+//    for(auto &screen : screens)
+//    {
+//        qDebug() << "Screen Geometry: " << screen->geometry();
+//        qDebug() << "Screen Available Geometry: " << screen->availableGeometry();
+//    }
+
+    int width = 400;
+    if(screens.count() >= _settings->monitor())
+    {
+        // Set the width of the selected monitor if it exists
+        width = screens[_settings->monitor()]->availableGeometry().width();
+    }
+    else if(screens.count() > 0)
+    {
+        // Fallback: set the with of the first monitor
+        width = screens[0]->availableGeometry().width();
+    }
+
+    return width;
+}
+
 void DataManager::updateAvailableLanguageCode(QString translator_engine)
 {
     // Clear Language Codes

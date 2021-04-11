@@ -38,6 +38,7 @@ Rectangle
         onSelection.checked = DataManager.settings.translateOnSelection
         onCopy.checked = DataManager.settings.translateOnCopy
         autoHide.checked = DataManager.settings.autoHideWin
+        monitor.currentIndex = DataManager.settings.monitor
     }
 
     // Set values to settings backend
@@ -51,6 +52,7 @@ Rectangle
         DataManager.settings.setTranslateOnSelection(onSelection.checked)
         DataManager.settings.setTranslateOnCopy(onCopy.checked)
         DataManager.settings.setAutoHideWin(autoHide.checked)
+        DataManager.settings.setMonitor(monitor.currentIndex)
     }
 
     // Column of settings
@@ -646,6 +648,71 @@ Rectangle
                     {
                         autoHide.checked = DataManager.settings.autoHideWin
                         console.log("Updating Auto-Hide: " + DataManager.settings.autoHideWin)
+                    }
+                }
+            }
+        }
+
+        // Monitor
+        Row
+        {
+            id: monitorRow
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 2
+
+            Rectangle
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                width: widthColum1
+                height: heightColumns
+                color: "transparent"
+
+                Text
+                {
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: fontPixelSize
+                    font.bold: false
+                    color: fontColor
+                    text: "    Monitor:"
+                }
+            }
+            Rectangle
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                width: widthColum2
+                height: heightColumns
+                color: comboBoxColor
+                opacity: unhoveredOpacity
+
+                CustomComboBox
+                {
+                    id: monitor
+                    height: parent.height
+                    width: parent.width
+                    anchors.centerIn: parent
+                    backgroundColor: "transparent"
+                    textColor: fontColor
+                    fontSize: fontPixelSize
+                    dropDownMaxHeight: root.height/2
+                    dropDownArrowColor: backgroundColor
+                    currentIndex: 0
+                    textRole: "index"
+                    displayText: currentIndex
+                    model: Qt.application.screens
+                    onHoveredChanged:
+                    {
+                        parent.opacity = hovered? 1.0 : unhoveredOpacity
+                    }
+                }
+                Connections
+                {
+                    target: DataManager.settings
+
+                    onMonitorChanged:
+                    {
+                        monitor.currentIndex = DataManager.settings.monitor
+                        console.log("Updating Monitor to: " + DataManager.settings.monitor)
                     }
                 }
             }

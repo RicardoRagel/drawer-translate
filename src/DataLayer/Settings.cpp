@@ -82,6 +82,18 @@ void Settings::init()
         qDebug() << "(Settings) AutoHide Window:" << autoHideWin();
     }
 
+    // Monitor where place the app
+    if(!_settingsHandler->contains("Window/monitor"))
+    {
+        qDebug() << "(Settings) Initializing monitor " << DEFAULT_MONITOR;
+        setMonitor(DEFAULT_MONITOR);
+    }
+    else
+    {
+        setMonitor(_settingsHandler->value("Window/monitor").toInt());
+        qDebug() << "(Settings) Monitor: " << monitor();
+    }
+
     // Translate on selection
     if(!_settingsHandler->contains("Input/translateOnSelection"))
     {
@@ -204,6 +216,13 @@ void Settings::setAutoHideWin(bool autohide_win)
     _settingsHandler->setValue("Window/autoHide", autohide_win);
     _autohide_win = autohide_win;
     emit autoHideWinChanged();
+}
+
+void Settings::setMonitor(int monitor)
+{
+    _settingsHandler->setValue("Window/monitor", monitor);
+    _monitor = monitor;
+    emit monitorChanged();
 }
 
 void Settings::setTranslateOnSelection(bool translate_on_selection)

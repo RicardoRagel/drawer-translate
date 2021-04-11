@@ -9,6 +9,7 @@
 #include <QClipboard>
 #include <QApplication>
 #include <QMediaPlayer>
+#include <QScreen>
 
 #include "Constants.h"
 #include "Settings.h"
@@ -77,6 +78,8 @@ public:
   Q_INVOKABLE void setTtsAvailableForTargetLang(bool enable);
 
   // QML Invokable functions
+  Q_INVOKABLE int getScreenX();
+  Q_INVOKABLE int getScreenWidth();
   Q_INVOKABLE void updateAvailableLanguageCode(QString translator_engine);
   Q_INVOKABLE void setSourceLanguage(QString source_lang);
   Q_INVOKABLE void setTargetLanguage(QString target_lang);

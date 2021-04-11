@@ -52,7 +52,6 @@ ApplicationWindow
     flags: Qt.Window
            | Qt.FramelessWindowHint        // Frameless window
            | Qt.WindowStaysOnTopHint       // Always on top
-           //| Qt.X11BypassWindowManagerHint // Avoid flickering in Linux, but it disables keyboard inputs
 
     // Manage the app starup, fixing some issues found for multiple monitors:
     // the problem is Screen.desktopAvailableWidth doesn't take in account the
@@ -61,35 +60,9 @@ ApplicationWindow
     // on the input text field
     Component.onCompleted:
     {
-        if(Screen.desktopAvailableWidth > Screen.width)
-        {
-            fixMultipleMonitorIssueTimer.running = true
-        }
-        else
-            root.visible = true
-
         targetHeight = Qt.platform.os === "windows"?Screen.desktopAvailableHeight * (heightFactor):Screen.height * (heightFactor)
-    }
-    Timer
-    {
-        id: fixMultipleMonitorIssueTimer
-        interval: 100
-        running: false
-        repeat: true
-        onTriggered:
-        {
-            if(!root.visible)
-            {
-                root.visible = true
-            }
-            else
-            {
-                if(root.width > Screen.width)
-                {
-                    root.width = root.width - Screen.width
-                }
-            }
-        }
+
+        root.visible = true
     }
 
     // A FramelessWindow has not handlers to resize it. Adding one at the top
@@ -180,6 +153,12 @@ ApplicationWindow
             {
                 autoHideTimer.running = false
             }
+        }
+
+        onMonitorChanged:
+        {
+            root.x = DataManager.getScreenX();
+            root.width = DataManager.getScreenWidth();
         }
     }
 
@@ -362,7 +341,7 @@ ApplicationWindow
             onSectionPressed:
             {
                 // stop the dummy timer
-                fixMultipleMonitorIssueTimer.running = false
+                //fixMultipleMonitorIssueTimer.running = false
             }
         }//content
 

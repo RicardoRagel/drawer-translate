@@ -9,6 +9,7 @@
 
 #define DEFAULT_FONT_SIZE 14                                // App Font Size
 #define DEFAULT_AUTOHIDE_WIN false                          // AutoHide App Window flag
+#define DEFAULT_MONITOR 0                                   // Monitor where place the app
 #define DEFAULT_TRANSLATE_ON_SELECTION true                 // Enable input text from clipboard selection
 #define DEFAULT_TRANSLATE_ON_COPY true                      // Enable input text from clipboard copy
 #define DEFAULT_TRANSLATOR_ENGINE LIBRE_TRANSLATE_API_NAME  // Select the default Translation engine
@@ -38,6 +39,7 @@ public:
     Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor NOTIFY textColorChanged)
     Q_PROPERTY(int fontSize READ fontSize WRITE setFontSize NOTIFY fontSizeChanged)
     Q_PROPERTY(bool autoHideWin READ autoHideWin WRITE setAutoHideWin NOTIFY autoHideWinChanged)
+    Q_PROPERTY(int monitor READ monitor WRITE setMonitor NOTIFY monitorChanged)
     Q_PROPERTY(bool translateOnSelection READ translateOnSelection WRITE setTranslateOnSelection NOTIFY translateOnSelectionChanged)
     Q_PROPERTY(bool translateOnCopy READ translateOnCopy WRITE setTranslateOnCopy NOTIFY translateOnCopyChanged)
     Q_PROPERTY(QString translatorEngine READ translatorEngine WRITE setTranslatorEngine NOTIFY translatorEngineChanged)
@@ -52,6 +54,7 @@ public:
     QColor foregroundColor()    {return _foreground_color;}
     QColor textColor()          {return _text_color;}
     bool autoHideWin()          {return _autohide_win;}
+    int  monitor()              {return _monitor;}
     bool translateOnSelection() {return _translate_on_selection;}
     bool translateOnCopy()      {return _translate_on_copy;}
     QString googleApiKey()      {return _google_api_key;}
@@ -66,6 +69,7 @@ public:
     Q_INVOKABLE void setForegroundColor(QColor foreground_color);
     Q_INVOKABLE void setTextColor(QColor text_color);
     Q_INVOKABLE void setAutoHideWin(bool autohide_win);
+    Q_INVOKABLE void setMonitor(int monitor);
     Q_INVOKABLE void setTranslateOnSelection(bool translate_on_selection);
     Q_INVOKABLE void setTranslateOnCopy(bool translate_on_copy);
     Q_INVOKABLE void setTranslatorEngine(QString translator_engine);
@@ -85,6 +89,7 @@ signals:
     void foregroundColorChanged();
     void textColorChanged();
     void autoHideWinChanged();
+    void monitorChanged();
     void translateOnSelectionChanged();
     void translateOnCopyChanged();
     void translatorEngineChanged();
@@ -104,6 +109,7 @@ private:
     QColor _foreground_color;
     QColor _text_color;
     bool _autohide_win;
+    int _monitor;
     bool _translate_on_selection;
     bool _translate_on_copy;
     QString _translator_engine;
