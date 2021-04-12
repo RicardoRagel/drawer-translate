@@ -134,7 +134,17 @@ void DataManager::setTtsAvailableForTargetLang(bool enable)
 /** *********************************
  *  QML Invokable functions
  ** ********************************/
-int DataManager::getScreenX()
+
+/* Note about Available Screen Properties using availableGeometry():
+ *
+ * From https://doc.qt.io/qt-5/qscreen.html#availableGeometry-prop
+ *
+ * "Note, on X11 this will return the true available geometry only on systems
+ *  with one monitor and if window manager has set _NET_WORKAREA atom. In all
+ *  other cases this is equal to geometry(). This is a limitation in X11 window
+ *  manager specification."
+*/
+int DataManager::getAvailableScreenX()
 {
     QList<QScreen *> screens = qApp->screens();
 
@@ -153,7 +163,7 @@ int DataManager::getScreenX()
     return x;
 }
 
-int DataManager::getScreenY()
+int DataManager::getAvailableScreenY()
 {
     QList<QScreen *> screens = qApp->screens();
 
@@ -172,9 +182,17 @@ int DataManager::getScreenY()
     return y;
 }
 
-int DataManager::getScreenWidth()
+int DataManager::getAvailableScreenWidth()
 {
     QList<QScreen *> screens = qApp->screens();
+
+    qDebug() << "(DataManager) Getting Screen Width";
+    qDebug() << "*** Qt screens " << screens.count() << " ***";
+    for(auto &screen : screens)
+    {
+        //qDebug() << "Screen Geometry: " << screen->geometry();
+        qDebug() << "Screen Available Geometry: " << screen->availableGeometry();
+    }
 
     int width = 400;
     if(screens.count() >= _settings->monitor())
@@ -191,17 +209,9 @@ int DataManager::getScreenWidth()
     return width;
 }
 
-int DataManager::getScreenHeight()
+int DataManager::getAvailableScreenHeight()
 {
     QList<QScreen *> screens = qApp->screens();
-
-    qDebug() << "(DataManager) Getting Screen Width";
-    qDebug() << "*** Qt screens " << screens.count() << " ***";
-    for(auto &screen : screens)
-    {
-        qDebug() << "Screen Geometry: " << screen->geometry();
-        qDebug() << "Screen Available Geometry: " << screen->availableGeometry();
-    }
 
     int height = 200;
     if(screens.count() > _settings->monitor())

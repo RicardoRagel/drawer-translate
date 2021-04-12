@@ -52,18 +52,13 @@ ApplicationWindow
     x: 0
     y: 0
     width: Screen.desktopAvailableWidth
-    height: Screen.desktopAvailableHeight
+    //height: Screen.desktopAvailableHeight
     minimumHeight: forceMinimumHeight
     minimumWidth: 400
     menuBar: MenuBar{ visible: false }  // Remove MenuBar
     flags: Qt.Window
            | Qt.FramelessWindowHint        // Frameless window
            | Qt.WindowStaysOnTopHint       // Always on top
-
-    Component.onCompleted:
-    {
-        root.visible = true
-    }
 
     // Connections to C++ backend
     Connections
@@ -83,18 +78,17 @@ ApplicationWindow
 
         onMonitorChanged:
         {
-            root.x = DataManager.getScreenX();
-            root.width = DataManager.getScreenWidth();
-            screenAvailableHeight = DataManager.getScreenHeight();
-            screenYoffset = DataManager.getScreenY();
-            targetHeight = DataManager.getScreenHeight() * heightFactor;
+            root.x = DataManager.getAvailableScreenX();
+            root.width = DataManager.getAvailableScreenWidth();
+            screenAvailableHeight = DataManager.getAvailableScreenHeight();
+            screenYoffset = DataManager.getAvailableScreenY();
+            targetHeight = DataManager.getAvailableScreenHeight() * heightFactor;
+            root.visible = true
         }
     }
 
     // A FramelessWindow has not handlers to resize it. Adding one at the top
     // Reference: https://evileg.com/en/post/280/
-    property int previousX
-    property int previousY
     MouseArea
     {
         id: topArea
