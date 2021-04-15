@@ -40,11 +40,16 @@ Rectangle
     // Set values to settings backend
     function saveAll()
     {
-        DataManager.settings.setFontSize(fontSizeSelector.sizeSelected)
-        DataManager.settings.setBackgroundColor(backgroundColorSelector.buttonColor)
-        DataManager.settings.setForegroundColor(foregroundColorSelector.buttonColor)
-        DataManager.settings.setTextColor(textColorSelector.buttonColor)
-        DataManager.settings.setMonitor(monitor.currentIndex)
+        if(fontSizeSelector.sizeSelected !== DataManager.settings.fontSize)
+            DataManager.settings.setFontSize(fontSizeSelector.sizeSelected)
+        if(backgroundColorSelector.buttonColor !== DataManager.settings.backgroundColor)
+            DataManager.settings.setBackgroundColor(backgroundColorSelector.buttonColor)
+        if(foregroundColorSelector.buttonColor !== DataManager.settings.foregroundColor)
+            DataManager.settings.setForegroundColor(foregroundColorSelector.buttonColor)
+        if(textColorSelector.buttonColor !== DataManager.settings.textColor)
+            DataManager.settings.setTextColor(textColorSelector.buttonColor)
+        if(monitor.currentIndex !== DataManager.settings.monitor)
+            DataManager.settings.setMonitor(monitor.currentIndex)
     }
 
     // Column of settings

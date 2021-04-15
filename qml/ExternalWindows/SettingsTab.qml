@@ -44,15 +44,24 @@ Rectangle
     // Set values to settings backend
     function saveAll()
     {
-        DataManager.settings.setTranslatorEngine(translatorEngine.currentText)
+        if(translatorEngine.currentText !== DataManager.settings.translatorEngine)
+            DataManager.settings.setTranslatorEngine(translatorEngine.currentText)
+
         DataManager.setSourceLanguage(sourceLang.currentText)
         DataManager.setTargetLanguage(targetLang.currentText)
-        DataManager.settings.setGoogleApiKey(googleApiKey.text)
-        DataManager.settings.setEmail(email.text)
-        DataManager.settings.setTranslateOnSelection(onSelection.checked)
-        DataManager.settings.setTranslateOnCopy(onCopy.checked)
-        DataManager.settings.setAutoHideWin(autoHide.checked)
-        DataManager.settings.setWelcomeWinVisible(welcomeWin.checked)
+
+        if(googleApiKey.text !== DataManager.settings.googleApiKey)
+            DataManager.settings.setGoogleApiKey(googleApiKey.text)
+        if(email.text !== DataManager.settings.email)
+            DataManager.settings.setEmail(email.text)
+        if(onSelection.checked !== DataManager.settings.translateOnSelection)
+            DataManager.settings.setTranslateOnSelection(onSelection.checked)
+        if(onCopy.checked !== DataManager.settings.translateOnCopy)
+            DataManager.settings.setTranslateOnCopy(onCopy.checked)
+        if(autoHide.checked !== DataManager.settings.autoHideWin)
+            DataManager.settings.setAutoHideWin(autoHide.checked)
+        if(welcomeWin.checked !== DataManager.settings.welcomeWinVisible)
+            DataManager.settings.setWelcomeWinVisible(welcomeWin.checked)
     }
 
     // Column of settings

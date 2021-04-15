@@ -244,6 +244,11 @@ Window
                         border_color: hovered? "black" : "transparent"
                         border_width: 1
                         tool_tip:  "Next time you run the app this window will not be shown"
+
+                        onCheckedChanged:
+                        {
+                            keyboardController.focus = true
+                        }
                     }
                 }
 
@@ -254,6 +259,7 @@ Window
     // Keyboard Control
     Item
     {
+        id: keyboardController
         anchors.fill: parent
         focus: true
         Keys.onPressed:
