@@ -148,84 +148,52 @@ int DataManager::getAvailableScreenX()
 {
     QList<QScreen *> screens = qApp->screens();
 
-    int x = 0;
-    if(screens.count() >= _settings->monitor())
-    {
-        // Set app X pos of the selected monitor if it exists
-        x = screens[_settings->monitor()]->availableGeometry().x();
-    }
-    else if(screens.count() > 0)
-    {
-        // Fallback: set the with of the first monitor
-        x = screens[0]->availableGeometry().x();
-    }
+    // Get valid monitor
+    if(_settings->monitor() >= screens.count())
+        _settings->setMonitor(0);
 
-    return x;
+    return screens[_settings->monitor()]->availableGeometry().x();
 }
 
 int DataManager::getAvailableScreenY()
 {
     QList<QScreen *> screens = qApp->screens();
 
-    int y = 0;
-    if(screens.count() >= _settings->monitor())
-    {
-        // Set app X pos of the selected monitor if it exists
-        y = screens[_settings->monitor()]->availableGeometry().y();
-    }
-    else if(screens.count() > 0)
-    {
-        // Fallback: set the with of the first monitor
-        y = screens[0]->availableGeometry().y();
-    }
+    // Get valid monitor
+    if(_settings->monitor() >= screens.count())
+        _settings->setMonitor(0);
 
-    return y;
+    return screens[_settings->monitor()]->availableGeometry().y();
 }
 
 int DataManager::getAvailableScreenWidth()
 {
     QList<QScreen *> screens = qApp->screens();
 
-    qDebug() << "(DataManager) Getting Screen Width";
-    qDebug() << "*** Qt screens " << screens.count() << " ***";
-    for(auto &screen : screens)
-    {
-        //qDebug() << "Screen Geometry: " << screen->geometry();
-        qDebug() << "Screen Available Geometry: " << screen->availableGeometry();
-    }
+    // Get valid monitor
+    if(_settings->monitor() >= screens.count())
+        _settings->setMonitor(0);
 
-    int width = 400;
-    if(screens.count() >= _settings->monitor())
-    {
-        // Set the width of the selected monitor if it exists
-        width = screens[_settings->monitor()]->availableGeometry().width();
-    }
-    else if(screens.count() > 0)
-    {
-        // Fallback: set the with of the first monitor
-        width = screens[0]->availableGeometry().width();
-    }
+//    qDebug() << "(DataManager) Getting Screen Width";
+//    qDebug() << "*** Qt screens " << screens.count() << " ***";
+//    for(auto &screen : screens)
+//    {
+//        //qDebug() << "Screen Geometry: " << screen->geometry();
+//        qDebug() << "Screen Available Geometry: " << screen->availableGeometry();
+//    }
 
-    return width;
+    return screens[_settings->monitor()]->availableGeometry().width();
 }
 
 int DataManager::getAvailableScreenHeight()
 {
     QList<QScreen *> screens = qApp->screens();
 
-    int height = 200;
-    if(screens.count() > _settings->monitor())
-    {
-        // Set the width of the selected monitor if it exists
-        height = screens[_settings->monitor()]->availableGeometry().height();
-    }
-    else if(screens.count() > 0)
-    {
-        // Fallback: set the with of the first monitor
-        height = screens[0]->availableGeometry().height();
-    }
+    // Get valid monitor
+    if(_settings->monitor() >= screens.count())
+        _settings->setMonitor(0);
 
-    return height;
+    return screens[_settings->monitor()]->availableGeometry().height();
 }
 
 void DataManager::updateAvailableLanguageCode(QString translator_engine)

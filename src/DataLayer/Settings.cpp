@@ -19,6 +19,19 @@ void Settings::init()
     _settingsHandler = new QSettings(QSettings::IniFormat, QSettings::UserScope, "DrawerTranslate", "DrawerTranslate");
     qDebug() << "(Settings) Initialization of settings to/from " << _settingsHandler->fileName();
 
+
+    // Welcome window visible
+    if(!_settingsHandler->contains("WelcomeWin/visible"))
+    {
+        qDebug() << "(Settings) Initializing Welcome Window visible to" << DEFAULT_WELCOME_WIN_VISIBLE;
+        setWelcomeWinVisible(DEFAULT_WELCOME_WIN_VISIBLE);
+    }
+    else
+    {
+        setWelcomeWinVisible(_settingsHandler->value("WelcomeWin/visible").toBool());
+        qDebug() << "(Settings) Welcome Window visible:" << welcomeWinVisible();
+    }
+
     // Font Size
     if(!_settingsHandler->contains("Window/fontSize"))
     {
@@ -183,6 +196,13 @@ void Settings::init()
 /** *********************************
  *  QML Invokable properties setters
  ** ********************************/
+void Settings::setWelcomeWinVisible(bool welcome_win_visible)
+{
+    _settingsHandler->setValue("WelcomeWin/visible", welcome_win_visible);
+    _welcome_win_visible = welcome_win_visible;
+    emit welcomeWinVisibleChanged();
+}
+
 void Settings::setFontSize(int font_size)
 {
     _settingsHandler->setValue("Window/fontSize", font_size);

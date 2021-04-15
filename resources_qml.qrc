@@ -21,5 +21,6 @@
         <file>qml/CustomWidgets/CustomColorDialog.qml</file>
         <file>qml/ExternalWindows/AppearanceTab.qml</file>
         <file>qml/ExternalWindows/SettingsTab.qml</file>
+        <file>qml/ExternalWindows/WelcomeWin.qml</file>
     </qresource>
 </RCC>

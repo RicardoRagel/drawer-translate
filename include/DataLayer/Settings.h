@@ -7,6 +7,7 @@
 #include <QColor>
 #include <Constants.h>
 
+#define DEFAULT_WELCOME_WIN_VISIBLE true                    // welcome windows visible flag
 #define DEFAULT_FONT_SIZE 14                                // App Font Size
 #define DEFAULT_AUTOHIDE_WIN false                          // AutoHide App Window flag
 #define DEFAULT_MONITOR 0                                   // Monitor where place the app
@@ -34,6 +35,7 @@ public:
     void init();
 
     // QML properties declarations
+    Q_PROPERTY(bool welcomeWinVisible READ welcomeWinVisible WRITE setWelcomeWinVisible NOTIFY welcomeWinVisibleChanged)
     Q_PROPERTY(QColor backgroundColor READ backgroundColor WRITE setBackgroundColor NOTIFY backgroundColorChanged)
     Q_PROPERTY(QColor foregroundColor READ foregroundColor WRITE setForegroundColor NOTIFY foregroundColorChanged)
     Q_PROPERTY(QColor textColor READ textColor WRITE setTextColor NOTIFY textColorChanged)
@@ -49,10 +51,11 @@ public:
     Q_PROPERTY(QString email READ email WRITE setEmail NOTIFY emailChanged)
 
     // QML properties getters
-    int fontSize()              {return _font_size;}
+    bool welcomeWinVisible()    {return _welcome_win_visible;}
     QColor backgroundColor()    {return _background_color;}
     QColor foregroundColor()    {return _foreground_color;}
     QColor textColor()          {return _text_color;}
+    int fontSize()              {return _font_size;}
     bool autoHideWin()          {return _autohide_win;}
     int  monitor()              {return _monitor;}
     bool translateOnSelection() {return _translate_on_selection;}
@@ -64,10 +67,11 @@ public:
     QString email()             {return _email;}
 
     // QML Invokable properties setters
-    Q_INVOKABLE void setFontSize(int font_size);
+    Q_INVOKABLE void setWelcomeWinVisible(bool welcome_win_visible);
     Q_INVOKABLE void setBackgroundColor(QColor background_color);
     Q_INVOKABLE void setForegroundColor(QColor foreground_color);
     Q_INVOKABLE void setTextColor(QColor text_color);
+    Q_INVOKABLE void setFontSize(int font_size);
     Q_INVOKABLE void setAutoHideWin(bool autohide_win);
     Q_INVOKABLE void setMonitor(int monitor);
     Q_INVOKABLE void setTranslateOnSelection(bool translate_on_selection);
@@ -84,10 +88,11 @@ public:
 signals:
 
     // QML properties signals
-    void fontSizeChanged();
+    void welcomeWinVisibleChanged();
     void backgroundColorChanged();
     void foregroundColorChanged();
     void textColorChanged();
+    void fontSizeChanged();
     void autoHideWinChanged();
     void monitorChanged();
     void translateOnSelectionChanged();
@@ -104,10 +109,11 @@ private:
     QSettings *_settingsHandler;
 
     // Settings variables
-    int _font_size;
+    bool _welcome_win_visible;
     QColor _background_color;
     QColor _foreground_color;
     QColor _text_color;
+    int _font_size;
     bool _autohide_win;
     int _monitor;
     bool _translate_on_selection;

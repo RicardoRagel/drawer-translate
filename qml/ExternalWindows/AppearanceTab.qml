@@ -21,8 +21,11 @@ Rectangle
     property int fontPixelSize: 12
 
     property color fontColor: "white"
+    property color comboBoxColor: "black"
     property color buttonUnpressedColor: "gray"
     property color buttonPressedColor: "black"
+
+    property double unhoveredOpacity: 0.75
 
     // Restore values from settings backend
     function cancelAll()
@@ -31,6 +34,7 @@ Rectangle
         backgroundColorSelector.buttonColor = DataManager.settings.backgroundColor
         foregroundColorSelector.buttonColor = DataManager.settings.foregroundColor
         textColorSelector.buttonColor = DataManager.settings.textColor
+        monitor.currentIndex = DataManager.settings.monitor
     }
 
     // Set values to settings backend
@@ -40,6 +44,7 @@ Rectangle
         DataManager.settings.setBackgroundColor(backgroundColorSelector.buttonColor)
         DataManager.settings.setForegroundColor(foregroundColorSelector.buttonColor)
         DataManager.settings.setTextColor(textColorSelector.buttonColor)
+        DataManager.settings.setMonitor(monitor.currentIndex)
     }
 
     // Column of settings
@@ -48,10 +53,10 @@ Rectangle
         id: columnAppearance
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: heightColumns
+        anchors.topMargin: heightColumns/2
         spacing: 5
 
-        // SECTION - Window
+        // SECTION - GUI
         Rectangle
         {
             anchors.left: parent.left
@@ -66,7 +71,7 @@ Rectangle
                 font.pixelSize: fontPixelSize * 1.1
                 font.bold: true
                 color: fontColor
-                text: "Window"
+                text: "GUI"
             }
         }
 
@@ -428,6 +433,97 @@ Rectangle
             }
         }//fontSize
 
+        // SECTION - Display
+        Rectangle
+        {
+            anchors.left: parent.left
+            width: widthColum1 + widthColum2
+            height: heightColumns
+            color: "transparent"
+
+            Text
+            {
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                font.pixelSize: fontPixelSize * 1.1
+                font.bold: true
+                color: fontColor
+                text: "Display"
+            }
+        }
+
+        // Monitor
+        Row
+        {
+            id: monitorRow
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 2
+
+            Rectangle
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                width: widthColum1
+                height: heightColumns
+                color: "transparent"
+
+                Text
+                {
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: fontPixelSize
+                    font.bold: false
+                    color: fontColor
+                    text: "    Monitor:"
+                }
+            }
+            Rectangle
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                width: widthColum2
+                height: heightColumns
+                color: "transparent"
+
+                Rectangle
+                {
+                    anchors.centerIn: parent
+                    width: buttonSize * 2
+                    height: parent.height
+                    color: comboBoxColor
+                    opacity: unhoveredOpacity
+
+                    CustomComboBox
+                    {
+                        id: monitor
+                        width: parent.width
+                        height: parent.height
+                        anchors.centerIn: parent
+                        backgroundColor: "transparent"
+                        textColor: fontColor
+                        fontSize: fontPixelSize
+                        dropDownMaxHeight: root.height/2
+                        dropDownArrowColor: backgroundColor
+                        currentIndex: 0
+                        textRole: "index"
+                        displayText: currentIndex
+                        model: Qt.application.screens
+                        onHoveredChanged:
+                        {
+                            parent.opacity = hovered? 1.0 : unhoveredOpacity
+                        }
+                    }
+                    Connections
+                    {
+                        target: DataManager.settings
+
+                        onMonitorChanged:
+                        {
+                            monitor.currentIndex = DataManager.settings.monitor
+                            console.log("Updating Monitor to: " + DataManager.settings.monitor)
+                        }
+                    }
+                }
+            }
+        }
 
     }//column
 

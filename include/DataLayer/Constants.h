@@ -26,6 +26,10 @@
 #define DEFAULT_TEXT_COLOR_G 242
 #define DEFAULT_TEXT_COLOR_B 242
 #define DEFAULT_TEXT_COLOR_A 255
+#define SHORTCUT_OPEN_SETTINGS  "Ctrl+S"
+#define SHORTCUT_SWITCH_HIDDEN  "Ctrl+H"
+#define SHORTCUT_SWITCH_MONITOR "Ctrl+T"
+#define SHORTCUT_EXCHANGE_LANGS "Ctrl+E"
 
 /*
  *
@@ -76,6 +80,22 @@ public:
     Q_PROPERTY(QColor defaultTextColor READ defaultTextColor NOTIFY defaultTextColorChanged)
     QColor defaultTextColor(){return default_text_color;}
 
+    QString shortcut_open_settings = SHORTCUT_OPEN_SETTINGS;
+    Q_PROPERTY(QString shortcutOpenSettings READ shortcutOpenSettings NOTIFY shortcutOpenSettingsChanged)
+    QString shortcutOpenSettings(){return shortcut_open_settings;}
+
+    QString shortcut_switch_hidden = SHORTCUT_SWITCH_HIDDEN;
+    Q_PROPERTY(QString shortcutSwitchHidden READ shortcutSwitchHidden NOTIFY shortcutSwitchHiddenChanged)
+    QString shortcutSwitchHidden(){return shortcut_switch_hidden;}
+
+    QString shortcut_switch_monitor = SHORTCUT_SWITCH_MONITOR;
+    Q_PROPERTY(QString shortcutSwitchMonitor READ shortcutSwitchMonitor NOTIFY shortcutSwitchMonitorChanged)
+    QString shortcutSwitchMonitor(){return shortcut_switch_monitor;}
+
+    QString shortcut_exchange_langs = SHORTCUT_EXCHANGE_LANGS;
+    Q_PROPERTY(QString shortcutExchangeLangs READ shortcutExchangeLangs NOTIFY shortcutExchangeLangsChanged)
+    QString shortcutExchangeLangs(){return shortcut_exchange_langs;}
+
 signals:
 
   void appTitleChanged();
@@ -86,6 +106,10 @@ signals:
   void defaultBackgroundColorChanged();
   void defaultForegroundColorChanged();
   void defaultTextColorChanged();
+  void shortcutOpenSettingsChanged();
+  void shortcutSwitchHiddenChanged();
+  void shortcutSwitchMonitorChanged();
+  void shortcutExchangeLangsChanged();
 };
 
 #endif

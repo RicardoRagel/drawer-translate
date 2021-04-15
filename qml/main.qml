@@ -17,12 +17,14 @@ import MouseProvider 1.0
 import "CustomWidgets"
 import "ExternalWindows"
 
-// App Window
+// Main App Window
 ApplicationWindow
 {
     id: root
 
-    // Design
+    /*
+        DESIGN PROPERTIES
+    */
     property int fontPixelSize: DataManager.settings.fontSize
     property int buttonSize:    20
     property int buttonSize2:   30
@@ -39,28 +41,206 @@ ApplicationWindow
     property int forceMinimumHeight: buttonSize
     property int resizingMinimumHeight: buttonSize + 2 * margins
     property double contentsOpacity: 1.0
-
-    // y and height are controlled by these properties
+    // Y and Height are controlled by these properties
     property int targetHeight           // Animations and mouse actions control this property, and this property control y and height
     property int screenAvailableHeight  // Available height
     property int screenYoffset          // Y Offset in case of dock/start-menu is at the top
 
-    // Windows Configuration
+    /*
+        APP WINDOW CONFIG
+    */
     title: qsTr(Constants.appTitle)
     visible: false
     color: "transparent"
-    x: 0
-    y: 0
+    x: 0; y: 0
     width: Screen.desktopAvailableWidth
     //height: Screen.desktopAvailableHeight
     minimumHeight: forceMinimumHeight
     minimumWidth: 400
-    menuBar: MenuBar{ visible: false }  // Remove MenuBar
+    menuBar: MenuBar {visible: false}
     flags: Qt.Window
            | Qt.FramelessWindowHint        // Frameless window
            | Qt.WindowStaysOnTopHint       // Always on top
 
-    // Connections to C++ backend
+    /*
+        APP WINDOW SHOTCUTS
+    */
+    Shortcut
+    {
+        sequence: Constants.shortcutOpenSettings
+        context: Qt.ApplicationShortcut
+        onActivated: settingsWindow.visible = true
+    }
+    Shortcut
+    {
+        sequence: Constants.shortcutSwitchHidden
+        context: Qt.ApplicationShortcut
+        onActivated:
+        {
+            showHide()
+            if(DataManager.settings.autoHideWin && autoHideTimer.running)
+                autoHideTimer.restart()
+        }
+    }
+    Shortcut
+    {
+        sequence: Constants.shortcutSwitchMonitor
+        context: Qt.ApplicationShortcut
+        onActivated: DataManager.settings.setMonitor(DataManager.settings.monitor+1)
+    }
+    Shortcut
+    {
+        sequence: Constants.shortcutExchangeLangs
+        context: Qt.ApplicationShortcut
+        onActivated: DataManager.interchangeSourceAndTargetLanguages()
+    }
+
+    /*
+        FRAMELESS WINDOW TOP HANDLER
+    */
+    // A FramelessWindow has not handlers to resize it. Adding one at the top
+    // Reference: https://evileg.com/en/post/280/
+    MouseArea
+    {
+        id: topArea
+        height: 20
+        hoverEnabled: true
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        cursorShape: !appHidden? Qt.SizeVerCursor : Qt.ArrowCursor
+
+        // If mouse pressed, recalculate target height -> app win Y and Height
+        onMouseYChanged:
+        {
+            if(pressed && !appHidden)
+            {
+                var tmptargetHeight = screenAvailableHeight + screenYoffset - MouseProvider.cursorPos().y
+                if(tmptargetHeight > resizingMinimumHeight)
+                    targetHeight = tmptargetHeight
+            }
+        }
+        // Control auto-hide when mouse hovers the app
+        onHoveredChanged:
+        {
+            // unhide
+            if(DataManager.settings.autoHideWin && appHidden)
+                showHide()
+
+            // stop and start autoHide
+            if(DataManager.settings.autoHideWin)
+            {
+                if(containsMouse)
+                    autoHideTimer.running = false
+                else
+                    autoHideTimer.running = true
+            }
+        }
+    }
+
+    /*
+        CONTENTS
+    */
+    Rectangle
+    {
+        id: appBackground
+        visible: true
+        anchors.fill: parent
+        color: appWindowColor
+        radius: 10
+
+        // Window Header
+        Header
+        {
+            id: headerRect
+            anchors.top: parent.top
+            anchors.horizontalCenter: parent.horizontalCenter
+            color: "transparent"
+            width: parent.width
+            height: buttonSize
+            buttonsWidth: buttonSize2
+            buttonsHeight: buttonSize
+            top_margin: root.margins
+            anchors.topMargin: top_margin
+            fontColor: root.fontColor
+            fontPixelSize: root.fontPixelSize
+            contentsOpacity: root.contentsOpacity
+            isHidden: appHidden
+
+            onSeetingsButtonPressed: { settingsWindow.visible = true }
+            onExitButtonPressed: { root.close() }
+            onMinimizeButtonPressed: { root.showMinimized() }
+            onHideButtonPressed: { root.showHide() }
+        }//header
+
+        //  Window Content
+        Content
+        {
+            id: contentRect
+            anchors.top: headerRect.bottom
+            anchors.bottom: parent.bottom
+            anchors.topMargin: margins
+            anchors.bottomMargin: margins
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width - 2*margins
+            color: "transparent"
+            clip: true
+            opacity: contentsOpacity
+            sectionsColor: appSectionColor
+            sectionsBordersColor: appSectionBorderColor
+            fontColor: root.fontColor
+            fontPixelSize: root.fontPixelSize
+            buttonsWidth: buttonSize2
+            buttonsHeight: buttonSize2
+            margins: root.margins
+
+            onInputTextChanged:
+            {
+                // Control autoHide
+                if(appHidden)
+                {
+                    showHide()
+                }
+                if(DataManager.settings.autoHideWin && autoHideTimer.running)
+                    autoHideTimer.restart()
+            }
+
+            onSectionHoveredChanged:
+            {
+                // Control autoHide
+                if(DataManager.settings.autoHideWin)
+                {
+                    if(hovered)
+                        autoHideTimer.running = false
+                    else
+                        autoHideTimer.running = true
+                }
+            }
+
+            onSectionPressed:
+            {
+                // stop the dummy timer
+                //fixMultipleMonitorIssueTimer.running = false
+            }
+        }//content
+
+        // Do not round app at the bottom
+        Rectangle
+        {
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
+            height: parent.radius
+            z: parent.z - 1
+            color: parent.color
+            visible: parent.color.a >=1
+        }
+    }//appBackground
+
+
+    /*
+        CONNECTIONS TO C++ BACKEND
+    */
     Connections
     {
         target: DataManager.settings
@@ -87,52 +267,9 @@ ApplicationWindow
         }
     }
 
-    // A FramelessWindow has not handlers to resize it. Adding one at the top
-    // Reference: https://evileg.com/en/post/280/
-    MouseArea
-    {
-        id: topArea
-        height: 20
-        hoverEnabled: true
-        anchors
-        {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
-
-        // We set the shape of the cursor so that it is clear that this resizing
-        cursorShape: !appHidden? Qt.SizeVerCursor : Qt.ArrowCursor
-
-        // When changing a position, we recalculate the position of the window, and its height
-        onMouseYChanged:
-        {
-            if(pressed && !appHidden)
-            {
-                var tmptargetHeight = screenAvailableHeight + screenYoffset - MouseProvider.cursorPos().y
-                if(tmptargetHeight > resizingMinimumHeight)
-                    targetHeight = tmptargetHeight
-            }
-        }
-
-        onHoveredChanged:
-        {
-            // unhide
-            if(DataManager.settings.autoHideWin && appHidden)
-                showHide()
-
-            // stop and start autoHide
-            if(DataManager.settings.autoHideWin)
-            {
-                if(containsMouse)
-                    autoHideTimer.running = false
-                else
-                    autoHideTimer.running = true
-            }
-        }
-    }
-
-    // Height controller
+    /*
+        APP Y AND HEIGHT CONTROLLER
+    */
     onTargetHeightChanged:
     {
         // If the OS is Linux, check a minimum displacemnt to avoid flickering and/or flashing
@@ -146,7 +283,9 @@ ApplicationWindow
         }
     }
 
-    // AutoHide controller
+    /*
+        AUTO-HIDE CONTROLLER
+    */
     Timer
     {
         id: autoHideTimer
@@ -250,105 +389,6 @@ ApplicationWindow
     }
 
     /*
-        CONTENTS
-    */
-    Rectangle
-    {
-        id: appBackground
-        visible: true
-        anchors.fill: parent
-        color: appWindowColor
-        radius: 10
-
-        // Window Header
-        Header
-        {
-            id: headerRect
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            color: "transparent"
-            width: parent.width
-            height: buttonSize
-            buttonsWidth: buttonSize2
-            buttonsHeight: buttonSize
-            top_margin: root.margins
-            anchors.topMargin: top_margin
-            fontColor: root.fontColor
-            fontPixelSize: root.fontPixelSize
-            contentsOpacity: root.contentsOpacity
-            isHidden: appHidden
-
-            onSeetingsButtonPressed: { settingsWindow.visible = true }
-            onExitButtonPressed: { root.close() }
-            onMinimizeButtonPressed: { root.showMinimized() }
-            onHideButtonPressed: { root.showHide() }
-        }//header
-
-        //  Window Content
-        Content
-        {
-            id: contentRect
-            anchors.top: headerRect.bottom
-            anchors.bottom: parent.bottom
-            anchors.topMargin: margins
-            anchors.bottomMargin: margins
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width - 2*margins
-            color: "transparent"
-            clip: true
-            opacity: contentsOpacity
-            sectionsColor: appSectionColor
-            sectionsBordersColor: appSectionBorderColor
-            fontColor: root.fontColor
-            fontPixelSize: root.fontPixelSize
-            buttonsWidth: buttonSize2
-            buttonsHeight: buttonSize2
-            margins: root.margins
-
-            onInputTextChanged:
-            {
-                // Control autoHide
-                if(appHidden)
-                {
-                    showHide()
-                }
-                if(DataManager.settings.autoHideWin && autoHideTimer.running)
-                    autoHideTimer.restart()
-            }
-
-            onSectionHoveredChanged:
-            {
-                // Control autoHide
-                if(DataManager.settings.autoHideWin)
-                {
-                    if(hovered)
-                        autoHideTimer.running = false
-                    else
-                        autoHideTimer.running = true
-                }
-            }
-
-            onSectionPressed:
-            {
-                // stop the dummy timer
-                //fixMultipleMonitorIssueTimer.running = false
-            }
-        }//content
-
-        // Do not round app at the bottom
-        Rectangle
-        {
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            width: parent.width
-            height: parent.radius
-            z: parent.z - 1
-            color: parent.color
-            visible: parent.color.a >=1
-        }
-    }//appBackground
-
-    /*
         EXTERNAL WINDOWS
     */
     SettingsWin
@@ -365,6 +405,38 @@ ApplicationWindow
         buttonUnpressedColor: root.appButtonUnpressedColor
         buttonPressedColor: root.appButtonPressedColor
         margins: root.margins
+        Component.onCompleted:
+        {
+            width = 700
+            height = 500
+            x = Screen.width/2 - width/2
+            y = Screen.height/2 - height/2
+            minimumHeight = height
+            maximumHeight = height
+            minimumWidth = width
+            maximumWidth = width
+        }
+
+        onVisibleChanged:
+        {
+            // Control autoHide
+            if(DataManager.settings.autoHideWin)
+            {
+                if(visible)
+                    autoHideTimer.running = false
+                else
+                    autoHideTimer.running = true
+            }
+        }
+    }
+
+    WelcomeWin
+    {
+        id: welcomeWindow
+        visible: DataManager.settings.welcomeWinVisible
+        title: root.title + " - Welcome"
+        fontPixelSize: root.fontPixelSize
+        opacity: 0.85
         Component.onCompleted:
         {
             width = 700

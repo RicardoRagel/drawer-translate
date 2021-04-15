@@ -122,11 +122,11 @@ Popup
             {
                 anchors.centerIn: parent
                 width: parent.width
-                spacing: 20
+                spacing: 10
 
                 Text
                 {
-                    id: description
+                    id: description1
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: fontPixelSize
                     color: fontColor
@@ -134,17 +134,49 @@ Popup
                     verticalAlignment: TextInput.AlignVCenter
                     width: parent.width
                     wrapMode: TextEdit.Wrap
-                    text: "<p><b>" + Constants.appTitle + "</b> (v" + Qt.application.version + ") is an open-source and multi-platform application designed as a hub for translation engines that provide an open (and mainly free) API.</p>
-                            <p>As an open-source application, fell free to ask for the integration of a new translation engine, writting an issue or creating a pull request in the Github repository.</p>"
+                    text: "<b>" + Constants.appTitle + "</b> (v" + Qt.application.version + ") is an open-source and multi-platform application designed as a hub for translation engines that provide an open (and mainly free) API."
+                }
+
+                Image
+                {
+                    id: drawerTranslateLogo
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    sourceSize.height: 40
+                    sourceSize.width: 40
+                    fillMode: Image.PreserveAspectFit
+                    antialiasing: true
+                    source: "qrc:/resources/icon_app.png"
+                    property bool hovered: false
+                    HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked: {Qt.openUrlExternally("https://ricardoragel.github.io/drawer-translate/");}
+                        cursorShape: parent.hovered? Qt.PointingHandCursor : Qt.ArrowCursor
+                    }
+                }
+
+                Text
+                {
+                    id: description2
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    font.pixelSize: fontPixelSize
+                    color: fontColor
+                    horizontalAlignment: TextInput.AlignHCenter
+                    verticalAlignment: TextInput.AlignVCenter
+                    width: parent.width
+                    wrapMode: TextEdit.Wrap
+                    text: "As an open-source application, fell free to ask for the integration of a new translation engine, writting an issue or creating a pull request in the Github repository."
                 }
 
                 Image
                 {
                     id: githubLogo
                     anchors.horizontalCenter: parent.horizontalCenter
-                    height: 60
-                    width: 60
+                    sourceSize.height: 40
+                    sourceSize.width: 40
                     fillMode: Image.PreserveAspectFit
+                    antialiasing: true
                     source: "qrc:/resources/logos/GitHub-Mark-Light-120px-plus.png"
                     property bool hovered: false
                     HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
@@ -173,89 +205,128 @@ Popup
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width
 
-                Image
+                Rectangle
                 {
-                    id: myMemoryLogo
+                    color: "transparent"
                     anchors.verticalCenter: parent.verticalCenter
                     height: iconsSpace.height
                     width: iconsSpace.width/5
-                    fillMode: Image.PreserveAspectFit
-                    source: "qrc:/resources/logos/mymemory.svg"
-                    property bool hovered: false
-                    HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
-                    MouseArea
+
+                    Image
                     {
-                        anchors.fill: parent
-                        onClicked: {Qt.openUrlExternally("https://mymemory.translated.net/");}
-                        cursorShape: parent.hovered? Qt.PointingHandCursor : Qt.ArrowCursor
+                        id: myMemoryLogo
+                        anchors.centerIn: parent
+                        sourceSize.width: parent.width
+                        fillMode: Image.PreserveAspectFit
+                        source: "qrc:/resources/logos/mymemory.svg"
+                        property bool hovered: false
+                        HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            onClicked: {Qt.openUrlExternally("https://mymemory.translated.net/");}
+                            cursorShape: parent.hovered? Qt.PointingHandCursor : Qt.ArrowCursor
+                        }
                     }
                 }
-                Image
+
+                Rectangle
                 {
-                    id: apertiumLogo
+                    color: "transparent"
                     anchors.verticalCenter: parent.verticalCenter
                     height: iconsSpace.height
                     width: iconsSpace.width/5
-                    fillMode: Image.PreserveAspectFit
-                    source: "qrc:/resources/logos/apertium.png"
-                    property bool hovered: false
-                    HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
-                    MouseArea
+
+                    Image
                     {
-                        anchors.fill: parent
-                        onClicked: {Qt.openUrlExternally("https://wiki.apertium.org/wiki/Main_Page");}
-                        cursorShape: parent.hovered? Qt.PointingHandCursor : Qt.ArrowCursor
+                        id: apertiumLogo
+                        anchors.centerIn: parent
+                        sourceSize.height: parent.height * 1.0
+                        fillMode: Image.PreserveAspectFit
+                        source: "qrc:/resources/logos/apertium.png"
+                        property bool hovered: false
+                        HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            onClicked: {Qt.openUrlExternally("https://wiki.apertium.org/wiki/Main_Page");}
+                            cursorShape: parent.hovered? Qt.PointingHandCursor : Qt.ArrowCursor
+                        }
                     }
                 }
-                Image
+
+                Rectangle
                 {
-                    id: googleLogo
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: iconsSpace.height * 0.75
-                    width: iconsSpace.width/5
-                    fillMode: Image.PreserveAspectFit
-                    source: "qrc:/resources/logos/google.png"
-                    property bool hovered: false
-                    HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
-                    MouseArea
-                    {
-                        anchors.fill: parent
-                        onClicked: {Qt.openUrlExternally("https://cloud.google.com/translate");}
-                        cursorShape: parent.hovered? Qt.PointingHandCursor : Qt.ArrowCursor
-                    }
-                }
-                Image
-                {
-                    id: hearlingLogo
-                    anchors.verticalCenter: parent.verticalCenter
-                    height: iconsSpace.height * 0.75
-                    width: iconsSpace.width/5
-                    fillMode: Image.PreserveAspectFit
-                    source: "qrc:/resources/logos/hearling.png"
-                    property bool hovered: false
-                    HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
-                    MouseArea
-                    {
-                        anchors.fill: parent
-                        onClicked: {Qt.openUrlExternally("https://hearling.com/");}
-                        cursorShape: parent.hovered? Qt.PointingHandCursor : Qt.ArrowCursor
-                    }
-                }
-                Image
-                {
-                    id: libreTranslateLogo
+                    color: "transparent"
                     anchors.verticalCenter: parent.verticalCenter
                     height: iconsSpace.height
                     width: iconsSpace.width/5
-                    fillMode: Image.PreserveAspectFit
-                    source: "qrc:/resources/logos/libretranslate.svg"
-                    property bool hovered: false
-                    HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
-                    MouseArea
+
+                    Image
                     {
-                        anchors.fill: parent
-                        onClicked: {Qt.openUrlExternally("https://github.com/uav4geo/LibreTranslate/blob/main/README.md");}
-                        cursorShape: parent.hovered? Qt.PointingHandCursor : Qt.ArrowCursor
+                        id: googleLogo
+                        anchors.centerIn: parent
+                        sourceSize.height: parent.height * 0.75
+                        fillMode: Image.PreserveAspectFit
+                        source: "qrc:/resources/logos/google.png"
+                        property bool hovered: false
+                        HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            onClicked: {Qt.openUrlExternally("https://cloud.google.com/translate");}
+                            cursorShape: parent.hovered? Qt.PointingHandCursor : Qt.ArrowCursor
+                        }
+                    }
+                }
+
+                Rectangle
+                {
+                    color: "transparent"
+                    anchors.verticalCenter: parent.verticalCenter
+                    height: iconsSpace.height
+                    width: iconsSpace.width/5
+
+                    Image
+                    {
+                        id: hearlingLogo
+                        anchors.centerIn: parent
+                        sourceSize.height: parent.height * 0.75
+                        fillMode: Image.PreserveAspectFit
+                        source: "qrc:/resources/logos/hearling.png"
+                        property bool hovered: false
+                        HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            onClicked: {Qt.openUrlExternally("https://hearling.com/");}
+                            cursorShape: parent.hovered? Qt.PointingHandCursor : Qt.ArrowCursor
+                        }
+                    }
+                }
+
+                Rectangle
+                {
+                    color: "transparent"
+                    anchors.verticalCenter: parent.verticalCenter
+                    height: iconsSpace.height
+                    width: iconsSpace.width/5
+
+                    Image
+                    {
+                        id: libreTranslateLogo
+                        anchors.centerIn: parent
+                        sourceSize.width: parent.width
+                        fillMode: Image.PreserveAspectFit
+                        source: "qrc:/resources/logos/libretranslate.svg"
+                        property bool hovered: false
+                        HoverHandler{onHoveredChanged: {parent.hovered = hovered}}
+                        MouseArea
+                        {
+                            anchors.fill: parent
+                            onClicked: {Qt.openUrlExternally("https://github.com/uav4geo/LibreTranslate/blob/main/README.md");}
+                            cursorShape: parent.hovered? Qt.PointingHandCursor : Qt.ArrowCursor
+                        }
                     }
                 }
             }

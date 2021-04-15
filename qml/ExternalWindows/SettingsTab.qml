@@ -38,7 +38,7 @@ Rectangle
         onSelection.checked = DataManager.settings.translateOnSelection
         onCopy.checked = DataManager.settings.translateOnCopy
         autoHide.checked = DataManager.settings.autoHideWin
-        monitor.currentIndex = DataManager.settings.monitor
+        welcomeWin.checked = DataManager.settings.welcomeWinVisible
     }
 
     // Set values to settings backend
@@ -52,7 +52,7 @@ Rectangle
         DataManager.settings.setTranslateOnSelection(onSelection.checked)
         DataManager.settings.setTranslateOnCopy(onCopy.checked)
         DataManager.settings.setAutoHideWin(autoHide.checked)
-        DataManager.settings.setMonitor(monitor.currentIndex)
+        DataManager.settings.setWelcomeWinVisible(welcomeWin.checked)
     }
 
     // Column of settings
@@ -61,7 +61,7 @@ Rectangle
         id: columnSettings
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
-        anchors.topMargin: heightColumns
+        anchors.topMargin: heightColumns/2
         spacing: 5
 
         // SECTION - Translation
@@ -653,10 +653,9 @@ Rectangle
             }
         }
 
-        // Monitor
+        // Welcome Window
         Row
         {
-            id: monitorRow
             anchors.horizontalCenter: parent.horizontalCenter
             spacing: 2
 
@@ -674,7 +673,7 @@ Rectangle
                     font.pixelSize: fontPixelSize
                     font.bold: false
                     color: fontColor
-                    text: "    Monitor:"
+                    text: "    Show welcome window: "
                 }
             }
             Rectangle
@@ -682,41 +681,28 @@ Rectangle
                 anchors.verticalCenter: parent.verticalCenter
                 width: widthColum2
                 height: heightColumns
-                color: comboBoxColor
-                opacity: unhoveredOpacity
+                color: "transparent"
 
-                CustomComboBox
+                CustomCheckBox
                 {
-                    id: monitor
-                    height: parent.height
-                    width: parent.width
+                    id: welcomeWin
                     anchors.centerIn: parent
-                    backgroundColor: "transparent"
-                    textColor: fontColor
-                    fontSize: fontPixelSize
-                    dropDownMaxHeight: root.height/2
-                    dropDownArrowColor: backgroundColor
-                    currentIndex: 0
-                    textRole: "index"
-                    displayText: currentIndex
-                    model: Qt.application.screens
-                    onHoveredChanged:
-                    {
-                        parent.opacity = hovered? 1.0 : unhoveredOpacity
-                    }
+                    box_width: buttonSize/2
+                    border_color: hovered? "black" : "transparent"
+                    border_width: 1
+                    tool_tip:  "Show the welcome window at startup"
                 }
                 Connections
                 {
                     target: DataManager.settings
 
-                    onMonitorChanged:
+                    onWelcomeWinVisibleChanged:
                     {
-                        monitor.currentIndex = DataManager.settings.monitor
-                        console.log("Updating Monitor to: " + DataManager.settings.monitor)
+                        welcomeWin.checked = DataManager.settings.welcomeWinVisible
+                        console.log("Updating welcome win: " + DataManager.settings.welcomeWinVisible)
                     }
                 }
             }
         }
-
     }//column
 }
