@@ -50,6 +50,8 @@ Rectangle
             DataManager.settings.setTextColor(textColorSelector.buttonColor)
         if(monitor.currentIndex !== DataManager.settings.monitor)
             DataManager.settings.setMonitor(monitor.currentIndex)
+
+        return 1
     }
 
     // Column of settings

@@ -1,5 +1,6 @@
 import QtQuick 2.14
 import QtQuick.Controls 2.14
+import QtQuick.Dialogs 1.2
 
 // Import other project QML scripts
 import "../CustomWidgets"
@@ -44,6 +45,14 @@ Rectangle
     // Set values to settings backend
     function saveAll()
     {
+        // Check mandatory parameters
+        if(translatorEngine.currentText === Constants.googleTranslateApiName && googleApiKey.text === "")
+        {
+            errorMessage.open()
+            return 0
+        }
+
+        // Save values that have changed
         if(translatorEngine.currentText !== DataManager.settings.translatorEngine)
             DataManager.settings.setTranslatorEngine(translatorEngine.currentText)
 
@@ -62,6 +71,8 @@ Rectangle
             DataManager.settings.setAutoHideWin(autoHide.checked)
         if(welcomeWin.checked !== DataManager.settings.welcomeWinVisible)
             DataManager.settings.setWelcomeWinVisible(welcomeWin.checked)
+
+        return 1
     }
 
     // Column of settings
@@ -714,4 +725,18 @@ Rectangle
             }
         }
     }//column
+
+    // Error message
+    MessageDialog
+    {
+        id: errorMessage
+        visible: false
+        icon: StandardIcon.Critical
+        title: "Drawer Translate Error"
+        text: "Please, fill the API Key with a valid Google Translate Key or select other API"
+        onAccepted:
+        {
+            close()
+        }
+    }
 }

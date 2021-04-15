@@ -235,9 +235,8 @@ Window
                             {
                                 clicked = false
                                 console.log("Setting new configuration")
-                                settingsTab.saveAll()
-                                appearanceTab.saveAll()
-                                root.visible = false
+                                if(settingsTab.saveAll() && appearanceTab.saveAll())
+                                    root.visible = false
                             }
                         }
                     }
